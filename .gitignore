@@ -1,0 +1,51 @@
+# Archivos y carpetas de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de editor
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+logs/
+*.log
+
+# Directorios de dependencias
+node_modules/
+bower_components/
+
+# Archivos de construcción
+dist/
+build/
+.next/
+
+# Archivos de entorno
+.env
+.env.*
+
+# Archivos de caché
+.cache/
+.eslintcache
+
+# Archivos de prueba
+coverage/
+__tests__/
+
+# Otros
+*.swp
+*.swo
+*.bak
+
+# Backend (Node.js)
+server/node_modules/
+
+# Frontend (React, Vue.js, Angular)
+client/node_modules/
+client/dist/
+client/build/
+
+# Archivos específicos de React
+client/.pnp
+.pnp.js
+
