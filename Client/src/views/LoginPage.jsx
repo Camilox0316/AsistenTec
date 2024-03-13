@@ -31,6 +31,7 @@ export function LoginPage() {
 
   const loginUser = async () => {
     try {
+      console.log(email, password);
       const response = await axios.post(
         LOGIN_URL,
         JSON.stringify({ email, password }),
@@ -71,7 +72,7 @@ export function LoginPage() {
     backgroundPosition: "center",   
    
   };
-  console.log(logoImage);
+
   return (
     
     <div className="absolute inset-0 bg-cover bg-center"  style={styles} >
@@ -110,7 +111,7 @@ export function LoginPage() {
                     color: "black",
                   }}
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-black dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500 placeholder-black"
-                  placeholder="email"
+                  placeholder="Dirección de correo electrónico"
                   required
                   value={email}
                 />
@@ -127,7 +128,7 @@ export function LoginPage() {
                     backgroundColor: "#F0F0F0",
                     borderColor: "black",
                   }}
-                  placeholder="contraseña"
+                  placeholder="Contraseña"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-black dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
                   value={password}

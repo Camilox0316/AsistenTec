@@ -1,35 +1,77 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./index.css";
+import { Layout } from "./components/Layout";
+import { Route, Routes } from "react-router-dom";
+import { LoginPage } from "./views/LoginPage";
+import { ForgotPasswordPage } from "./views/ForgotPasswordPage";
+import RequireAuth from "./components/RequireAuth";
 
-function App() {
-  const [count, setCount] = useState(0)
+import { HomeSwitch } from "./components/HomeSwitch";
 
+import RegisterUserPage from "./views/RegisterUserPage";
+
+import { ViewActivityPage } from "./views/ViewActivityPage";
+
+
+
+const ROLES = {
+  Student: 1597,
+  Professor: 2264,
+  Admin: 3123,
+
+};
+
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        {/*Public routes */}
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/unauthorized" element={<h1>Unauthorized</h1>} />
+        <Route path="/register-student" element={<RegisterUserPage/>} />
+      
+        {/*Private routes */}
+        {/* User routes */}
+        <Route
+          element={
+            <RequireAuth
+              allowedRoles={[
+                ROLES.Professor,
+                ROLES.Student,
+                ROLES.Admin,
+      
+              ]}
+            />
+          }
+        >
+          <Route path="/home-switch" element={<HomeSwitch />} />
+        </Route>
 
-export default App
+        {/* Student routes */}
+        <Route
+          element={
+            <RequireAuth allowedRoles={[ROLES.Student]} />
+          }
+        >
+            <Route path="/home-student" element={<ViewActivityPage />} />
+        </Route>
+
+        {/* Professor routes */}
+        <Route element={<RequireAuth allowedRoles={[ROLES.Professor]} />}>
+
+        </Route>
+
+
+        {/* Admin routes */}
+        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+          <Route
+
+          />
+        </Route>
+
+        {/*Catch all*/}
+        <Route path="*" element={<h1>404 error</h1>} />
+      </Route>
+    </Routes>
+  );
+}

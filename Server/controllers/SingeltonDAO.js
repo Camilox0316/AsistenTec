@@ -21,8 +21,8 @@ class SingletonDAO {
     static count = 0;
 
     constructor() {
-        //Database connection
-        SingletonConnexion.dbConnect();
+        console.log("Singleton constructor called");
+        this.conn = SingletonConnexion.getInstance();
     }
 
     static getInstance() {
@@ -72,6 +72,7 @@ class SingletonDAO {
         }
     }
 };
+
 const singletonDAO = SingletonDAO.getInstance();
 
 module.exports = singletonDAO;

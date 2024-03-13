@@ -43,10 +43,9 @@ const registerUser = async (req, res, next) => {
         
         console.log("jsonBody: ", jsonBody);
         //create and store the new user        
-        await User.create({ "email": jsonBody.email, "password": hashedPassword,
-        "lastName1":jsonBody.lastName1,"lastName2":jsonBody.lastName2,
-        "carnet":jsonBody.carnet,"roles":jsonBody.roles,
-        "photo":jsonBody.photo });
+        await User.create({ "email": jsonBody.email, "password": hashedPassword, "name" : jsonBody.firstName,
+        "carnet":jsonBody.carnet ,"lastName1":jsonBody.lastName1,"lastName2":jsonBody.lastName2,
+        "role": 1597});
         
         res.status(200).json({ msg: 'User created' });
     } catch (e) {

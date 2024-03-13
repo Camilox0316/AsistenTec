@@ -1,30 +1,24 @@
 const mongoose = require('mongoose');
 
-async function dbConnect() {
-    // use mongoose to connect this app to our database on mongoDB using the DB_URL (connection string)
-    mongoose
-      .connect(
-          process.env.DB_URL,
-        {
-          //   these are options to ensure that the connection is done properly
-          useNewUrlParser: true, 
-          useUnifiedTopology: true 
-        }
-      )
-      .then(() => {
-        console.log("Successfully connected to MongoDB Atlas!");
-      })
-      .catch((error) => {
-        console.log("Unable to connect to MongoDB Atlas!");
-        console.error(error);
-  
-      });
-  }
+const dbConnect = async () => {
+    try {
+        await mongoose.connect(process.env.DB_URL);
+        console.log('Database connected successfully');
+    } catch (err) {
+        console.error('Database connection error: ', err);
+    }
+};
 
-// fution to disconnect from the database
-async function dbDisconnect() {
-    mongoose.connection.close()
-    //mongoose.disconnect();
-    console.log("Disconnected from MongoDB Atlas!");
-}
-module.exports = {dbConnect, dbDisconnect};
+const dbDisconnect = async () => {
+    try {
+        await mongoose.connection.close();
+        console.log('Database disconnected successfully');
+    } catch (err) {
+        console.error('Database disconnection error: ', err);
+    }
+};
+
+module.exports = {
+    dbConnect,
+    dbDisconnect
+};

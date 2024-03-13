@@ -1,39 +1,28 @@
 const DB = require('../config/dbConn.js');
-const dbConn = DB.dbConnect;
-const dbDisconn = DB.dbDisconnect;
-//Databse singleton
+
 class SingletonConnexion {
-    static instance;
-    static count = 0;
-  
     constructor() {
-      //Database connection
-      //dbConn();
-    }
-  
-    static getInstance() {
-      if (this.instance) {
-        console.log("Returning instance");
-        return this.instance;
-      }
-      console.log("creating instance");
-      this.instance = new SingletonConnexion();
-  
-      this.count = this.count + 1;
-      return this.instance;
+        console.log('SingletonConnexion constructor called');
+        this.dbConnection();
     }
 
-    async dbConnect() {
-        // use mongoose to connect this app to our database on mongoDB using the DB_URL (connection string)
-        dbConn();
+    async dbConnection() {
+        console.log('SingletonConnexion dbConnection called');
+        await DB.dbConnect();
     }
 
     async dbDisconnect() {
-        // use mongoose to connect this app to our database on mongoDB using the DB_URL (connection string)
-        dbDisconn();
+        await DB.dbDisconnect();
     }
-  }
-  
-const conn = SingletonConnexion.getInstance();
+}
 
-module.exports = conn;
+let instance = null;
+
+const getInstance = () => {
+    if (!instance) {
+        instance = new SingletonConnexion();
+    }
+    return instance;
+};
+
+module.exports = { getInstance };

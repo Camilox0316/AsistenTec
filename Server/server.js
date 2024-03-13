@@ -6,10 +6,7 @@ const corsOptions = require('./config/corsOptions');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const verifyJWT = require('./middleware/verifyJWT');
-const PORT = process.env.PORT || 3500;
-
-
-
+const PORT = process.env.PORT || 3000;
 
 
 app.use(cors(corsOptions));
@@ -17,7 +14,7 @@ app.use(cors(corsOptions));
 // built-in middleware to handle urlencoded data
 // in other words, form data:  
 // ‘content-type: application/x-www-form-urlencoded’
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 // built-in middleware for json 
 app.use(express.json());

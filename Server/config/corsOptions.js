@@ -1,14 +1,7 @@
-//Cross Origin Resource Sharing
-const whiteList = ['http://localhost:5173', 'http://localhost:3500']
-const corsOptions = {
-    origin: (origin, callback) =>{
-        if (whiteList.indexOf(origin) !== -1 || !origin) {
-            callback(null, true)
-        } else {
-            callback(new Error('Not allowed by CORS'))
-        }
-    }, 
-    optionsSuccessStatus: 200
-}
-
-module.exports = corsOptions;
+// File: ./config/corsOptions.js
+module.exports = {
+    origin: "http://localhost:5173", // Replace with your frontend application’s URL
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+    optionsSuccessStatus: 204,
+  };
