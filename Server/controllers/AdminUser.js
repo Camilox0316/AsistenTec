@@ -33,6 +33,7 @@ const registerUser = async (req, res, next) => {
     const duplicate = await User.findOne({ email: email }).exec();
 
     if (duplicate) {
+        console.log('duplicado');
         return res.status(400).json({ msg: 'User already exists' });
     }
 

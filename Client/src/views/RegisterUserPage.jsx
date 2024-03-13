@@ -70,7 +70,16 @@ function RegisterUserPage() {
       console.log(response.data); // O manejar la respuesta como necesites
       navigate('/login'); // Redirige al usuario a la página de inicio de sesión
     } catch (error) {
-      setErrorMsg("Error al registrar el usuario");
+      if (error.response && error.response.data && error.response.data.msg) {
+        // Verifica específicamente si el mensaje es por un usuario duplicado
+        if (error.response.data.msg === 'User already exists') {
+          setErrorMsg("El usuario ya existe. Por favor, intenta con otro correo electrónico.");
+        } else {
+          setErrorMsg(error.response.data.msg); // Otros mensajes de error del backend
+        }
+      } else {
+        setErrorMsg("Error al registrar el usuario. Por favor, intenta de nuevo más tarde.");
+      }
       console.error(error);
     }
   };
@@ -95,9 +104,6 @@ function RegisterUserPage() {
     }
   };
   
-
-  
-
   const styles = {
     backgroundImage: "url(/src/img/backgroundLogin.jpg)",
     backgroundSize: "cover",
