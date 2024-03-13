@@ -57,7 +57,7 @@ class SingletonDAO {
 
                 if (match) {
 
-                    res.status(200).json({ status: true, roles: [userFound.roles], message: 'User logged perfectly ' });
+                    res.status(200).json({ status: true,name: userFound.name,photo: userFound.photo, roles: [userFound.roles], message: 'User logged perfectly ' });
                     return true;
 
                 } else {

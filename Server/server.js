@@ -6,6 +6,8 @@ const corsOptions = require('./config/corsOptions');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const verifyJWT = require('./middleware/verifyJWT');
+const path = require('path');
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const PORT = process.env.PORT || 3000;
 
 

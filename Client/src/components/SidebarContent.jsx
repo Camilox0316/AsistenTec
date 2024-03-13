@@ -2,11 +2,13 @@ import { Link } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import PersonIcon from "@mui/icons-material/Person";
 import EventNoteIcon from "@mui/icons-material/EventNote";
+import CoPresentIcon from '@mui/icons-material/CoPresent';
 import GroupIcon from "@mui/icons-material/Group";
 import { useAuth } from "../hooks/useAuth";
 import { useLocation, Navigate } from "react-router-dom";
 import { Logout } from "./Logout";
 import fotoPerfilDefault from '../img/fotoPerfilDefault.webp';
+import axiosInstance from "../api/axios";
 
 function Item({ children }) {
   return (
@@ -21,8 +23,13 @@ export function SidebarContent() {
   const { auth,logout } = useAuth();
   const location = useLocation();
 
+  const photoUrl = auth?.photo ? `${axiosInstance.defaults.baseURL}${auth.photo}` : fotoPerfilDefault;
+  console.log(photoUrl);
+  const name = auth?.name || "Nombre no disponible"; // Cambia "Nombre no disponible" por lo que prefieras
+  const email = auth?.email || "Correo no disponible"; // Cambia "Correo no disponible" por lo que prefieras
+
   let options;
-  options = auth?.roles?.find((role) => [1597].includes(role)) ? (
+  options = auth?.roles?.find((role) => [1597].includes(role)) ? ( //Student
     <>
       <Item>
         <Link to="/home-switch" className="flex items-center space-x-2">
@@ -49,22 +56,10 @@ export function SidebarContent() {
         </Link>
 
       </Item> */}
-      <div className="fixed bottom-0"> 
-        <Logout
-          photoUrl={fotoPerfilDefault}//{auth.user.photoUrl}
-          name={"Dayron"}//{auth.user.name}
-          email={"dayronpc24@estudiantec.cr"}
-          logout={() => console.log("Cerrar sesión")} // Envuelve la función dentro de una función de flecha
-
-        />
-        <Link to="/" className="flex justify-center items-center space-x-2">
-          
-          <span className="text-red-500">Cerrar session</span>
-        </Link>
-      </div>  
+       
     
     </>
-  ) : auth?.roles?.find((role) => [3123, 4478].includes(role)) ? (
+  ) : auth?.roles?.find((role) => [2264].includes(role)) ? ( //Profesor
     <>
       <Item>
         <Link to="/home-switch" className="flex items-center space-x-2">
@@ -74,22 +69,65 @@ export function SidebarContent() {
       </Item>
       <Item>
         <Link to="/plans" className="flex items-center space-x-2">
-          <EventNoteIcon />
-          <span>Planes de trabajo</span>
+          <CoPresentIcon />
+          <span>Asistencias</span>
         </Link>
       </Item>
       <Item>
         <Link to="/registrar-profesor" className="flex items-center space-x-2">
           <GroupIcon />
-          <span>Profesores</span>
+          <span>Consultar Estudiante</span>
         </Link>
       </Item>
     </>
-  ) : auth?.email ? (
+  ) : auth?.roles?.find((role) => [3123].includes(role)) ? ( //Admin
+    <>
+      <Item>
+        <Link to="/home-switch" className="flex items-center space-x-2">
+          <HomeIcon />
+          <span>Inicio</span>
+        </Link>
+      </Item>
+      <Item>
+        <Link to="/plans" className="flex items-center space-x-2">
+          <GroupIcon />
+          <span>Consultar Estudiantes</span>
+        </Link>
+      </Item>
+      <Item>
+        <Link to="/registrar-profesor" className="flex items-center space-x-2">
+          <GroupIcon />
+          <span>Consultar Solicitudes</span>
+        </Link>
+      </Item>
+      <Item>
+        <Link to="/registrar-profesor" className="flex items-center space-x-2">
+          <GroupIcon />
+          <span>Consultar Asistencias Activas</span>
+        </Link>
+      </Item>
+    </>
+  ): auth?.email ? (
+    
     <Navigate to="/unauthorized" state={{ from: location }} replace />
+    
   ) : (
     <Navigate to="/" state={{ from: location }} replace />
   );
 
-  return <>{options}</>;
+  return <>{options}
+  
+  <div className="fixed bottom-0"> 
+  <Logout
+    photoUrl={photoUrl}//{auth.user.photoUrl}
+    name={name}//{auth.user.name}
+    email={email}
+    logout={logout} // Envuelve la función dentro de una función de flecha
+
+  />
+  <Link to="/" className="flex justify-center items-center space-x-2">
+    
+    <span className="text-red-500">Cerrar session</span>
+  </Link>
+</div> </>;
 }

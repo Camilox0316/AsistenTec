@@ -43,8 +43,10 @@ export function LoginPage() {
       //console.log(JSON.stringify(response));
       // const accessToken = response?.data?.accessToken;
       let roles = response?.data?.roles;
+      let name = response?.data?.name;
+      let photo = response?.data?.photo;
       console.log(roles);
-      setAuth({ email, password, roles });
+      setAuth({name,photo,email, password, roles: [roles[0]]});
       setEmail("");
       setPassword("");
       navigate("/home-switch");

@@ -39,12 +39,13 @@ export default function App() {
                 ROLES.Professor,
                 ROLES.Student,
                 ROLES.Admin,
-      
               ]}
             />
           }
         >
           <Route path="/home-switch" element={<HomeSwitch />} />
+          <Route path="/home-student" element={<HomeSwitch />} />
+          
         </Route>
 
         {/* Student routes */}
@@ -58,15 +59,16 @@ export default function App() {
 
         {/* Professor routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Professor]} />}>
-
+          <Route path="/home-student" element={<ViewActivityPage />} />
+          <Route path="/home-switch" element={<HomeSwitch />} />
         </Route>
 
 
         {/* Admin routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-          <Route
 
-          />
+            <Route path="/home-student" element={<ViewActivityPage />} />
+            
         </Route>
 
         {/*Catch all*/}

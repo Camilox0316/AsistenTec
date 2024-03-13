@@ -50,7 +50,7 @@ const registerUser = async (req, res, next) => {
             lastName1: lastName1,
             lastName2: lastName2,
             photo: req.file ? `/uploads/profilePhotos/${req.file.filename}` : '',
-            role: 1597
+            roles: 1597
         });
         
         res.status(200).json({ msg: 'User created', userId: newUser._id });

@@ -68,7 +68,7 @@ function RegisterUserPage() {
       });
       
       console.log(response.data); // O manejar la respuesta como necesites
-      navigate('/login'); // Redirige al usuario a la página de inicio de sesión
+      navigate('/'); // Redirige al usuario a la página de inicio de sesión
     } catch (error) {
       if (error.response && error.response.data && error.response.data.msg) {
         // Verifica específicamente si el mensaje es por un usuario duplicado

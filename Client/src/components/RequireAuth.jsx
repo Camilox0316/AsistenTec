@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useLocation, Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { Sidebar } from "./Sidebar.jsx";
@@ -18,6 +19,10 @@ const RequireAuth = ({ allowedRoles }) => {
   ) : (
     <Navigate to="/" state={{ from: location }} replace />
   );
+};
+
+RequireAuth.propTypes = {
+  allowedRoles: PropTypes.array.isRequired,
 };
 
 export default RequireAuth;

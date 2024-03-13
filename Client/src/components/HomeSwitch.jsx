@@ -6,16 +6,23 @@ export function HomeSwitch() {
   const location = useLocation();
 
   let home;
-  home = auth?.roles?.find((role) => [1597].includes(role)) ? (
-    <Navigate to="/home-student" />
-  ) : auth?.roles?.find((role) => [3123,2264].includes(role)) ? (
-    <Navigate to="/home-student" />
-  ) : auth?.roles?.find((role) => [3123, 4478].includes(role)) ? (
-    <Navigate to="/home-assistant" />
-  ) : auth?.email ? (
-    <Navigate to="/unauthorized" state={{ from: location }} replace />
-  ) : (
-    <Navigate to="/" state={{ from: location }} replace />
-  );
+
+  if (auth?.roles?.find((role) => [3123].includes(role))) {
+    console.log("Entering Admin route");
+    home = <Navigate to="/home-student" />;
+  } else if (auth?.roles?.find((role) => [1597].includes(role))) {
+    console.log("Entering Student route");
+    home = <Navigate to="/home-student" />;
+  } else if (auth?.roles?.find((role) => [2264].includes(role))) {
+    console.log("Entering Professor route");
+    home = <Navigate to="/home-student" />;
+  } else if (auth?.email) {
+    console.log("User is authenticated but has no role, redirecting to /unauthorized");
+    home = <Navigate to="/unauthorized" state={{ from: location }} replace />;
+  } else {
+    console.log("User is not authenticated, redirecting to /");
+    home = <Navigate to="/" state={{ from: location }} replace />;
+  }
+
   return home;
 }
