@@ -24,32 +24,37 @@ const loginUser = async (req, res, next) => {
 }
 
 const registerUser = async (req, res, next) => {
-    const jsonBody = req.body;
+    const { email, password, firstName, lastName1, lastName2, carnet } = req.body;
     
-    if (!jsonBody.email || !jsonBody.password) {
+    if (!email || !password) {
         return res.status(400).json({ msg: 'Please enter all fields' });
     }
     //check for duplicate usernames in the db
-    const duplicate = await User.findOne({ email: jsonBody.email }).exec();
+    const duplicate = await User.findOne({ email: email }).exec();
 
     if (duplicate) {
         return res.status(400).json({ msg: 'User already exists' });
     }
 
     try {
-        //encrypt password
-
-        const hashedPassword = await bcrypt.hash(jsonBody.password, 10);
+        // Encriptar contraseña
+        const hashedPassword = await bcrypt.hash(password, 10);
         
-        console.log("jsonBody: ", jsonBody);
-        //create and store the new user        
-        await User.create({ "email": jsonBody.email, "password": hashedPassword, "name" : jsonBody.firstName,
-        "carnet":jsonBody.carnet ,"lastName1":jsonBody.lastName1,"lastName2":jsonBody.lastName2,
-        "role": 1597});
+        // Crear y almacenar el nuevo usuario
+        const newUser = await User.create({ 
+            email: email, 
+            password: hashedPassword, 
+            name: firstName,
+            carnet: carnet,
+            lastName1: lastName1,
+            lastName2: lastName2,
+            photo: req.file ? `/uploads/profilePhotos/${req.file.filename}` : '',
+            role: 1597
+        });
         
-        res.status(200).json({ msg: 'User created' });
+        res.status(200).json({ msg: 'User created', userId: newUser._id });
     } catch (e) {
-        res.status(500).json({ msg: 'Server error'+ e });
+        res.status(500).json({ msg: 'Server error' + e });
     }
     next();
 }

@@ -14,6 +14,9 @@ import axios from "../api/axios";
 //  }; 
 
 function RegisterUserPage() {
+
+  const [fileName, setFileName] = useState('Max 2 MB');
+
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -25,6 +28,7 @@ function RegisterUserPage() {
     lastName1: '',
     lastName2: '',
     carnet: '',
+    photoFile: null,
 	});
 
   const errorRef = useRef();
@@ -49,9 +53,19 @@ function RegisterUserPage() {
       return;
     }
 
+    const data = new FormData();
+
+    Object.keys(formData).forEach(key => {
+      data.append(key, formData[key]);
+    });
+
     try {
       // Aquí debes ajustar la URL según tu configuración de backend
-      const response = await axios.post('/user/register', formData);
+      const response = await axios.post('/user/register', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       
       console.log(response.data); // O manejar la respuesta como necesites
       navigate('/login'); // Redirige al usuario a la página de inicio de sesión
@@ -69,6 +83,20 @@ function RegisterUserPage() {
 		});
 	};
 
+  const handleFileChange = event => {
+    const { name, files } = event.target;
+    if (files.length > 0) {
+      const file = files[0]; // Siempre toma el primer archivo, asegurando que solo se procesa uno
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        [name]: file
+      }));
+      setFileName(file.name); // Actualiza el estado con el nombre del archivo
+    }
+  };
+  
+
+  
 
   const styles = {
     backgroundImage: "url(/src/img/backgroundLogin.jpg)",
@@ -128,15 +156,16 @@ function RegisterUserPage() {
                               Subir archivo
                             </span>
                             <span className="mt-0.5 block text-sm text-gray-500 dark:text-gray-400">
-                              Max 2 MB
+                              {fileName}
                             </span>
                           </div>
                         </label>
                         <input
                           hidden={true}
                           type="file"
-                          name="button2"
+                          name="photoFile"
                           id="photoFile"
+                          onChange={handleFileChange}
                         />
                       </div>
 
