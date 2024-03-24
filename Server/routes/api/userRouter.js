@@ -1,15 +1,18 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const adminUserControllers = require('../../controllers/AdminUser');
-const verifyJWT = require('../../middleware/verifyJWT');
-const { uploadProfileImage } = require('../../utilities/multerConfig');
+const adminUserControllers = require("../../controllers/AdminUser");
+const { authRequire } = require("../../middleware/validateToken");
+const { uploadProfileImage } = require("../../utilities/multerConfig");
 
-router.route('/auth')
-    .post(adminUserControllers.loginUser);
-router.route('/register')
-    .post(uploadProfileImage, adminUserControllers.registerUser);
+router.route("/auth").post(adminUserControllers.loginUser);
+router
+  .route("/register")
+  .post(uploadProfileImage, adminUserControllers.registerUser);
 
-router.route('/updatePassword')
-    .put(adminUserControllers.updatePassword);
-    
+router.route("/updatePassword").put(adminUserControllers.updatePassword);
+router.route("/verifyToken").get(adminUserControllers.verifyToken);
+router.route("/profile").get(authRequire, adminUserControllers.profile);
+router.route("/logout").put(adminUserControllers.logout);
+//Nota para el editar perfil se debe de tener el authRequiere
+
 module.exports = router;

@@ -1,7 +1,7 @@
-const SingletonConnexion = require('./SingeltonConnexion.js');
+const SingletonConnexion = require("./SingeltonConnexion.js");
 
 //Models
-const User = require('../models/User');
+const User = require("../models/User");
 // const Student = require('../models/Student');
 // const Professor = require('../models/Professor');
 // const Assistant = require('../models/Assistant');
@@ -10,68 +10,120 @@ const User = require('../models/User');
 // const Activity = require('../models/Activity.js');
 // const Branch = require('../models/Branch.js');
 // const ActivityType = require('../models/activityType');
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const erorrHandler = require('../middleware/erorrHandler');
-
-
-
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const erorrHandler = require("../middleware/erorrHandler");
+const { createAccessToken } = require("../libs/jwt.js");
+const { TOKEN_SECRET } = require("../config/config.js");
+const jwt = require("jsonwebtoken");
 class SingletonDAO {
-    static instance;
-    static count = 0;
+  static instance;
+  static count = 0;
 
-    constructor() {
-        console.log("Singleton constructor called");
-        this.conn = SingletonConnexion.getInstance();
+  constructor() {
+    console.log("Singleton constructor called");
+    this.conn = SingletonConnexion.getInstance();
+  }
+
+  static getInstance() {
+    if (this.instance) {
+      console.log("Returning instance");
+      return this.instance;
     }
+    console.log("creating instance");
+    this.instance = new SingletonDAO();
 
-    static getInstance() {
-        if (this.instance) {
-            console.log("Returning instance");
-            return this.instance;
+    this.count = this.count + 1;
+    return this.instance;
+  }
+  //-------------------------------------------------------------------------------------
+  //                      User Admin Functions
+  //-------------------------------------------------------------------------------------
+
+  async loginUser(req, res, next) {
+    try {
+      //check for find the user usernames in the db
+      const { email, password } = req.body;
+      const userFound = await User.findOne({ email: email }).exec();
+      if (!userFound) {
+        res
+          .status(400)
+          .json({ status: false, message: "User has no register" });
+        return false;
+      }
+      if (userFound) {
+        const match = await bcrypt.compare(password, userFound.password);
+
+        if (match) {
+          const token = await createAccessToken({ id: userFound._id });
+          console.log("Token generado:", token);
+          res.cookie("token", token);
+
+          res.status(200).json({
+            status: true,
+            name: userFound.name,
+            photo: userFound.photo,
+            roles: [userFound.roles],
+            message: "User logged perfectly ",
+          });
+
+          return true;
+        } else {
+          res.status(400).json({ status: false, message: "User not logged" });
+          return false;
         }
-        console.log("creating instance");
-        this.instance = new SingletonDAO();
-
-        this.count = this.count + 1;
-        return this.instance;
+      }
+    } catch {
+      res.status(500).json({ status: false, message: "Server error" });
+      return false;
     }
-    //-------------------------------------------------------------------------------------
-    //                      User Admin Functions
-    //-------------------------------------------------------------------------------------
- 
+  }
 
-    async loginUser(req, res, next) {
-        try {
+  //CREATE  A LOGOUT
+  async logout(req, res) {
+    res.cookie("token", "", { expires: new Date(0) });
+    return res.sendStatus(200);
+  }
 
-            //check for find the user usernames in the db
-            const { email, password } = req.body;
-            const userFound = await User.findOne({ email: email }).exec();
-            if (!userFound) {
-                res.status(400).json({ status: false, message: 'User has no register' });
-                return false;
-            }
-            if (userFound) {
+  // create VerifyToken
+  async profile(req, res, next) {
+    const userFound = await User.findById(req.user.id);
+    if (!userFound) return res.status(400).json({ msg: "User not found" });
+    return res.json({
+      id: userFound._id,
+      email: userFound.email,
+      name: userFound.name,
+      carnet: userFound.carnet,
+      lastName1: userFound.lastName1,
+      lastName2: userFound.lastName2,
+      roles: [userFound.roles],
+      photo: userFound.photo,
+    });
+  }
+  // create VerifyToken
+  async verifyToken(req, res, next) {
+    const { token } = req.cookies;
+    if (!token) return res.status(401).json({ msg: "Unauthorized1" });
 
-                const match = await bcrypt.compare(password, userFound.password);
+    jwt.verify(token, TOKEN_SECRET, async (err, user) => {
+      if (err) return res.status(401).json({ msg: "Unauthorized2" });
 
-                if (match) {
+      const userFound = await User.findById(user.id);
+      if (!userFound) return res.status(401).json({ msg: "Unauthorized3" });
 
-                    res.status(200).json({ status: true,name: userFound.name,photo: userFound.photo, roles: [userFound.roles], message: 'User logged perfectly ' });
-                    return true;
-
-                } else {
-                    res.status(400).json({ status: false, message: 'User not logged' });
-                    return false;
-                }
-            }
-
-        } catch {
-            res.status(500).json({ status: false, message: 'Server error' });
-            return false;
-        }
-    }
-};
+      return res.json({
+        id: userFound._id,
+        email: userFound.email,
+        name: userFound.name,
+        carnet: userFound.carnet,
+        lastName1: userFound.lastName1,
+        roles: [userFound.roles],
+        lastName2: userFound.lastName2,
+        photo: userFound.photo,
+      });
+    });
+  }
+}
 
 const singletonDAO = SingletonDAO.getInstance();
 
