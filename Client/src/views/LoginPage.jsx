@@ -29,7 +29,8 @@ export function LoginPage() {
     setErrorMsg("");
   }, [email, password]);
 
-  const loginUser = async () => {
+  const loginUser = async (e) => {
+    e.preventDefault();
     try {
       console.log(email, password);
       const response = await axios.post(
@@ -91,7 +92,7 @@ export function LoginPage() {
                 <h1 className="text-xl bg-white rounded-lg font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white p-3 flex items-center justify-center">
                   <img src={logoImage} alt="logo" className="w-90 h-10" />
                 </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form className="space-y-4 md:space-y-6" action="#" onSubmit={loginUser}>
               <div>
                 <label className="block mb-6 text-[30px] font-medium  text-center text-white ">
                   Iniciar sesión
@@ -138,7 +139,6 @@ export function LoginPage() {
               </div>
 
               <button
-                onClick={loginUser}
                 type="submit"
                 className="w-full justify-center text-white bg-gradient-to-r from-teal-700 to-cyan-950 font-medium rounded-lg text-sm px-5 py-2.5 text-center 
                       hover:bg-gradient-to-r hover:from-teal-600 hover:to-cyan-800 hover:shadow-2xl transition-all duration-300 ease-in-out hover:scale-110 hover:-translate-y-1"

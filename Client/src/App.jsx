@@ -11,13 +11,10 @@ import RegisterUserPage from "./views/RegisterUserPage";
 
 import { ViewActivityPage } from "./views/ViewActivityPage";
 
-
-
 const ROLES = {
   Student: 1597,
   Professor: 2264,
   Admin: 3123,
-
 };
 
 export default function App() {
@@ -28,33 +25,24 @@ export default function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/unauthorized" element={<h1>Unauthorized</h1>} />
-        <Route path="/register-student" element={<RegisterUserPage/>} />
-      
+        <Route path="/register-student" element={<RegisterUserPage />} />
+
         {/*Private routes */}
         {/* User routes */}
         <Route
           element={
             <RequireAuth
-              allowedRoles={[
-                ROLES.Professor,
-                ROLES.Student,
-                ROLES.Admin,
-              ]}
+              allowedRoles={[ROLES.Professor, ROLES.Student, ROLES.Admin]}
             />
           }
         >
           <Route path="/home-switch" element={<HomeSwitch />} />
           <Route path="/home-student" element={<HomeSwitch />} />
-          
         </Route>
 
         {/* Student routes */}
-        <Route
-          element={
-            <RequireAuth allowedRoles={[ROLES.Student]} />
-          }
-        >
-            <Route path="/home-student" element={<ViewActivityPage />} />
+        <Route element={<RequireAuth allowedRoles={[ROLES.Student]} />}>
+          <Route path="/home-student" element={<ViewActivityPage />} />
         </Route>
 
         {/* Professor routes */}
@@ -63,12 +51,9 @@ export default function App() {
           <Route path="/home-switch" element={<HomeSwitch />} />
         </Route>
 
-
         {/* Admin routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-
-            <Route path="/home-student" element={<ViewActivityPage />} />
-            
+          <Route path="/home-student" element={<ViewActivityPage />} />
         </Route>
 
         {/*Catch all*/}
