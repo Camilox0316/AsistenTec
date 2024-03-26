@@ -33,14 +33,20 @@ export function SidebarContent() {
     <>
       <Item>
         <Link to="/home-switch" className="flex items-center space-x-2">
-          <PersonIcon />
-          <span>Editar Perfil</span>
+          <HomeIcon />
+          <span>Inicio</span>
         </Link>
       </Item>
       <Item>
-        <Link to="/plans" className="flex items-center space-x-2">
+        <Link to="/home-student" className="flex items-center space-x-2">
+          <PersonIcon />
+          <span>Mis Asistencias</span>
+        </Link>
+      </Item>
+      <Item>
+        <Link to="/home-student" className="flex items-center space-x-2">
           <EventNoteIcon />
-          <span>Asistencias Disponibles</span>
+          <span>Mi Perfil</span>
         </Link>
       </Item>
 {/*       <Item>

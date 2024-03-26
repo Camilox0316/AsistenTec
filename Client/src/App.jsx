@@ -10,6 +10,7 @@ import { HomeSwitch } from "./components/HomeSwitch";
 import RegisterUserPage from "./views/RegisterUserPage";
 
 import { ViewActivityPage } from "./views/ViewActivityPage";
+import { ViewHomeStudent } from "./views/ViewHomeStudent";
 
 const ROLES = {
   Student: 1597,
@@ -37,23 +38,21 @@ export default function App() {
           }
         >
           <Route path="/home-switch" element={<HomeSwitch />} />
-          <Route path="/home-student" element={<HomeSwitch />} />
         </Route>
 
         {/* Student routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Student]} />}>
-          <Route path="/home-student" element={<ViewActivityPage />} />
+          <Route path="/home-student" element={<ViewHomeStudent />} />
         </Route>
 
         {/* Professor routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Professor]} />}>
-          <Route path="/home-student" element={<ViewActivityPage />} />
           <Route path="/home-switch" element={<HomeSwitch />} />
         </Route>
 
         {/* Admin routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-          <Route path="/home-student" element={<ViewActivityPage />} />
+          <Route path="/home-admin" element={<ViewActivityPage />} />
         </Route>
 
         {/*Catch all*/}
