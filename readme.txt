@@ -8,3 +8,4 @@ asistentec/client
 npm install 
 npm run dev 
 npm i js-cookie
+npm i prop-types
