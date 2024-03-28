@@ -3,7 +3,7 @@ import { useState } from "react";
 import {AvailableAssistance} from "../components/AvailableAssistance";
 import '../css modules/AvailableAssistance.css';
 
-export function ViewHomeStudent() {
+export function ViewProfe() {
 
   return (
     <div>

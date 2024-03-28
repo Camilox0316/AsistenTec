@@ -12,6 +12,9 @@ import RegisterUserPage from "./views/RegisterUserPage";
 import { ViewActivityPage } from "./views/ViewActivityPage";
 import { ViewHomeStudent } from "./views/ViewHomeStudent";
 
+import { ViewProfe } from "./views/ViewProfe";
+
+
 const ROLES = {
   Student: 1597,
   Professor: 2264,
@@ -47,7 +50,7 @@ export default function App() {
 
         {/* Professor routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Professor]} />}>
-          <Route path="/home-switch" element={<HomeSwitch />} />
+          <Route path="/home-professor" element={<ViewProfe />} />
         </Route>
 
         {/* Admin routes */}
