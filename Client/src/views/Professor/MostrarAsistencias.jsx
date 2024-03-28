@@ -2,7 +2,7 @@ import AsistenciaCard from "../../components/AsistenciaCard";
 import "./MostrarAsistencias.css";
 import { useState } from "react";
 import SolicitarAsistencia from "./SolicitarAsistencia";
-//import { Sidebar } from "../../components/Sidebar";
+import { Sidebar } from "../../components/Sidebar";
 // Datos simulados para las tarjetas de asistencia
 
 
@@ -91,6 +91,7 @@ const TIPOS_ASISTENCIA = [
 
   return (
     <div className="mostrar-asistencias-container">
+      <Sidebar></Sidebar>
       <div className="sidebar-simulado"></div>
       <div className="asistencias-cards-container">
         <div className="filtros-y-titulo">
@@ -120,7 +121,6 @@ const TIPOS_ASISTENCIA = [
         ))}
         </div>
       </div>
-       {/* ... (tu código existente) */}
        {isSolicitarAsistenciaVisible && (
         <SolicitarAsistencia onClose={handleCloseModal}  onAgregarAsistencia={agregarAsistencia} asistenciaTipos={TIPOS_ASISTENCIA}  />
       )}

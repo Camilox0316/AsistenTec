@@ -31,10 +31,6 @@ export default function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/unauthorized" element={<h1>Unauthorized</h1>} />
         <Route path="/register-student" element={<RegisterUserPage />} />
-
-        <Route path="/mostrar-asistencias-professor" element={<MostrarAsistencias />} />
-        <Route path="/solicitar-asistencias-professor" element={<SolicitarAsistencia />} />
-
         {/*Private routes */}
         {/* User routes */}
         <Route
@@ -55,8 +51,8 @@ export default function App() {
 
         {/* Professor routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Professor]} />}>
-          <Route path="/home-student" element={<ViewActivityPage />} />
-          <Route path="/home-switch" element={<HomeSwitch />} />
+          <Route path="/home-professor" element={<MostrarAsistencias />} />
+          <Route path="/solicitar-asistencias-professor" element={<SolicitarAsistencia />} />
         </Route>
 
         {/* Admin routes */}

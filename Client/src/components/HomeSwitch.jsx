@@ -15,7 +15,7 @@ export function HomeSwitch() {
     home = <Navigate to="/home-student" />;
   } else if (auth?.roles?.find((role) => [2264].includes(role))) {
     console.log("Entering Professor route");
-    home = <Navigate to="/home-student" />;
+    home = <Navigate to="/home-professor" />;
   } else if (auth?.email) {
     console.log("User is authenticated but has no role, redirecting to /unauthorized");
     home = <Navigate to="/unauthorized" state={{ from: location }} replace />;
