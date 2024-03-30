@@ -92,7 +92,6 @@ const TIPOS_ASISTENCIA = [
   return (
     <div className="mostrar-asistencias-container">
       <Sidebar></Sidebar>
-      <div className="sidebar-simulado"></div>
       <div className="asistencias-cards-container">
         <div className="filtros-y-titulo">
           <button onClick={handleAgregarClick} className="btn-filtro">

@@ -3,6 +3,7 @@ const SingletonConnexion = require("./SingeltonConnexion.js");
 //Models
 const User = require("../models/User");
 // const Student = require('../models/Student');
+const Assistance = require("../models/Assistance");
 // const Professor = require('../models/Professor');
 // const Assistant = require('../models/Assistant');
 // const Team = require('../models/Team.js');
@@ -122,6 +123,60 @@ class SingletonDAO {
         photo: userFound.photo,
       });
     });
+  }
+
+  //-------------------------------------------------------------------------------------
+  //                      Assistences Functions
+  //-------------------------------------------------------------------------------------
+
+  // Obtener todas las asistencias
+  async getAllAssistances() {
+    try {
+      const assistances = await Assistance.find();
+      return assistances; // Simplemente retorna los datos
+    } catch (error) {
+      throw new Error("Failed to retrieve assistances"); // Lanza un error para manejarlo más arriba
+    }
+  }
+
+  // Agregar una nueva asistencia
+  async addAssistance(assistanceData) {
+    try {
+      // Crear una nueva asistencia con los datos recibidos
+      const newAssistance = new Assistance(assistanceData);
+      await newAssistance.save();
+      return newAssistance;
+    } catch (error) {
+      throw new Error("Error creating assistance: " + error.message);
+    }
+  }
+
+  // Actualizar una asistencia existente
+  async updateAssistance(assistanceId, updateData) {
+    try {
+      const updatedAssistance = await Assistance.findByIdAndUpdate(
+        assistanceId,
+        updateData,
+        { new: true }
+      );
+      if (!updatedAssistance) {
+        throw new Error("Assistance not found");
+      }
+      return updatedAssistance;
+    } catch (error) {
+      throw new Error(`Failed to update assistance: ${error.message}`);
+    }
+  }
+
+  // Eliminar una asistencia
+  async deleteAssistance(req, res) {
+    try {
+      const { id } = req.params; // ID de la asistencia a eliminar
+      await Assistance.findByIdAndDelete(id);
+      res.json({ message: "Assistance deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Server error", error });
+    }
   }
 }
 

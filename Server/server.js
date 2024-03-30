@@ -33,6 +33,8 @@ app.use("/login", require("./routes/api/userRouter"));
 app.use("/user", require("./routes/api/userRouter"));
 //app.use('/utilities', require('./routes/api/utilitiesRouter'));
 
+app.use("/assistance", require("./routes/api/assistanceRouter"));
+
 //custom middleware of error handling
 app.use(erorrHandler);
 

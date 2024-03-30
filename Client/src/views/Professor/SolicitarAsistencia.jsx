@@ -4,9 +4,6 @@ import Libro from "../../img/libro.png";
 import CerrarIcono from '../../img/cancelar.png'; // Asegúrate de tener un ícono de cierre
 import PropTypes from 'prop-types';
 
-
-
-
 const SolicitarAsistencia = ({onClose ,onAgregarAsistencia, asistenciaTipos}) => {
   
 SolicitarAsistencia.propTypes = {

@@ -6,20 +6,8 @@
   overflow-x: hidden; /* Elimina la barra de desplazamiento horizontal */
 }
 
-.sidebar-simulado {
-  background-color: #003087; /* Un azul oscuro, ajusta el color según tu diseño */
-  width: 250px; /* O el ancho que prefieras */
-  padding: 20px;
-  box-sizing: border-box;
-  position: fixed; /* Hace que el sidebar sea fijo */
-  top: 0;
-  left: 0;
-  bottom: 0;
-}
-
 .asistencias-cards-container {
   padding: 20px;
-  margin-left: 270px; /* Ajustado para evitar el solapamiento con el sidebar */
   display: flex;
   flex-wrap: wrap; /* Permite que las tarjetas se ajusten en filas y columnas */
   align-items: flex-start;
@@ -73,6 +61,10 @@
 .filtro-combobox {
   display: flex;
   align-items: center;
+  position: relative; /* Agregado para el posicionamiento del ícono de búsqueda */
+}
+.filtro-combobox:hover input {
+  background-color: #acbeff;
 }
 
 .filtro-input {
@@ -82,4 +74,24 @@
   width: 100%; /* O un ancho específico si es necesario */
   max-width: 400px; /* Para evitar que el input sea demasiado ancho */
   background-color: #d9e0f9; /* Gris claro para el fondo del botón */
+}
+
+@media (max-width: 768px) {
+  .filtros-y-titulo {
+    flex-direction: column; /* Cambia la disposición a vertical */
+    align-items: flex-start; /* Alinea los elementos al inicio */
+  }
+
+  .filtro-combobox {
+    width: 100%; /* Permite que el filtro ocupe todo el ancho disponible */
+    margin-top: 10px; /* Añade un espacio arriba cuando está en modo columna */
+  }
+
+  .filtro-input {
+    width: calc(100% - 20px); /* Ajusta el ancho para pequeñas pantallas */
+  }
+
+  .btn-filtro {
+    margin-bottom: 10px; /* Espacio debajo del botón en pantallas pequeñas */
+  }
 }

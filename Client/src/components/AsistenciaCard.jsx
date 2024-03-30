@@ -1,6 +1,8 @@
 import libroIcon from '../img/libro.png'; // Asegúrate de que la ruta es correcta
 import boligrafoIcon from '../img/boligrafo.png'; // Si es necesario
 import "./cards.css"
+import PropTypes from 'prop-types';
+
 function AsistenciaCard({ asistencia }) {
     const {
       nombre,
@@ -36,6 +38,8 @@ function AsistenciaCard({ asistencia }) {
       </div>
     );
   }
-  
+  AsistenciaCard.propTypes = {
+    asistencia: PropTypes.arrayOf(PropTypes.string).isRequired,
+  };
   export default AsistenciaCard;
   
