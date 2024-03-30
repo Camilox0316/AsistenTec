@@ -11,8 +11,7 @@ import RegisterUserPage from "./views/RegisterUserPage";
 
 import { ViewActivityPage } from "./views/ViewActivityPage";
 import { ViewHomeStudent } from "./views/ViewHomeStudent";
-
-import { ViewProfe } from "./views/ViewProfe";
+import { ViewAssistanceDetails } from "./views/ViewAssitanceDetails";
 
 
 const ROLES = {
@@ -46,11 +45,12 @@ export default function App() {
         {/* Student routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Student]} />}>
           <Route path="/home-student" element={<ViewHomeStudent />} />
+          <Route path="/assistance-details/:courseCode" element={<ViewAssistanceDetails />} />
         </Route>
 
         {/* Professor routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Professor]} />}>
-          <Route path="/home-professor" element={<ViewProfe />} />
+          <Route path="/home-professor" element={< ViewActivityPage/>} />
         </Route>
 
         {/* Admin routes */}

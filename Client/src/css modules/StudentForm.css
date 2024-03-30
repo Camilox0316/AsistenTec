@@ -1,0 +1,102 @@
+.request-form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333333;
+    font-size: 24px;
+  }
+  
+  .course-info {
+    margin-bottom: 20px;
+  }
+  
+  .course-name,
+  .professor-name {
+    color: #666666;
+    font-size: 16px;
+  }
+  
+  .request-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+  }
+  
+  .request-form input[type="text"],
+  .request-form input[type="email"],
+  .request-form input[type="number"],
+  .request-form select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #dddddd;
+    font-size: 14px;
+  }
+  
+  .request-form label {
+    font-size: 14px;
+    color: #333333;
+  }
+  
+  .request-form .optional {
+    grid-column: span 2;
+  }
+  
+  .request-form button {
+    grid-column: span 2;
+    padding: 10px 20px;
+    background-color: #005f73;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .request-form button:hover {
+    background-color: #0a9396;
+  }
+
+  .input-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .input-row label {
+    flex-basis: 100%;
+    margin-right: 10px;
+  }
+  
+  .input-row label:last-child {
+    margin-right: 0;
+  }
+  
+  .input-row input,
+  .input-row select {
+    flex: 1;
+    margin-left: 10px;
+  }
+  
+  .input-row div.toggle-switch {
+    display: flex;
+    align-items: center;
+  }
+  
+  .toggle-switch input[type="checkbox"] {
+    margin-right: 5px;
+  }
+  
+  .submit-row {
+    display: flex;
+    justify-content: flex-end;
+  }
+  

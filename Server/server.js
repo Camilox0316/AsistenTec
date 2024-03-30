@@ -8,7 +8,7 @@ const cookieParser = require("cookie-parser");
 const authRequire = require("./middleware/validateToken");
 const path = require("path");
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT
 
 app.use(cors(corsOptions));
 

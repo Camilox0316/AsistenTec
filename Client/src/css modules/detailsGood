@@ -1,0 +1,85 @@
+.assistance-header .course-icon {
+    font-size: 60px;
+    color: #4f46e5;
+  }
+  
+  .assistance-header .help-icon {
+    font-size: 60px;
+    color: #4f46e5;
+  }
+  
+  .assistance-body .course-info p,
+  .assistance-body .requirements ul,
+  .assistance-body .description p {
+    margin-bottom: 0.5rem;
+  }
+  
+  .assistance-body .apply-button {
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 2rem;
+  }
+  
+  .apply-button {
+    /* tus estilos para el botón 'Aplicar' */
+    position: absolute; /* Si es necesario para posicionar */
+    bottom: 20px;
+    left: 20px; /* Ajusta como sea necesario */
+  }
+
+  .assistance-details {
+    max-width: 800px;
+    margin: auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative; /* Para posicionar absolutamente los círculos */
+  }
+  
+  .assistance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Alinear los elementos al principio del contenedor */
+    margin-bottom: 2rem;
+  }
+  
+  .assistance-title {
+    flex-grow: 1; /* Ocupar el espacio disponible */
+    position: relative; /* Para posicionar el círculo del ícono */
+  }
+  
+  .icon-circle,
+  .help-circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%; /* Hacer los círculos perfectos */
+    width: 60px; /* Tamaño del círculo */
+    height: 60px; /* Tamaño del círculo */
+    background-color: #e0f2fe; /* Fondo azul claro */
+    position: absolute; /* Posicionamiento absoluto */
+  }
+  
+  .icon-circle {
+    right: -80px; /* Posición a la derecha del título */
+  }
+  
+  .help-circle {
+    right: 16px; /* Posición a la derecha del contenedor */
+    bottom: 16px; /* Posición en la parte inferior del contenedor */
+  }
+  
+  /* Estilos para los íconos dentro de los círculos */
+  .icon-circle > .MuiSvgIcon-root,
+  .help-circle > .MuiSvgIcon-root {
+    color: #4f46e5; /* Color del ícono */
+    font-size: 30px; /* Tamaño del ícono */
+  }
+  
+  /* Resto de tu CSS */
+  
