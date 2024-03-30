@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../css modules/StudentForm.css';
 
-export default function AvailableRequestForm({ courseName, professorName, requestType }) {
+export const ApplyForm = ({ courseName, professorName, requestType }) => { 
   const [scholarships, setScholarships] = useState(["Ninguna", "Parcial", "Completa"]);
   
   return (

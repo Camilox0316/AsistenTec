@@ -12,6 +12,8 @@ import RegisterUserPage from "./views/RegisterUserPage";
 import { ViewActivityPage } from "./views/ViewActivityPage";
 import { ViewHomeStudent } from "./views/ViewHomeStudent";
 import { ViewAssistanceDetails } from "./views/ViewAssitanceDetails";
+import { MyAssistancesPage } from "./views/MyAssistancesPage";
+import { ApplyForm } from "./views/StudentForm";
 
 
 const ROLES = {
@@ -46,6 +48,8 @@ export default function App() {
         <Route element={<RequireAuth allowedRoles={[ROLES.Student]} />}>
           <Route path="/home-student" element={<ViewHomeStudent />} />
           <Route path="/assistance-details/:courseCode" element={<ViewAssistanceDetails />} />
+          <Route path="/my-assists" element={<MyAssistancesPage />} />
+          <Route path="/form/:courseCode" element={<ApplyForm />} />
         </Route>
 
         {/* Professor routes */}

@@ -38,7 +38,7 @@ export function SidebarContent() {
         </Link>
       </Item>
       <Item>
-        <Link to="/home-student" className="flex items-center space-x-2">
+        <Link to="/my-assists" className="flex items-center space-x-2">
           <PersonIcon />
           <span>Mis Asistencias</span>
         </Link>

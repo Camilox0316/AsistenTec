@@ -1,7 +1,9 @@
 // AssistanceDetails.jsx
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+
+import { AssistanceInfoPopUp } from '../components/AssistanceInfoPopUp'; // Asegúrate de que la ruta sea correcta según tu estructura de carpetas
 
 import Button from '@mui/material/Button';
 
@@ -14,7 +16,7 @@ export const ViewAssistanceDetails = () => {
     // Asumiendo que tendrás los datos disponibles aquí o los obtendrás de alguna API.
     // const { courseCode } = useParams();
 
-    const applied = true
+    const applied = false
     const terminated = false
     const status = 'pendiente'
 
@@ -29,6 +31,25 @@ export const ViewAssistanceDetails = () => {
         "Nota del curso igual o superior a 80"
       ],
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pharetra diam erat, quis laoreet libero mattis a. Cras ex ipsum, scelerisque id gravida in, luctus vel sapien."
+    };
+
+    // Agrega un estado para manejar la visibilidad del Popup
+    const [showPopup, setShowPopup] = useState(false);
+    const navigate = useNavigate();
+
+    const handleApply = () => {
+      // Redirecciona al formulario con el código del curso
+      navigate(`/form/${courseDetails.code}`);
+  };
+
+    // Función para abrir el Popup
+    const handleOpenPopup = () => {
+      setShowPopup(true);
+    };
+
+    // Función para cerrar el Popup
+    const handleClosePopup = () => {
+      setShowPopup(false);
     };
 
     const getStatusButton = () => {
@@ -58,7 +79,10 @@ export const ViewAssistanceDetails = () => {
           {courseDetails.title}
           <div className="icon-circle"><BookIcon style={{ fontSize: '8.5rem'}} /></div>
         </div>
-        <div className="help-circle"><HelpOutlineIcon /></div>
+        <div className="help-circle" onClick={handleOpenPopup}>
+          <HelpOutlineIcon />
+        </div>
+        {showPopup && <AssistanceInfoPopUp onClose={handleClosePopup} />}
       </div>
       <div className="assistance-body">
           <div className="course-info">
@@ -83,7 +107,7 @@ export const ViewAssistanceDetails = () => {
                     </Button>
                 )}
                 {!applied && (
-                    <Button variant="contained" color="primary" style={{ marginRight: '10px' }}>
+                    <Button variant="contained" color="primary" style={{ marginRight: '10px' }} onClick={handleApply}>
                         Aplicar
                     </Button>
                 )}
