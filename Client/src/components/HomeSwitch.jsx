@@ -9,7 +9,7 @@ export function HomeSwitch() {
 
   if (auth?.roles?.find((role) => [3123].includes(role))) {
     console.log("Entering Admin route");
-    home = <Navigate to="/home-student" />;
+    home = <Navigate to="/home-admin" />;
   } else if (auth?.roles?.find((role) => [1597].includes(role))) {
     console.log("Entering Student route");
     home = <Navigate to="/home-student" />;

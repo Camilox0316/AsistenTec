@@ -36,22 +36,20 @@
 
 /* Estilos para los botones de filtro y agregar nuevo */
 .btn-filtro {
-  background-color: #d9e0f9; /* Gris claro para el fondo del botón */
-  border: none;
-  border-radius: 20px;
-  padding: 8px 20px; /* Ajusta el padding para cambiar el tamaño de los botones */
   margin: 0 10px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   align-self: center;
-  font-weight: bold;
-  color: #333;
-  text-decoration: none;
-  transition: background-color 0.3s;
-  font-size: 16px; /* Asegúrate de que el tamaño de fuente sea el mismo para ambos botones */
   height: 40px; /* Establece una altura fija para ambos botones */
+  padding: 10px;
+  border-radius: 20px;
+  border: 0px;
+  width: 100%; /* O un ancho específico si es necesario */
+  max-width: 400px; /* Para evitar que el input sea demasiado ancho */
+  background-color: #d9e0f9; /* Gris claro para el fondo del botón */
+  outline: none;
 }
 
 .btn-filtro:hover {
@@ -63,17 +61,26 @@
   align-items: center;
   position: relative; /* Agregado para el posicionamiento del ícono de búsqueda */
 }
-.filtro-combobox:hover input {
+.filtro-combobox:hover input,
+.filtro-combobox:hover select {
   background-color: #acbeff;
+  outline: none;
 }
 
-.filtro-input {
+.filtro-combobox:focus input,
+.filtro-combobox:focus select {
+  outline: none;
+}
+
+.filtro-combobox input,
+.filtro-combobox select {
   padding: 10px;
   border-radius: 20px;
   border: 0px;
   width: 100%; /* O un ancho específico si es necesario */
   max-width: 400px; /* Para evitar que el input sea demasiado ancho */
   background-color: #d9e0f9; /* Gris claro para el fondo del botón */
+  outline: none;
 }
 
 @media (max-width: 768px) {

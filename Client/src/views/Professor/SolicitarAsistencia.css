@@ -4,15 +4,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(
-    100,
-    133,
-    233,
-    0.315
-  ); /* Azul claro semi-transparente */
+  background-color: rgba(100, 133, 233, 0.315);
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* Cambiado de center a flex-start */
   justify-content: center;
+  overflow-y: auto; /* Agrega desplazamiento si el contenido es demasiado alto */
   z-index: 1000;
 }
 
@@ -74,7 +70,7 @@
   outline: none;
 }
 .solicitar-asistencia-container textarea {
-  height: 200px; /* Altura más grande para el área de texto */
+  height: 120px; /* Altura más grande para el área de texto */
 }
 
 /* Centrado del botón */
@@ -99,17 +95,51 @@
   background-color: #003d82; /* Color al pasar el ratón */
 }
 
+.campo-doble {
+  display: flex;
+  justify-content: space-between;
+  flex-basis: calc(
+    50% - 10px
+  ); /* Ajusta este valor según el margen entre los campos */
+  margin-bottom: 1rem; /* Espacio debajo de cada grupo de campos */
+}
+
+/* Ajusta los márgenes para etiquetas dentro del .campo-doble */
+.campo-doble label {
+  flex-basis: 45%; /* Ajusta este valor según la disposición deseada */
+  margin-right: 10px; /* Espacio a la derecha de cada label, si es necesario */
+}
+
+/* Asegúrate de que los input y textarea no ocupen el 100% del ancho dentro de .campo-doble */
+.campo-doble input,
+.campo-doble select {
+  width: calc(
+    50% - 20px
+  ); /* Ajusta este valor según el margen entre los campos */
+}
+
+.campo-simple input,
+.campo-simple select,
+.campo-simple textarea,
+.campo-doble input,
+.campo-doble select {
+  width: 100%; /* Restablece el ancho para que se ajuste al contenedor padre */
+  margin-right: 0; /* Restablece cualquier margen aplicado globalmente */
+}
 /* Media query para ajustar cuando la pantalla es muy pequeña */
 @media (max-width: 768px) {
-  .sidebar-provisional {
-    width: 100%;
-    height: auto;
-    position: relative;
+  .campo-simple,
+  .campo-doble {
+    flex-direction: column;
   }
 
-  .solicitar-asistencia-container {
-    margin-top: 0;
-    margin-bottom: 0;
-    max-width: 90%;
+  .campo-simple label,
+  .campo-doble label {
+    margin-right: 0;
+  }
+
+  .campo-doble input,
+  .campo-doble select {
+    width: 100%; /* En pantallas pequeñas, cada input/select ocupará el ancho completo */
   }
 }

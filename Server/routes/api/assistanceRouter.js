@@ -14,9 +14,13 @@ router
   .route("/updateAssistance/:id")
   .put(AssistanceController.updateAssistance);
 
+// Obtener asistencias por id de profesor
+router
+  .route("/getProfAssistances/:id")
+  .get(AssistanceController.getAssistancesByProfessorId);
+
 // Eliminar una asistencia
 router
   .route("/deleteAssistance/:id")
   .delete(AssistanceController.deleteAssistance);
-
 module.exports = router;

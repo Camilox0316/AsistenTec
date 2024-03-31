@@ -9,6 +9,18 @@ class AssistanceController {
       res.status(500).json({ message: error.message });
     }
   }
+  static async getAssistancesByProfessorId(req, res) {
+    try {
+      const proffesorId = req.params.id; // Asume que el ID del profesor viene como parámetro en la URL
+      const assistances = await SingletonDAO.getAllAssistancesByProfessorId(
+        proffesorId
+      );
+
+      res.json(assistances);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
   static async addAssistance(req, res) {
     try {
       let {

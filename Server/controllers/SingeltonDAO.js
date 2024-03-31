@@ -61,6 +61,7 @@ class SingletonDAO {
           res.cookie("token", token);
 
           res.status(200).json({
+            id: userFound._id,
             status: true,
             name: userFound.name,
             photo: userFound.photo,
@@ -138,7 +139,17 @@ class SingletonDAO {
       throw new Error("Failed to retrieve assistances"); // Lanza un error para manejarlo más arriba
     }
   }
-
+  // Obtener todas las asistencias por ID de profesor
+  async getAllAssistancesByProfessorId(proffesorId) {
+    try {
+      const assistances = await Assistance.find({ proffesorId: proffesorId });
+      return assistances; // Retorna las asistencias que coinciden con el ID del profesor
+    } catch (error) {
+      throw new Error(
+        "Failed to retrieve assistances for the given professor ID"
+      );
+    }
+  }
   // Agregar una nueva asistencia
   async addAssistance(assistanceData) {
     try {

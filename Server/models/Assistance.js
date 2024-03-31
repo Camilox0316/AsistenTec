@@ -17,7 +17,7 @@ const assistanceSchema = new mongoose.Schema(
         "horas estudiante",
         "asistencia especial",
         "horas asistente",
-        "tutorias",
+        "tutoría",
       ],
     },
     year: {
