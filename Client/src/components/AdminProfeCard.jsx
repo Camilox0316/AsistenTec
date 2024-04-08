@@ -12,8 +12,8 @@ function AdminProfeCard({ admin_profe }) {
       email, 
       password,
       roles,
-      estado,
-      description
+      //estado,
+      //description
     } = admin_profe;
   
     //const semestreAnio = `Semestre ${semestre} ${anio}`;

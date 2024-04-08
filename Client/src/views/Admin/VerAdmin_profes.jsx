@@ -9,81 +9,32 @@ import axios from "axios";
 
 //Imagenes
 //import iconoFiltro from "../../img/lupa.png";
-//const URI = 'http://localhost:3000/user/getAdmins'
- //const admins_profes = await axios.get(URI);
- //console.log(admins_profes)
+const URI = 'http://localhost:3000/user/getAdmins'
 
-const admins_profesData = [
-  {
-    Objectid : 121231 ,
-    name: "Mario",
-    carnet: 0,
-    lastName1: "Marin",
-    lastName2: "Chacon", 
-    email: "mario@itcr.com" , 
-    password: "1234" ,
 
-    //photo: "Image",
-    roles: 2264,
-    estado: true,
-    description: "Profesor de la escuela de matematicas"
-  },
-  {
-    Objectid : 1212313 ,
-    name: "Mario",
-    carnet: 0,
-    lastName1: "Marin",
-    lastName2: "Chacon", 
-    email: "mario@itcr.com" , 
-    password: "1234" ,
+let response = await axios.get(URI);
+console.log("response:", response.data);
+let admins_profesData = response.data;
 
-    //photo: "Image",
-    roles: 2264,
-    estado: true,
-    description: "Profesor de la escuela de matematicas"
-  },
-  {
-    Objectid : 12313 ,
-    name: "Geovanny",
-    carnet: 0,
-    lastName1: "Calderon",
-    lastName2: "Zuñiga", 
-    email: "geo@itcr.com" , 
-    password: "1234" ,
+const recargarDatos = async () => {
+  response = await axios.get(URI);
+  console.log("response:", response.data);
+  admins_profesData = response.data;
+};
+ 
 
-    //photo: "Image",
-    roles: 2264,
-    estado: true,
-    description: "Profesor de la escuela de matematicas"
-    },
-  {
-    Objectid : 112313 ,
-    name: "Mario",
-    carnet: 0,
-    lastName1: "Marin",
-    lastName2: "Chacon", 
-    email: "mario@itcr.com" , 
-    password: "1234" ,
-
-    //photo: "Image",
-    roles: 2264,
-    estado: true,
-    description: "Profesor de la escuela de matematicas"
-  },
-
-];
 export function VerAdmin_profes() {
   const [isSolicitarAsistenciaVisible, setIsSolicitarAsistenciaVisible] = useState(false);
-  const [asistencias, setAsistencias] = useState(admins_profesData);
-  const agregarAsistencia = (nuevaAsistencia) => {
-    setAsistencias([...asistencias, nuevaAsistencia]);  
-  };
+  const [admin_profes, setAdmin_profes] = useState(admins_profesData);
+
   // Mock data for dropdown
-const TIPOS_ASISTENCIA = [
-  "Horas Estudiante",
-  "Asistencia Especial",
-  "Horas Asistente",
-];
+// const TIPOS_ASISTENCIA = [
+//   "Horas Estudiante",
+//   "Asistencia Especial",
+//   "Horas Asistente",
+// ];
+  // Función para abrir el modal
+
   // Función para abrir el modal
   const handleAgregarClick = () => {
     setIsSolicitarAsistenciaVisible(true);
@@ -93,15 +44,16 @@ const TIPOS_ASISTENCIA = [
   const handleCloseModal = () => {
     setIsSolicitarAsistenciaVisible(false);
   };
-  // Puedes usar el estado para manejar los filtros
+  // Puedes usar el estado para manejar los filtrosß
   const [filtro, setFiltro] = useState("");
 
-  const asistenciasFiltradas = filtro
+  const admins_profesFiltrados = filtro
     ? admins_profesData.filter((admin_profe) =>
       admin_profe.name.toLowerCase().includes(filtro.toLowerCase())
       )
     : admins_profesData; // si no hay filtro, muestra todas las asistencias
 
+  console.log("filtrado", admins_profesFiltrados);
   return (
     <div className="mostrar-asistencias-container">
       <Sidebar></Sidebar>
@@ -128,13 +80,13 @@ const TIPOS_ASISTENCIA = [
           </div>
         </div>
         <div className="cards-alineadas">
-        {asistenciasFiltradas.map((admin_profe) => (
-          <AdminProfeCard key={admin_profe.Objectid} admin_profe={admin_profe} />
+        {admins_profesFiltrados.map((admin_profe) => (
+          <AdminProfeCard key={admin_profe._id} admin_profe={admin_profe} />
         ))}
         </div>
       </div>
        {isSolicitarAsistenciaVisible && (
-        <IngresarAdmin_prof onClose={handleCloseModal}  onAgregarAsistencia={agregarAsistencia} asistenciaTipos={TIPOS_ASISTENCIA}  />
+        <IngresarAdmin_prof onClose={handleCloseModal} onAgregarAdmin={recargarDatos}/>
       )}
     </div>
        

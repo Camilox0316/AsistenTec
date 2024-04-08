@@ -98,9 +98,14 @@ const verifyToken = async (req, res, next) => {
 };
 
 const getAdmins_profes = async (req, res, next) => {
-  const response = await SingletonDAO.getUserByRole(req, res, next);
-  return response;
+  try {
+    const response = await SingletonDAO.getUserByRole(req, res, next);
+    return res.json(response);
+  } catch (error) {
+    return res.status(400).json({ msg: "Error fetching admins/profes" });
+  }
 };
+
 
 
 module.exports = {
