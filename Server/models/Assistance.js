@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const assistanceSchema = new mongoose.Schema(
   {
-    proffesorId: {
-      type: String,
+    professorId: {
+      type: Schema.Types.ObjectId, // Cambio a ObjectId
+      ref: 'User', // Referencia al modelo de usuario
       required: true,
     },
     school: {

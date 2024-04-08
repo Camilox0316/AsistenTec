@@ -94,6 +94,7 @@ export const ApplyForm = () => {
               key={option}
               className={`option-button ${selectedOption === option ? 'selected' : ''}`}
               onClick={() => handleSelection(option)}
+              type="button"
             >
               {option}
             </button>

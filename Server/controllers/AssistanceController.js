@@ -1,7 +1,8 @@
 const SingletonDAO = require("../controllers/SingeltonDAO");
+const Assistance = require("../models/Assistance");
 
 class AssistanceController {
-  static async getAllAssistances(req, res) {
+  static async getAll(req, res) {
     try {
       const assistances = await SingletonDAO.getAllAssistances();
       res.json(assistances); // Maneja la respuesta HTTP aquí
@@ -11,9 +12,9 @@ class AssistanceController {
   }
   static async getAssistancesByProfessorId(req, res) {
     try {
-      const proffesorId = req.params.id; // Asume que el ID del profesor viene como parámetro en la URL
+      const professorId = req.params.id; // Asume que el ID del profesor viene como parámetro en la URL
       const assistances = await SingletonDAO.getAllAssistancesByProfessorId(
-        proffesorId
+        professorId
       );
 
       res.json(assistances);
@@ -24,7 +25,7 @@ class AssistanceController {
   static async addAssistance(req, res) {
     try {
       let {
-        proffesorId,
+        professorId,
         school,
         assistanceType,
         year,
@@ -41,7 +42,7 @@ class AssistanceController {
 
       // Crear el objeto de asistencia con valores predeterminados para algunos campos
       const assistanceData = {
-        proffesorId,
+        professorId,
         school,
         assistanceType,
         year,
@@ -103,6 +104,26 @@ class AssistanceController {
       res.status(500).send({ message: "Server error", error });
     }
   }
+
+  static async getAllAssistances(req, res) {
+    try {
+      const assistances = await Assistance.find({ assistanceType: { $ne: 'tutorship' }});
+      res.json(assistances);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async getAllTutorship(req, res) {
+    try {
+      const assistances = await Assistance.find({ assistanceType: 'tutorship'});
+      res.json(assistances);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+
 }
 
 module.exports = AssistanceController;

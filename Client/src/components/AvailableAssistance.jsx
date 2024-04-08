@@ -46,7 +46,7 @@ export const AvailableAssistance = ({ title, semester, professor, type, status, 
         <div className="card-body mt-4">
             <div className="professor">Profesor: {professor}</div>
             <div className="type">Tipo: {type}</div>
-            <div className={`status ${status.toLowerCase()}`}>Estatus: {status}</div>
+            <div className={`status ${status?.toLowerCase() ?? ''}`}>Estatus: {status}</div>
         </div>
         <div className="flex items-end">
           <button

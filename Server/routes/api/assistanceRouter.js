@@ -4,7 +4,7 @@ const AssistanceController = require("../../controllers/AssistanceController");
 const { authRequire } = require("../../middleware/validateToken");
 
 // Obtener todas las asistencias
-router.route("/getAssistances").get(AssistanceController.getAllAssistances);
+router.route("/getAssistances").get(AssistanceController.getAll);
 
 // Agregar una nueva asistencia
 router.route("/addAssistance").post(AssistanceController.addAssistance);
@@ -23,4 +23,10 @@ router
 router
   .route("/deleteAssistance/:id")
   .delete(AssistanceController.deleteAssistance);
+
+// Obtener todas las asistencias
+router.route("/getAllAssistances").get(AssistanceController.getAllAssistances);
+
+//Obtener todas las tutorias
+router.route("/getTutoring").get(AssistanceController.getAllTutorship);
 module.exports = router;

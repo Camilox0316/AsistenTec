@@ -1,0 +1,1 @@
+const SingeltonDAO = require("./SingeltonDAO");
