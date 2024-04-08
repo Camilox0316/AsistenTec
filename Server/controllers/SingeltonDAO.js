@@ -125,14 +125,15 @@ class SingletonDAO {
     });
   }
 
-  async getUserByRole () {
+  async getUserByRole (req, res, next) {
     try {
-      const users = await User.find({ roles: { $in: [2264, 3123] } });
-      return users;
+      
+      return res.json = await User.find({ roles: { $in: [2264, 3123] } });;
     } catch (error) {
-      throw new Error('Error al obtener usuarios por rol: ' + error.message);
+      return res.status(400).json({ msg: "User not found by rol" });
+      
     }
-}
+  }
   //-------------------------------------------------------------------------------------
   //                      Assistences Functions
   //-------------------------------------------------------------------------------------

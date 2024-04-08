@@ -1,6 +1,6 @@
 .modal-overlay {
   position: fixed;
-  top: 0;
+
   left: 0;
   right: 0;
   bottom: 0;
@@ -11,14 +11,16 @@
     0.315
   ); /* Azul claro semi-transparente */
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
   z-index: 1000;
+  overflow-y: auto;
 }
 
 .solicitar-asistencia-container {
   position: relative;
   max-width: 600px;
+ 
   width: 100%;
   margin: 2rem; /* Agrega espacio arriba y abajo */
   padding: 20px;
@@ -41,6 +43,7 @@
   width: 100px; /* Aumenta si es necesario para el tamaño del icono */
   height: auto;
   margin-bottom: 20px;
+  border-radius: 50%;
 }
 
 .solicitar-asistencia-container h1 {
@@ -58,7 +61,7 @@
 .solicitar-asistencia-container select,
 .solicitar-asistencia-container textarea {
   width: 100%; /* Ocupa todo el ancho disponible */
-  padding: 1rem; /* Más padding para un aspecto más grande */
+   /* padding: 1rem;Más padding para un aspecto más grande */
   margin-top: 0.5rem; /* Espacio encima de cada input */
   margin-bottom: 0.5rem; /* Espacio debajo de cada input */
   border: 1px solid #ccd6e0; /* Borde suave */
@@ -74,7 +77,7 @@
   outline: none;
 }
 .solicitar-asistencia-container textarea {
-  height: 200px; /* Altura más grande para el área de texto */
+  height: auto; /* Altura más grande para el área de texto */
 }
 
 /* Centrado del botón */

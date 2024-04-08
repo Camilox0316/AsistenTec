@@ -9,9 +9,9 @@ import axios from "axios";
 
 //Imagenes
 //import iconoFiltro from "../../img/lupa.png";
-LOGIN_URL = '/user/getAdmins'
- const admins_profes = await axios.get(LOGIN_URL);
- console.log(admins_profes)
+//const URI = 'http://localhost:3000/user/getAdmins'
+ //const admins_profes = await axios.get(URI);
+ //console.log(admins_profes)
 
 const admins_profesData = [
   {

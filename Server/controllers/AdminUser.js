@@ -11,7 +11,7 @@ const loginUser = async (req, res, next) => {
 };
 
 const registerUser = async (req, res, next) => {
-  const { email, password, firstName, lastName1, lastName2, carnet } = req.body;
+  const { email, password, firstName, lastName1, lastName2, carnet ,roles} = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ msg: "Please enter all fields" });
@@ -28,6 +28,9 @@ const registerUser = async (req, res, next) => {
     // Encriptar contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const defaultRoles = 1597; // Valor predeterminado
+    const userRoles = roles || defaultRoles;
+
     // Crear y almacenar el nuevo usuario
     const newUser = await User.create({
       email: email,
@@ -37,7 +40,7 @@ const registerUser = async (req, res, next) => {
       lastName1: lastName1,
       lastName2: lastName2,
       photo: req.file ? `/uploads/profilePhotos/${req.file.filename}` : "",
-      roles: 1597,
+      roles: userRoles,
     });
 
     res.status(200).json({ msg: "User created", userId: newUser._id });
@@ -95,7 +98,8 @@ const verifyToken = async (req, res, next) => {
 };
 
 const getAdmins_profes = async (req, res, next) => {
-  await SingletonDAO.getUserByRole(req, res, next);
+  const response = await SingletonDAO.getUserByRole(req, res, next);
+  return response;
 };
 
 module.exports = {
