@@ -14,7 +14,8 @@ import { ViewActivityPage } from "./views/ViewActivityPage";
 //Professor Views
 import { MostrarAsistencias } from "./views/Professor/MostrarAsistencias";
 import SolicitarAsistencia from "./views/Professor/SolicitarAsistencia";
-
+//Admin Views
+import { VerAdmin_profes } from "./views/Admin/VerAdmin_profes";
 
 const ROLES = {
   Student: 1597,
@@ -57,7 +58,10 @@ export default function App() {
 
         {/* Admin routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-          <Route path="/home-student" element={<ViewActivityPage />} />
+          {/* Este home es temporal*/}
+          <Route path="/home-admin" element={<ViewActivityPage />} />
+          <Route path="/administradores_profes" element={<VerAdmin_profes />} />
+          <Route path="/solicitar-asistencias-professor" element={<SolicitarAsistencia />} />
         </Route>
 
         {/*Catch all*/}

@@ -64,7 +64,7 @@ export function SidebarContent() {
       <Item>
         <Link to="/home-switch" className="flex items-center space-x-2">
           <HomeIcon />
-          <span>Inicio</span>
+          <span >Inicio</span>
         </Link>
       </Item>
       <Item>
@@ -89,7 +89,7 @@ export function SidebarContent() {
         </Link>
       </Item>
       <Item>
-        <Link to="/plans" className="flex items-center space-x-2">
+        <Link to="/" className="flex items-center space-x-2">
           <GroupIcon />
           <span>Consultar Estudiantes</span>
         </Link>
@@ -104,6 +104,12 @@ export function SidebarContent() {
         <Link to="/registrar-profesor" className="flex items-center space-x-2">
           <GroupIcon />
           <span>Consultar Asistencias Activas</span>
+        </Link>
+      </Item>
+      <Item>
+        <Link to="/administradores_profes" className="flex items-center space-x-2">
+          <GroupIcon />
+          <span>Administradores y profesores</span>
         </Link>
       </Item>
     </>

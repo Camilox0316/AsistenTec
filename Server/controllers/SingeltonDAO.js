@@ -125,6 +125,14 @@ class SingletonDAO {
     });
   }
 
+  async getUserByRole () {
+    try {
+      const users = await User.find({ roles: { $in: [2264, 3123] } });
+      return users;
+    } catch (error) {
+      throw new Error('Error al obtener usuarios por rol: ' + error.message);
+    }
+}
   //-------------------------------------------------------------------------------------
   //                      Assistences Functions
   //-------------------------------------------------------------------------------------
