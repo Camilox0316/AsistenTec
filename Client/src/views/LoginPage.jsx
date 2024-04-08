@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
 import axios from "../api/axios";
 import logoImage from "../img/logoTec.png"; // importar el logo del tec
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {Link} from "react-router-dom";
 
 const LOGIN_URL = "/login/auth";
@@ -11,8 +11,6 @@ export function LoginPage() {
   const { setAuth } = useAuth();
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
 
   const userRef = useRef();
   const errorRef = useRef();
@@ -32,7 +30,6 @@ export function LoginPage() {
   const loginUser = async (e) => {
     e.preventDefault();
     try {
-      console.log(email, password);
       const response = await axios.post(
         LOGIN_URL,
         JSON.stringify({ email, password }),
@@ -40,14 +37,13 @@ export function LoginPage() {
           headers: { "Content-Type": "application/json" },
         }
       );
-      console.log(JSON.stringify(response?.data));
       //console.log(JSON.stringify(response));
       // const accessToken = response?.data?.accessToken;
       let roles = response?.data?.roles;
       let name = response?.data?.name;
       let photo = response?.data?.photo;
-      console.log(roles);
-      setAuth({name,photo,email, password, roles: [roles[0]]});
+      let id = response?.data?.id;
+      setAuth({id,name,photo,email, password, roles: [roles[0]]});
       setEmail("");
       setPassword("");
       navigate("/home-switch");

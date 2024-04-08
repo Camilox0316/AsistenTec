@@ -20,7 +20,7 @@ function Item({ children }) {
 
 
 export function SidebarContent() {
-  const { auth,logout } = useAuth();
+  const { auth, logout } = useAuth();
   const location = useLocation();
 
   const photoUrl = auth?.photo ? `${axiosInstance.defaults.baseURL}${auth.photo}` : fotoPerfilDefault;
@@ -49,7 +49,7 @@ export function SidebarContent() {
           <span>Mi Perfil</span>
         </Link>
       </Item>
-{/*       <Item>
+      {/*       <Item>
         <Link to="/crear-plan" className="flex items-center space-x-2">
           <GroupIcon />
           <span>Crear Plan</span>
@@ -62,27 +62,21 @@ export function SidebarContent() {
         </Link>
 
       </Item> */}
-       
-    
+
+
     </>
   ) : auth?.roles?.find((role) => [2264].includes(role)) ? ( //Profesor
     <>
       <Item>
         <Link to="/home-switch" className="flex items-center space-x-2">
           <HomeIcon />
-          <span>Inicio</span>
+          <span >Inicio</span>
         </Link>
       </Item>
       <Item>
-        <Link to="/plans" className="flex items-center space-x-2">
-          <CoPresentIcon />
-          <span>Asistencias</span>
-        </Link>
-      </Item>
-      <Item>
-        <Link to="/registrar-profesor" className="flex items-center space-x-2">
-          <GroupIcon />
-          <span>Consultar Estudiante</span>
+        <Link to="/home-switch" className="flex items-center space-x-2">
+          <PersonIcon />
+          <span>Mi perfil</span>
         </Link>
       </Item>
     </>
@@ -95,7 +89,7 @@ export function SidebarContent() {
         </Link>
       </Item>
       <Item>
-        <Link to="/plans" className="flex items-center space-x-2">
+        <Link to="/" className="flex items-center space-x-2">
           <GroupIcon />
           <span>Consultar Estudiantes</span>
         </Link>
@@ -112,28 +106,34 @@ export function SidebarContent() {
           <span>Consultar Asistencias Activas</span>
         </Link>
       </Item>
+      <Item>
+        <Link to="/administradores_profes" className="flex items-center space-x-2">
+          <GroupIcon />
+          <span>Administradores y profesores</span>
+        </Link>
+      </Item>
     </>
-  ): auth?.email ? (
-    
+  ) : auth?.email ? (
+
     <Navigate to="/unauthorized" state={{ from: location }} replace />
-    
+
   ) : (
     <Navigate to="/" state={{ from: location }} replace />
   );
 
   return <>{options}
-  
-  <div className="fixed bottom-0"> 
-  <Logout
-    photoUrl={photoUrl}//{auth.user.photoUrl}
-    name={name}//{auth.user.name}
-    email={email}
-    logout={logout} // Envuelve la función dentro de una función de flecha
 
-  />
-  <Link to="/" className="flex justify-center items-center space-x-2">
-    
-    <span className="text-red-500">Cerrar session</span>
-  </Link>
-</div> </>;
+    <div className="fixed bottom-0">
+      <Logout
+        photoUrl={photoUrl}//{auth.user.photoUrl}
+        name={name}//{auth.user.name}
+        email={email}
+        logout={logout} // Envuelve la función dentro de una función de flecha
+
+      />
+      <Link to="/" className="flex justify-center items-center space-x-2">
+
+        <span className="text-red-500">Cerrar session</span>
+      </Link>
+    </div> </>;
 }

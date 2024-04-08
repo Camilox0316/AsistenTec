@@ -1,0 +1,104 @@
+.mostrar-asistencias-container {
+  display: flex;
+  flex-direction: column; /* Cambiado de 'flex' a 'column' para estructurar los hijos verticalmente */
+  min-height: 100vh;
+  background: #f0f2f5; /* O el color de fondo que prefieras */
+  overflow-x: hidden; /* Elimina la barra de desplazamiento horizontal */
+}
+
+.asistencias-cards-container {
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap; /* Permite que las tarjetas se ajusten en filas y columnas */
+  align-items: flex-start;
+  justify-content: flex-start; /* Alinea las tarjetas al inicio del contenedor */
+  gap: 20px; /* Espacio entre las tarjetas */
+}
+
+.filtros-y-titulo {
+  width: 100%; /* Ajusta el ancho al tamaño del sidebar más los márgenes */
+  display: flex;
+  justify-content: space-between; /* Asegúrate de que haya espacio entre los botones */
+  padding-right: 20px; /* Añade padding para evitar que los elementos se peguen al borde */
+}
+.cards-alineadas {
+  width: 100%; /* Ajusta el ancho al tamaño del sidebar más los márgenes */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between; /* Asegúrate de que haya espacio entre los botones */
+}
+
+.filtros-y-titulo h1 {
+  color: #333;
+  font-size: 60px;
+}
+
+/* Estilos para los botones de filtro y agregar nuevo */
+.btn-filtro {
+  margin: 0 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  height: 40px; /* Establece una altura fija para ambos botones */
+  padding: 10px;
+  border-radius: 20px;
+  border: 0px;
+  width: 100%; /* O un ancho específico si es necesario */
+  max-width: 400px; /* Para evitar que el input sea demasiado ancho */
+  background-color: #d9e0f9; /* Gris claro para el fondo del botón */
+  outline: none;
+}
+
+.btn-filtro:hover {
+  background-color: #acbeff; /* Cambio de color al pasar el mouse */
+}
+
+.filtro-combobox {
+  display: flex;
+  align-items: center;
+  position: relative; /* Agregado para el posicionamiento del ícono de búsqueda */
+}
+.filtro-combobox:hover input,
+.filtro-combobox:hover select {
+  background-color: #acbeff;
+  outline: none;
+}
+
+.filtro-combobox:focus input,
+.filtro-combobox:focus select {
+  outline: none;
+}
+
+.filtro-combobox input,
+.filtro-combobox select {
+  padding: 10px;
+  border-radius: 20px;
+  border: 0px;
+  width: 100%; /* O un ancho específico si es necesario */
+  max-width: 400px; /* Para evitar que el input sea demasiado ancho */
+  background-color: #d9e0f9; /* Gris claro para el fondo del botón */
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  .filtros-y-titulo {
+    flex-direction: column; /* Cambia la disposición a vertical */
+    align-items: flex-start; /* Alinea los elementos al inicio */
+  }
+
+  .filtro-combobox {
+    width: 100%; /* Permite que el filtro ocupe todo el ancho disponible */
+    margin-top: 10px; /* Añade un espacio arriba cuando está en modo columna */
+  }
+
+  .filtro-input {
+    width: calc(100% - 20px); /* Ajusta el ancho para pequeñas pantallas */
+  }
+
+  .btn-filtro {
+    margin-bottom: 10px; /* Espacio debajo del botón en pantallas pequeñas */
+  }
+}

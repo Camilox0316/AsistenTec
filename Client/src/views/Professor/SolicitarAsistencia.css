@@ -1,0 +1,145 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(100, 133, 233, 0.315);
+  display: flex;
+  align-items: flex-start; /* Cambiado de center a flex-start */
+  justify-content: center;
+  overflow-y: auto; /* Agrega desplazamiento si el contenido es demasiado alto */
+  z-index: 1000;
+}
+
+.solicitar-asistencia-container {
+  position: relative;
+  max-width: 600px;
+  width: 100%;
+  margin: 2rem; /* Agrega espacio arriba y abajo */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #ffffff; /* Fondo blanco para el contenedor */
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+}
+.cerrar-icono {
+  position: absolute; /* Posicionamiento absoluto respecto a su contenedor relativo */
+  top: 20px; /* Espacio desde la parte superior del contenedor */
+  right: 20px; /* Espacio desde la parte derecha del contenedor */
+  cursor: pointer; /* Cambia el cursor a una mano cuando se pasa sobre el ícono */
+  width: 24px; /* Ancho del ícono de cierre */
+  height: 24px; /* Alto del ícono de cierre */
+}
+.asistencia-icon {
+  width: 100px; /* Aumenta si es necesario para el tamaño del icono */
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.solicitar-asistencia-container h1 {
+  font-size: 2rem; /* Tamaño de fuente para el título */
+  color: #333;
+  margin-bottom: 1rem; /* Espacio debajo del título */
+}
+
+.solicitar-asistencia-form {
+  width: 100%;
+}
+
+/* Ajustes para los inputs y textarea */
+.solicitar-asistencia-container input,
+.solicitar-asistencia-container select,
+.solicitar-asistencia-container textarea {
+  width: 100%; /* Ocupa todo el ancho disponible */
+  padding: 1rem; /* Más padding para un aspecto más grande */
+  margin-top: 0.5rem; /* Espacio encima de cada input */
+  margin-bottom: 0.5rem; /* Espacio debajo de cada input */
+  border: 1px solid #ccd6e0; /* Borde suave */
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #edf1fc;
+}
+
+/* Ajustes para los inputs y textarea */
+.solicitar-asistencia-container input:focus,
+.solicitar-asistencia-container select:focus,
+.solicitar-asistencia-container textarea:focus {
+  outline: none;
+}
+.solicitar-asistencia-container textarea {
+  height: 120px; /* Altura más grande para el área de texto */
+}
+
+/* Centrado del botón */
+.guardar-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* Centra el botón en el contenedor */
+  margin-top: 1rem; /* Espacio encima del botón */
+}
+
+.solicitar-asistencia-container button {
+  padding: 1rem 1.5rem; /* Padding más grande para un botón más grande */
+  font-size: 1rem;
+  background-color: #0056b3; /* Color de fondo más fuerte */
+  color: #ffffff; /* Texto en blanco */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.solicitar-asistencia-container button:hover {
+  background-color: #003d82; /* Color al pasar el ratón */
+}
+
+.campo-doble {
+  display: flex;
+  justify-content: space-between;
+  flex-basis: calc(
+    50% - 10px
+  ); /* Ajusta este valor según el margen entre los campos */
+  margin-bottom: 1rem; /* Espacio debajo de cada grupo de campos */
+}
+
+/* Ajusta los márgenes para etiquetas dentro del .campo-doble */
+.campo-doble label {
+  flex-basis: 45%; /* Ajusta este valor según la disposición deseada */
+  margin-right: 10px; /* Espacio a la derecha de cada label, si es necesario */
+}
+
+/* Asegúrate de que los input y textarea no ocupen el 100% del ancho dentro de .campo-doble */
+.campo-doble input,
+.campo-doble select {
+  width: calc(
+    50% - 20px
+  ); /* Ajusta este valor según el margen entre los campos */
+}
+
+.campo-simple input,
+.campo-simple select,
+.campo-simple textarea,
+.campo-doble input,
+.campo-doble select {
+  width: 100%; /* Restablece el ancho para que se ajuste al contenedor padre */
+  margin-right: 0; /* Restablece cualquier margen aplicado globalmente */
+}
+/* Media query para ajustar cuando la pantalla es muy pequeña */
+@media (max-width: 768px) {
+  .campo-simple,
+  .campo-doble {
+    flex-direction: column;
+  }
+
+  .campo-simple label,
+  .campo-doble label {
+    margin-right: 0;
+  }
+
+  .campo-doble input,
+  .campo-doble select {
+    width: 100%; /* En pantallas pequeñas, cada input/select ocupará el ancho completo */
+  }
+}

@@ -1,0 +1,67 @@
+.asistencia-card {
+  width: 200px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  padding: 1rem;
+  background-color: white;
+  position: relative; /* Para posicionar correctamente el ícono de edición */
+  transition: transform 0.3s ease;
+  overflow: hidden; /* Previene que el contenido se desborde */
+  flex: 0 0 calc(50% - 100px); /* Ajusta el ancho para que dos tarjetas quepan en una fila, restando el espacio del gap */
+  margin-bottom: 20px;
+}
+
+.asistencia-card:hover {
+  transform: translateY(-5px);
+}
+
+.asistencia-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.asistencia-icon {
+  width: 50px;
+  height: 50px;
+  margin-right: 1rem;
+}
+
+.asistencia-titulo h3 {
+  margin: 0;
+  color: #333;
+  font-size: 2rem; /* Ajusta este tamaño para que el texto sea grande */
+  font-weight: normal; /* Si prefieres que no esté en negrita */
+}
+
+.asistencia-titulo p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem; /* Ajusta este tamaño para que el texto sea más pequeño que el título */
+  font-weight: normal; /* Si prefieres que no esté en negrita */
+}
+
+.asistencia-info p {
+  margin: 0.5rem 0;
+  color: #333;
+  font-weight: normal; /* Si prefieres que no esté en negrita */
+}
+
+.asistencia-info p strong {
+  font-weight: bold; /* Para hacer "Asistente", "Estado Administrador", "Estado Estudiante" en negrita */
+}
+
+.edit-icon {
+  width: 24px; /* Ajusta este tamaño para tu icono de edición */
+  height: 24px;
+  position: absolute; /* Posiciona el icono de edición absolutamente dentro de la tarjeta */
+  bottom: 1rem;
+  right: 1rem;
+}
+
+/* Ajusta el flex-wrap para pantallas más pequeñas si es necesario */
+@media (max-width: 768px) {
+  .asistencia-card {
+    flex: 0 0 calc(100% - 20px); /* En pantallas pequeñas cada tarjeta toma el ancho completo */
+  }
+}

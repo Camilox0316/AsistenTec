@@ -2,52 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
-#root{
-    height: 100vh;
+#root {
+  height: 100vh;
+}
+body,
+html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Esto evitará la barra de desplazamiento horizontal */
+}
+input:focus,
+datalist:focus {
+  outline: none;
 }
 
-.container{
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.content-panel{
-    height: 100vh;
+.content-panel {
+  height: 100vh;
 }
 
 .errmsg {
-    background-color: lightpink;
-    color: firebrick;
-    font-weight: bold;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
+  background-color: lightpink;
+  color: firebrick;
+  font-weight: bold;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .offscreen {
-    position: absolute;
-    left: -9999px;
+  position: absolute;
+  left: -9999px;
 }
 
 ::-webkit-scrollbar {
-    width: 2px;
+  width: 2px;
 }
 
 ::-webkit-scrollbar-track {
-    background: white;
+  background: white;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #888;
+  background: #888;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+  background: #555;
 }
 
-.scrollable{
-    scrollbar-color: #888 white;
-    scrollbar-width: thin;
+.scrollable {
+  scrollbar-color: #888 white;
+  scrollbar-width: thin;
 }

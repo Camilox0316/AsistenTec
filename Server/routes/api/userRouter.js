@@ -13,6 +13,7 @@ router.route("/updatePassword").put(adminUserControllers.updatePassword);
 router.route("/verifyToken").get(adminUserControllers.verifyToken);
 router.route("/profile").get(authRequire, adminUserControllers.profile);
 router.route("/logout").put(adminUserControllers.logout);
+router.route("/getAdmins").get(adminUserControllers.getAdmins_profes);
 //Nota para el editar perfil se debe de tener el authRequiere
 
 module.exports = router;

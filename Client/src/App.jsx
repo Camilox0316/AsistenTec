@@ -16,6 +16,12 @@ import { MyAssistancesPage } from "./views/MyAssistancesPage";
 import { ApplyForm } from "./views/StudentForm";
 
 
+//Professor Views
+import { MostrarAsistencias } from "./views/Professor/MostrarAsistencias";
+import SolicitarAsistencia from "./views/Professor/SolicitarAsistencia";
+//Admin Views
+import { VerAdmin_profes } from "./views/Admin/VerAdmin_profes";
+
 const ROLES = {
   Student: 1597,
   Professor: 2264,
@@ -31,7 +37,6 @@ export default function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/unauthorized" element={<h1>Unauthorized</h1>} />
         <Route path="/register-student" element={<RegisterUserPage />} />
-
         {/*Private routes */}
         {/* User routes */}
         <Route
@@ -54,12 +59,13 @@ export default function App() {
 
         {/* Professor routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Professor]} />}>
-          <Route path="/home-professor" element={< ViewActivityPage/>} />
+          <Route path="/home-professor" element={<MostrarAsistencias />} />
+          <Route path="/solicitar-asistencias-professor" element={<SolicitarAsistencia />} />
         </Route>
 
         {/* Admin routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-          <Route path="/home-admin" element={<ViewActivityPage />} />
+          <Route path="/home-switch" element={<ViewActivityPage />} />
         </Route>
 
         {/*Catch all*/}

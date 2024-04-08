@@ -11,7 +11,7 @@ const loginUser = async (req, res, next) => {
 };
 
 const registerUser = async (req, res, next) => {
-  const { email, password, firstName, lastName1, lastName2, carnet } = req.body;
+  const { email, password, firstName, lastName1, lastName2, carnet ,roles} = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ msg: "Please enter all fields" });
@@ -28,6 +28,9 @@ const registerUser = async (req, res, next) => {
     // Encriptar contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const defaultRoles = 1597; // Valor predeterminado
+    const userRoles = roles || defaultRoles;
+
     // Crear y almacenar el nuevo usuario
     const newUser = await User.create({
       email: email,
@@ -37,7 +40,7 @@ const registerUser = async (req, res, next) => {
       lastName1: lastName1,
       lastName2: lastName2,
       photo: req.file ? `/uploads/profilePhotos/${req.file.filename}` : "",
-      roles: 1597,
+      roles: userRoles,
     });
 
     res.status(200).json({ msg: "User created", userId: newUser._id });
@@ -46,44 +49,6 @@ const registerUser = async (req, res, next) => {
   }
   next();
 };
-
-/*
-async registerUser(req, res, next) {
-    const { email, password, name, phone } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ msg: "Please enter all fields" });
-    }
-    //check for duplicate usernames in the db
-    const duplicate = await User.findOne({ email: email }).exec();
-
-    if (duplicate) {
-      return res.status(400).json({ msg: "User already exists" });
-    }
-
-    try {
-      //encrypt password
-      const hashedPassword = await bcrypt.hash(password, 10);
-      // creating the user
-      const newUser = new User({
-        email,
-        password: hashedPassword,
-        name,
-        phone,
-      });
-      // saving the user in the database
-      const userSaved = await newUser.save();
-
-      const token = await createAccessToken({ id: userSaved._id });
-
-      console.log("Token generado:", token);
-      res.cookie("token", token);
-
-      res.status(200).json({ roles:['client'],userSaved, msg: "User created" });
-    } catch (error) {
-      res.status(500).json({ msg: "Server error" });
-    }
-  }
-*/
 
 const updatePassword = async (req, res, next) => {
   try {
@@ -132,6 +97,12 @@ const verifyToken = async (req, res, next) => {
   await SingletonDAO.verifyToken(req, res, next);
 };
 
+const getAdmins_profes = async (req, res, next) => {
+  const response = await SingletonDAO.getUserByRole(req, res, next);
+  return response;
+};
+
+
 module.exports = {
   loginUser,
   registerUser,
@@ -139,4 +110,5 @@ module.exports = {
   verifyToken,
   profile,
   logout,
+  getAdmins_profes,
 };
