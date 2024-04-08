@@ -1,102 +1,192 @@
 .request-form-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px; /* Increased width for two columns */
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333333;
+  font-size: 24px;
+}
+
+.course-info {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.course-name,
+.professor-name {
+  color: #666666;
+  font-size: 16px;
+  flex-basis: 48%; /* Adjusts for two column */
+}
+
+.request-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.request-form .input-row {
+  flex: 0 0 48%; /* each input row will take up roughly half the form's width */
+  display: flex;
+  flex-direction: column;
+}
+
+.request-form label {
+  margin-bottom: 0.5rem;
+}
+
+.request-form input[type="text"],
+.request-form input[type="email"],
+.request-form input[type="number"],
+.request-form select {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 4px;
+  border: 1px solid #dddddd;
+}
+
+.request-form .optional {
+  flex: 0 0 100%; /* The optional input row will take the full width */
+}
+
+.submit-row {
+  flex: 0 0 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.apply-button {
+  background-color: #131927;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  /* No uses position absolute a menos que sea estrictamente necesario */
+  margin-top: 2rem; /* Asegura espacio entre el contenido y el botón */
+}
+
+.input-row div.toggle-switch {
+  display: flex;
+  gap: 10px; /* This will create a gap between the two toggle inputs */
+}
+
+.animated-selection-container {
+  display: flex;
+  justify-content: center; /* Horizontally center the content */
+  align-items: center; /* Vertically center the content (if needed) */
+  flex-wrap: wrap; /* Allow items to wrap as needed */
+  gap: 10px; /* Adjust the gap as needed */
+  padding: 10px; /* Add padding if necessary */
+}
+
+.option-button {
+  padding: 10px 20px;
+  border: 2px solid #4f46e5; /* Border color */
+  background-color: white;
+  color: #4f46e5;
+  cursor: pointer;
+  transition: all 0.3s ease; /* Smooth transition for color and background */
+  justify-content: center;
+  align-items: center;
+}
+
+.option-button:hover {
+  background-color: #4f46e5; /* Background color for hover */
+  color: white; /* Text color for hover */
+}
+
+.option-button.selected {
+  background-color: #4f46e5; /* Background color for selected */
+  color: white; /* Text color for selected */
+  border: 2px solid #4f46e5; /* Optional: Change border color for selected */
+}
+
+.question-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px; /* Espacio desde el último botón de opción */
+}
+
+.question-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; /* Tamaño del botón de pregunta */
+  height: 30px;
+  border-radius: 50%; /* Hacerlo circular */
+  border: 1px solid #4f46e5; /* Un borde para que destaque */
+  background-color: #e0f2fe;
+  color: #4f46e5;
+  cursor: pointer;
+  font-size: 18px; /* Ajusta esto según la escala de tu diseño */
+  line-height: 1; /* Asegura que el signo de interrogación esté centrado */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+
+  .animated-selection-container {
+    flex-direction: column;
   }
-  
-  .form-title {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #333333;
-    font-size: 24px;
-  }
-  
-  .course-info {
-    margin-bottom: 20px;
-  }
-  
-  .course-name,
-  .professor-name {
-    color: #666666;
-    font-size: 16px;
-  }
-  
-  .request-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 20px;
-  }
-  
-  .request-form input[type="text"],
-  .request-form input[type="email"],
-  .request-form input[type="number"],
-  .request-form select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #dddddd;
-    font-size: 14px;
-  }
-  
-  .request-form label {
-    font-size: 14px;
-    color: #333333;
-  }
-  
-  .request-form .optional {
-    grid-column: span 2;
-  }
-  
-  .request-form button {
-    grid-column: span 2;
-    padding: 10px 20px;
-    background-color: #005f73;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .request-form button:hover {
-    background-color: #0a9396;
+  .question-button-container {
+    margin-left: 0;
+    margin-top: 10px; /* Espacio arriba del botón de pregunta en pantallas pequeñas */
   }
 
-  .input-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
+  .request-form-container {
+    flex-direction: column;
+  }
+  .animated-selection-container {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
   }
   
-  .input-row label {
-    flex-basis: 100%;
-    margin-right: 10px;
+  .option-button {
+    width: 100%; /* Full width buttons on smaller screens */
   }
-  
-  .input-row label:last-child {
+
+  .course-info {
+    flex-direction: column;
+  }
+
+  .course-name,
+  .professor-name,
+  .request-form .input-row,
+  .submit-row {
+    flex: 0 0 100%;
+  }
+
+  .form-title {
+    font-size: 1.5rem;
+  }
+
+  .input-row label,
+  .submit-row button {
+    margin-left: 0;
     margin-right: 0;
   }
-  
-  .input-row input,
-  .input-row select {
-    flex: 1;
-    margin-left: 10px;
+
+  .submit-row button {
+    width: 100%;
   }
-  
+
   .input-row div.toggle-switch {
-    display: flex;
-    align-items: center;
+    flex-direction: column; /* Stack the toggle inputs vertically on smaller screens */
   }
-  
-  .toggle-switch input[type="checkbox"] {
-    margin-right: 5px;
+
+  .input-row div.toggle-switch label {
+    margin-right: 0; /* Remove the margin to the right of labels on smaller screens */
   }
-  
-  .submit-row {
-    display: flex;
-    justify-content: flex-end;
-  }
-  
+}

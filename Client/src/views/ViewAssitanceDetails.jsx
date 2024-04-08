@@ -16,8 +16,8 @@ export const ViewAssistanceDetails = () => {
     // Asumiendo que tendrás los datos disponibles aquí o los obtendrás de alguna API.
     // const { courseCode } = useParams();
 
-    const applied = false
-    const terminated = false
+    const applied = false  
+    const terminated = true
     const status = 'pendiente'
 
     const courseDetails = {
@@ -68,7 +68,7 @@ export const ViewAssistanceDetails = () => {
               color = 'grey'; // Un color por defecto en caso de que no se reconozca el estado
       }
       if (applied) {
-        return <Button variant="contained" style={{ backgroundColor: color, color: 'white' }}>Estado: {status.charAt(0).toUpperCase() + status.slice(1)}</Button>;
+        return <Button variant="contained" style={{ backgroundColor: color, color: 'black' }}>Estado: {status.charAt(0).toUpperCase() + status.slice(1)}</Button>;
       } 
     };
   
@@ -86,9 +86,13 @@ export const ViewAssistanceDetails = () => {
       </div>
       <div className="assistance-body">
           <div className="course-info">
-            <p><strong>Código de curso:</strong> {courseDetails.code}</p>
-            <p><strong>Profesor de curso:</strong> {courseDetails.professor}</p>
-            <p><strong>Horas:</strong> {courseDetails.hours}</p>
+            <p className="course-info__item"><strong>Código de curso:</strong> {courseDetails.code}</p>
+          </div>
+          <div className="course-info">
+            <p className="course-info__item"><strong>Profesor de curso:</strong> {courseDetails.professor}</p>
+          </div>
+          <div className="course-info">
+            <p className="course-info__item"><strong>Horas:</strong> {courseDetails.hours}</p>
           </div>
           <div className="requirements">
             <p><strong>Requisitos:</strong></p>

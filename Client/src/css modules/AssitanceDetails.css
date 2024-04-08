@@ -8,10 +8,14 @@
   color: #4f46e5;
 }
 
-.assistance-body .course-info p,
+.assistance-body,
 .assistance-body .requirements ul,
 .assistance-body .description p {
   margin-bottom: 0.5rem;
+}
+
+.course-info p {
+  display: block;
 }
 
 .assistance-body .apply-button {
