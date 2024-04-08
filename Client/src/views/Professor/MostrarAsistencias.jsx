@@ -1,76 +1,61 @@
 import AsistenciaCard from "../../components/AsistenciaCard";
 import "./MostrarAsistencias.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import SolicitarAsistencia from "./SolicitarAsistencia";
 import { Sidebar } from "../../components/Sidebar";
+import { useAuth } from "../../hooks/useAuth";
 // Datos simulados para las tarjetas de asistencia
-
 
 //Imagenes
 //import iconoFiltro from "../../img/lupa.png";
-const asistenciasData = [
-  {
-    id: 1,
-    tipoAsistencia: "Horas Estudiante",
-    anio: 2022,
-    semestre: 1,
-    nombre: "POO GR 2",
-    descripcionCurso: "Programación Orientada a Objetos Grupo 2",
-    estadoAdmin: "Aceptado",
-    estadoEstudiante: "Aceptado",
-    asistente: "Mario Barboza Artavia",
-    editable: false,
-  },
-  {
-    id: 2,
-    tipoAsistencia: "Horas Asistente",
-    anio: 2022,
-    semestre: 2,
-    nombre: "Algoritmos",
-    descripcionCurso: "Fundamentos de Algoritmos",
-    estadoAdmin: "Pendiente",
-    estadoEstudiante: "Aceptado",
-    asistente: "Lucía Quesada Solano",
-    editable: true,
-  },
-  {
-    id: 3,
-    tipoAsistencia: "Investigación",
-    anio: 2023,
-    semestre: 1,
-    nombre: "Inteligencia Artificial",
-    descripcionCurso: "Técnicas Avanzadas de IA",
-    estadoAdmin: "Rechazado",
-    estadoEstudiante: "Pendiente",
-    asistente: "Carmen Larios Navarro",
-    editable: true,
-  },
-  {
-    id: 4,
-    tipoAsistencia: "Proyecto",
-    anio: 2023,
-    semestre: 2,
-    nombre: "Desarrollo de Software",
-    descripcionCurso: "Metodologías Ágiles",
-    estadoAdmin: "Aceptado",
-    estadoEstudiante: "Pendiente",
-    asistente: "Andrés Vargas",
-    editable: false,
-  },
- 
-];
+
 export function MostrarAsistencias() {
-  const [isSolicitarAsistenciaVisible, setIsSolicitarAsistenciaVisible] = useState(false);
-  const [asistencias, setAsistencias] = useState(asistenciasData);
-  const agregarAsistencia = (nuevaAsistencia) => {
-    setAsistencias([...asistencias, nuevaAsistencia]);  
+  const [isSolicitarAsistenciaVisible, setIsSolicitarAsistenciaVisible] =
+    useState(false);
+  const [asistencias, setAsistencias] = useState([]);
+  const [filtro, setFiltro] = useState("");
+  const [orden, setOrden] = useState("más reciente");
+  const { auth } = useAuth();
+
+  const TIPOS_ASISTENCIA = ["horas estudiante", "horas asistente"];
+  const TIPOS_ASISTENCIA_ADMIN = [
+    "horas estudiante",
+    "asistencia especial",
+    "horas asistente",
+    "tutoría",
+  ];
+  const tiposAsistencia = auth.roles?.includes(2264)
+    ? TIPOS_ASISTENCIA
+    : TIPOS_ASISTENCIA_ADMIN;
+
+  const fetchAsistencias = async () => {
+    try {
+      const endpoint = auth.roles?.includes(2264)
+        ? `http://localhost:3000/assistance/getProfAssistances/${auth.id}`
+        : `http://localhost:3000/assistance/getAssistances`;
+      const response = await axios.get(endpoint);
+      let asistenciasOrdenadas = response.data;
+      // Ordenar por fecha de creación, de más reciente a menos reciente o viceversa
+      asistenciasOrdenadas = asistenciasOrdenadas.sort((a, b) => {
+        return orden === "más reciente"
+          ? new Date(b.createdAt) - new Date(a.createdAt)
+          : new Date(a.createdAt) - new Date(b.createdAt);
+      });
+      setAsistencias(asistenciasOrdenadas);
+    } catch (error) {
+      console.error("Error fetching assistances:", error);
+    }
   };
-  // Mock data for dropdown
-const TIPOS_ASISTENCIA = [
-  "Horas Estudiante",
-  "Asistencia Especial",
-  "Horas Asistente",
-];
+
+  useEffect(() => {
+    fetchAsistencias();
+  }, [orden]); // Agregar 'orden' como dependencia para refetch cuando cambie
+
+  const asistenciasFiltradas = asistencias.filter((asistencia) =>
+    asistencia.name.toLowerCase().includes(filtro.toLowerCase())
+  );
+
   // Función para abrir el modal
   const handleAgregarClick = () => {
     setIsSolicitarAsistenciaVisible(true);
@@ -79,15 +64,8 @@ const TIPOS_ASISTENCIA = [
   // Función para cerrar el modal
   const handleCloseModal = () => {
     setIsSolicitarAsistenciaVisible(false);
+    fetchAsistencias(); // Esto recargará las asistencias después de cerrar el modal
   };
-  // Puedes usar el estado para manejar los filtros
-  const [filtro, setFiltro] = useState("");
-
-  const asistenciasFiltradas = filtro
-    ? asistenciasData.filter((asistencia) =>
-        asistencia.nombre.toLowerCase().includes(filtro.toLowerCase())
-      )
-    : asistenciasData; // si no hay filtro, muestra todas las asistencias
 
   return (
     <div className="mostrar-asistencias-container">
@@ -99,6 +77,12 @@ const TIPOS_ASISTENCIA = [
           </button>
           <h1>Asistencias</h1>
           <div className="filtro-combobox">
+            <select onChange={(e) => setOrden(e.target.value)} value={orden}>
+              <option value="más reciente">Más Reciente</option>
+              <option value="menos reciente">Menos Reciente</option>
+            </select>
+          </div>
+          <div className="filtro-combobox">
             <input
               type="search"
               value={filtro}
@@ -108,22 +92,24 @@ const TIPOS_ASISTENCIA = [
               placeholder="Buscar o filtrar..."
             />
             <datalist id="asistencias-nombres">
-              {asistenciasData.map((asistencia) => (
-                <option key={asistencia.id} value={asistencia.nombre} />
+              {asistencias.map((asistencia) => (
+                <option key={asistencia.id} value={asistencia.name} />
               ))}
             </datalist>
           </div>
         </div>
         <div className="cards-alineadas">
-        {asistenciasFiltradas.map((asistencia) => (
-          <AsistenciaCard key={asistencia.id} asistencia={asistencia} />
-        ))}
+          {asistenciasFiltradas.map((asistencia) => (
+            <AsistenciaCard key={asistencia.id} asistencia={asistencia} />
+          ))}
         </div>
       </div>
-       {isSolicitarAsistenciaVisible && (
-        <SolicitarAsistencia onClose={handleCloseModal}  onAgregarAsistencia={agregarAsistencia} asistenciaTipos={TIPOS_ASISTENCIA}  />
+      {isSolicitarAsistenciaVisible && (
+        <SolicitarAsistencia
+          onClose={handleCloseModal}
+          asistenciaTipos={tiposAsistencia}
+        />
       )}
     </div>
-       
   );
 }
