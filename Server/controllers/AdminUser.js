@@ -102,6 +102,7 @@ const getAdmins_profes = async (req, res, next) => {
   return response;
 };
 
+
 module.exports = {
   loginUser,
   registerUser,
