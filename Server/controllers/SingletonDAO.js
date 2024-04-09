@@ -179,6 +179,7 @@ class SingletonDAO {
   async getAllAssistancesByProfessorId(proffesorId) {
     try {
       const assistances = await Assistance.find({ proffesorId: proffesorId });
+      console.log(assistances); 
       return assistances; // Retorna las asistencias que coinciden con el ID del profesor
     } catch (error) {
       throw new Error(

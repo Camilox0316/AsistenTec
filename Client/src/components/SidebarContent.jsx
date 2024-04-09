@@ -68,7 +68,7 @@ export function SidebarContent() {
   ) : auth?.roles?.find((role) => [2264].includes(role)) ? ( //Profesor
     <>
       <Item>
-        <Link to="/home-switch" className="flex items-center space-x-2">
+        <Link to="/home-professor" className="flex items-center space-x-2">
           <HomeIcon />
           <span >Inicio</span>
         </Link>

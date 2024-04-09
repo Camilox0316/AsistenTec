@@ -145,7 +145,7 @@ const SolicitarAsistencia = ({
                   type="number"
                   value={horas}
                   onChange={(e) => setHoras(e.target.value)}
-                  min={50}
+                  min={15}
                 />
               </label>
             </div>

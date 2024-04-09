@@ -16,16 +16,17 @@ class AssistanceController {
       const assistances = await SingletonDAO.getAllAssistancesByProfessorId(
         professorId
       );
-
       res.json(assistances);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   }
+
+
   static async addAssistance(req, res) {
     try {
       let {
-        professorId,
+        proffesorId,
         school,
         assistanceType,
         year,
@@ -34,6 +35,7 @@ class AssistanceController {
         courseDescription,
         hours,
         groupNumber,
+        courseCode,
       } = req.body;
 
       // Asegurarse de que los campos que deben ser en minúscula lo estén
@@ -42,7 +44,7 @@ class AssistanceController {
 
       // Crear el objeto de asistencia con valores predeterminados para algunos campos
       const assistanceData = {
-        professorId,
+        proffesorId,
         school,
         assistanceType,
         year,
@@ -56,6 +58,7 @@ class AssistanceController {
         hours,
         groupNumber,
         isActive: true, // Suponiendo que quieres que por defecto estén activas
+        courseCode: courseCode || "IC-9999",
       };
 
       // Llamada al método de tu SingletonDAO
