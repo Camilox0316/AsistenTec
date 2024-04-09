@@ -129,13 +129,11 @@ class SingletonDAO {
     });
   }
 
-  async getUserByRole (req, res, next) {
+  async getUserByRole(req, res, next) {
     try {
-      
-      return res.json = await User.find({ roles: { $in: [2264, 3123] } });;
+      return await User.find({ roles: { $in: [2264, 3123] } });
     } catch (error) {
-      return res.status(400).json({ msg: "User not found by rol" });
-      
+      throw new Error("Error fetching users by role");
     }
   }
 

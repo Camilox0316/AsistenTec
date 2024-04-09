@@ -10,17 +10,20 @@ import { HomeSwitch } from "./components/HomeSwitch";
 import RegisterUserPage from "./views/RegisterUserPage";
 
 import { ViewActivityPage } from "./views/ViewActivityPage";
-import { ViewHomeStudent } from "./views/ViewHomeStudent";
-import { ViewAssistanceDetails } from "./views/ViewAssitanceDetails";
-import { MyAssistancesPage } from "./views/MyAssistancesPage";
-import { ApplyForm } from "./views/StudentForm";
-
 
 //Professor Views
 import { MostrarAsistencias } from "./views/Professor/MostrarAsistencias";
 import SolicitarAsistencia from "./views/Professor/SolicitarAsistencia";
 //Admin Views
 import { VerAdmin_profes } from "./views/Admin/VerAdmin_profes";
+
+//admin Student
+import { ViewHomeStudent } from "./views/ViewHomeStudent";
+import { ViewAssistanceDetails } from "./views/ViewAssitanceDetails";
+import { MyAssistancesPage } from "./views/MyAssistancesPage";
+import { ApplyForm } from "./views/StudentForm";
+
+
 
 const ROLES = {
   Student: 1597,
@@ -68,6 +71,7 @@ export default function App() {
           <Route path="/home-switch" element={<HomeSwitch />} />
           <Route path="/home-admin" element={<ViewActivityPage />} />
           <Route path="/administradores_profes" element={<VerAdmin_profes />} />
+          <Route path="/mostrar-solicitudes" element={<MostrarAsistencias />} />
           
         </Route>
 
