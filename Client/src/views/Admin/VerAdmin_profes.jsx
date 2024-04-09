@@ -1,59 +1,53 @@
 import AdminProfeCard from "../../components/AdminProfeCard";
 import "./VerAdmin_profes.css";
-import { useState } from "react";
-//import IngresarAdmin_prof from "./IngresarAdmin_prof";
-import { Sidebar } from "../../components/Sidebar";
-// Datos simulados para las tarjetas de asistencia
+import { useState, useEffect } from "react";
 import IngresarAdmin_prof from "./IngresarAdmin_prof";
+import { Sidebar } from "../../components/Sidebar";
 import axios from "axios";
 
-//Imagenes
-//import iconoFiltro from "../../img/lupa.png";
-const URI = 'http://localhost:3000/user/getAdmins'
-
-
-let response = await axios.get(URI);
-console.log("response:", response.data);
-let admins_profesData = response.data;
-
-const recargarDatos = async () => {
-  response = await axios.get(URI);
-  console.log("response:", response.data);
-  admins_profesData = response.data;
-};
- 
+const URI = 'http://localhost:3000/user/getAdmins';
 
 export function VerAdmin_profes() {
   const [isSolicitarAsistenciaVisible, setIsSolicitarAsistenciaVisible] = useState(false);
-  const [admin_profes, setAdmin_profes] = useState(admins_profesData);
+  const [admins_profes, setAdmin_profes] = useState([]);
+  const [filtro, setFiltro] = useState("");
 
-  // Mock data for dropdown
-// const TIPOS_ASISTENCIA = [
-//   "Horas Estudiante",
-//   "Asistencia Especial",
-//   "Horas Asistente",
-// ];
-  // Función para abrir el modal
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(URI);
+        setAdmin_profes(response.data);
+      } catch (error) {
+        console.error("Error fetching admins/profes:", error);
+      }
+    };
 
-  // Función para abrir el modal
+    fetchData();
+  }, []);
+
+  const recargarDatos = async () => {
+    try {
+      const response = await axios.get(URI);
+      setAdmin_profes(response.data);
+    } catch (error) {
+      console.error("Error fetching admins/profes:", error);
+    }
+  };
+
   const handleAgregarClick = () => {
     setIsSolicitarAsistenciaVisible(true);
   };
 
-  // Función para cerrar el modal
   const handleCloseModal = () => {
     setIsSolicitarAsistenciaVisible(false);
   };
-  // Puedes usar el estado para manejar los filtrosß
-  const [filtro, setFiltro] = useState("");
 
   const admins_profesFiltrados = filtro
-    ? admins_profesData.filter((admin_profe) =>
-      admin_profe.name.toLowerCase().includes(filtro.toLowerCase())
+    ? admins_profes.filter((admin_profe) =>
+        admin_profe.name.toLowerCase().includes(filtro.toLowerCase())
       )
-    : admins_profesData; // si no hay filtro, muestra todas las asistencias
+    : admins_profes;
 
-  console.log("filtrado", admins_profesFiltrados);
   return (
     <div className="mostrar-asistencias-container">
       <Sidebar></Sidebar>
@@ -62,7 +56,6 @@ export function VerAdmin_profes() {
           <button onClick={handleAgregarClick} className="btn-filtro">
             Agregar Nuevo +
           </button>
-          {/* <h1>Administradores y profesores</h1> */}
           <div className="filtro-combobox">
             <input
               type="search"
@@ -73,22 +66,21 @@ export function VerAdmin_profes() {
               placeholder="Buscar o filtrar..."
             />
             <datalist id="asistencias-nombres">
-              {admins_profesData.map((admin_profe) => (
-                <option key={admin_profe.Objectid} value={admin_profe.Objectid} />
+              {admins_profes.map((admin_profe) => (
+                <option key={admin_profe._id} value={admin_profe.name} />
               ))}
             </datalist>
           </div>
         </div>
         <div className="cards-alineadas">
-        {admins_profesFiltrados.map((admin_profe) => (
-          <AdminProfeCard key={admin_profe._id} admin_profe={admin_profe} />
-        ))}
+          {admins_profesFiltrados.map((admin_profe) => (
+            <AdminProfeCard key={admin_profe._id} admin_profe={admin_profe} />
+          ))}
         </div>
       </div>
-       {isSolicitarAsistenciaVisible && (
-        <IngresarAdmin_prof onClose={handleCloseModal} onAgregarAdmin={recargarDatos}/>
+      {isSolicitarAsistenciaVisible && (
+        <IngresarAdmin_prof onClose={handleCloseModal} onAgregarAdmin={recargarDatos} />
       )}
     </div>
-       
   );
 }

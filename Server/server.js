@@ -20,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 // built-in middleware for json
 app.use(express.json());
 
+
 //built-in middleware to parse cookies
 app.use(cookieParser());
 
