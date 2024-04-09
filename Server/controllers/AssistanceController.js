@@ -1,4 +1,4 @@
-const SingletonDAO = require("../controllers/SingeltonDAO");
+const SingletonDAO = require("../controllers/SingletonDAO");
 const Assistance = require("../models/Assistance");
 
 class AssistanceController {
@@ -132,6 +132,21 @@ class AssistanceController {
     try {
       const assistance = await SingletonDAO.getAssistanceById(id);
       res.json(assistance);
+    }
+    catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async getAssistanceByIdObject(req, res) {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).send({ message: "Invalid request." });
+    }
+    try {
+      const assistances = await SingletonDAO.getAssistanceByIdObject(id);
+      res.json(assistances);
     }
     catch (error) {
       res.status(500).json({ message: error.message });

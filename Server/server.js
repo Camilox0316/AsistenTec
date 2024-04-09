@@ -35,6 +35,10 @@ app.use("/user", require("./routes/api/userRouter"));
 
 app.use("/assistance", require("./routes/api/assistanceRouter"));
 
+app.use("/application", require("./routes/api/ApplicationRouter"));
+
+app.use("/received", require("./routes/api/ReceivedApplicationRouter"));
+
 //custom middleware of error handling
 app.use(erorrHandler);
 

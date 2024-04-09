@@ -9,9 +9,13 @@ export const MyAssistanceCard = ({ courseName, semester, type, courseCode }) => 
   // Función para obtener el ícono basado en el tipo de asistencia
   const getIcon = (type) => {
     switch (type) {
-      case "Assistance":
+      case "horas asistente":
         return <BookIcon />;
-      case "Tutorship":
+      case "horas estudiante":
+        return <BookIcon />;
+      case "asistencia especial":
+        return <BookIcon />;
+      case "tutoría":
         return <SchoolIcon />;
       default:
         return <BlockIcon />; // O un ícono por defecto

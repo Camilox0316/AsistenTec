@@ -1,9 +1,11 @@
 const SingletonConnexion = require("./SingeltonConnexion.js");
 
 //Models
-const User = require("../models/User");
+const User = require("../models/User.js");
 // const Student = require('../models/Student');
-const Assistance = require("../models/Assistance");
+const Assistance = require("../models/Assistance.js");
+const Application = require("../models/Application.js");
+const ReceivedApplication = require("../models/ReceivedApplication.js");
 // const Professor = require('../models/Professor');
 // const Assistant = require('../models/Assistant');
 // const Team = require('../models/Team.js');
@@ -13,10 +15,11 @@ const Assistance = require("../models/Assistance");
 // const ActivityType = require('../models/activityType');
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const erorrHandler = require("../middleware/erorrHandler");
+const erorrHandler = require("../middleware/erorrHandler.js");
 const { createAccessToken } = require("../libs/jwt.js");
 const { TOKEN_SECRET } = require("../config/config.js");
 const jwt = require("jsonwebtoken");
+
 class SingletonDAO {
   static instance;
   static count = 0;
@@ -135,6 +138,33 @@ class SingletonDAO {
       
     }
   }
+
+  async getUserByCarnet(carnet) {
+    try {
+      const userFound = await User.findOne({ carnet: carnet }).exec();
+      if (!userFound) {
+        return null;
+      }
+      return userFound;
+    } catch (error) {
+      console.error("Error finding user by carnet:", error);
+      return null;
+    }
+  }
+
+  async getUserById(userId) {
+    try {
+      const user = await User.findById(userId).exec();
+      if (!user) {
+        throw new Error("Failed to retrieve user");
+      }
+      return user;
+    } catch (error) {
+      console.error("Error retrieving user by ID:", error.message);
+      throw error;
+    }
+  }
+  
   //-------------------------------------------------------------------------------------
   //                      Assistences Functions
   //-------------------------------------------------------------------------------------
@@ -286,6 +316,35 @@ class SingletonDAO {
       throw error;
     }
   }
+
+  async getAssistanceByIdObject(id) {
+    try {
+      // Find all assistance documents by ID
+      const assistances = await Assistance.find({ _id: id }).exec();
+      if (assistances.length === 0) {
+        throw new Error(`No assistances found for ID: ${id}`);
+      }
+      console.log(assistances);
+      // Map over the assistances to include professor details
+      const assistancesWithProfessorName = await Promise.all(assistances.map(async (assistanceDoc) => {
+        let assistanceObject = assistanceDoc.toObject(); // Convert document to a plain JavaScript object
+        if (assistanceObject.proffesorId) {
+          const professorDetails = await this.getUserById(assistanceObject.proffesorId);
+          assistanceObject.professorName = `${professorDetails.name} ${professorDetails.lastName1} ${professorDetails.lastName2}`.trim();
+        }
+        return assistanceObject;
+      }));
+  
+      console.log(assistancesWithProfessorName);
+      return assistancesWithProfessorName; // Return the array of modified objects
+    } catch (error) {
+      console.error("Error retrieving assistances by ID:", error.message);
+      throw error; // It's important to throw the error to let the calling function know something went wrong
+    }
+  }
+  
+
+  
   
   
 
@@ -303,6 +362,146 @@ class SingletonDAO {
   //     throw error; // It's better to throw the error so you can handle it in the calling function
   //   }
   // }
+
+  ///////////////////Application Functions/////////////////////
+
+  // Create a new application
+  async addApplication(applicationData) {
+    // You need to use await to get the result of the promise
+    const userFound = await this.getUserByCarnet(applicationData.carnet);
+    
+    // Now, you can check if userFound is not null and then access its properties
+    if (!userFound) {
+      throw new Error(`User not found for carnet: ${applicationData.carnet}`);
+    }
+
+    console.log(`DAO: ${userFound._id}`);
+    try {
+      const application = new Application(applicationData);
+      await application.save();
+      await this.addReceivedApplication({
+        idAssistance: applicationData.idAssistance,
+        idUser: userFound._id,
+        idApplication: application._id,
+        date: new Date(),
+        selected: false,
+        status: true
+      });
+      return application;
+    } catch (error) {
+      throw new Error(`Error creating application: ${error.message}`);
+    }
+  }
+
+  // Get all applications
+  async getAllApplications() {
+    try {
+      const applications = await Application.find();
+      return applications;
+    } catch (error) {
+      throw new Error(`Error retrieving applications: ${error.message}`);
+    }
+  }
+
+  // Get an application by ID
+  async getApplicationById(applicationId) {
+    try {
+      const application = await Application.findById(applicationId);
+      if (!application) {
+        throw new Error(`Application not found with id: ${applicationId}`);
+      }
+      return application;
+    } catch (error) {
+      throw new Error(`Error retrieving application: ${error.message}`);
+    }
+  }
+
+  // Update an application
+  async updateApplication(applicationId, updateData) {
+    try {
+      const application = await Application.findByIdAndUpdate(applicationId, updateData, { new: true });
+      return application;
+    } catch (error) {
+      throw new Error(`Error updating application: ${error.message}`);
+    }
+  }
+
+  // Delete an application
+  async deleteApplication(applicationId) {
+    try {
+      await Application.findByIdAndDelete(applicationId);
+    } catch (error) {
+      throw new Error(`Error deleting application: ${error.message}`);
+    }
+  }
+
+  ///////////////////ReceivedApplication Functions/////////////////////
+
+  // Create a new received application
+  async addReceivedApplication(receivedApplicationData) {
+    try {
+      console.log(`DAO Received: ${receivedApplicationData.idUser}`);
+      const receivedApplication = new ReceivedApplication(receivedApplicationData);
+      await receivedApplication.save();
+      return receivedApplication;
+    } catch (error) {
+      throw new Error(`Error creating received application: ${error.message}`);
+    }
+  }
+
+  // Get all received applications
+  async getAllReceivedApplications() {
+    try {
+      const receivedApplications = await ReceivedApplication.find();
+      return receivedApplications;
+    } catch (error) {
+      throw new Error(`Error retrieving received applications: ${error.message}`);
+    }
+  }
+
+  // Get a received application by ID
+  async getReceivedApplicationById(receivedApplicationId) {
+    try {
+      const receivedApplication = await ReceivedApplication.findById(receivedApplicationId);
+      if (!receivedApplication) {
+        throw new Error(`Received application not found with id: ${receivedApplicationId}`);
+      }
+      return receivedApplication;
+    } catch (error) {
+      throw new Error(`Error retrieving received application: ${error.message}`);
+    }
+  }
+
+  // Update a received application
+  async updateReceivedApplication(receivedApplicationId, updateData) {
+    try {
+      const receivedApplication = await ReceivedApplication.findByIdAndUpdate(receivedApplicationId, updateData, { new: true });
+      return receivedApplication;
+    } catch (error) {
+      throw new Error(`Error updating received application: ${error.message}`);
+    }
+  }
+
+  // Delete a received application
+  async deleteReceivedApplication(receivedApplicationId) {
+    try {
+      await ReceivedApplication.findByIdAndDelete(receivedApplicationId);
+    } catch (error) {
+      throw new Error(`Error deleting received application: ${error.message}`);
+    }
+  }
+
+  async getReceivedApplicationsByUserId(userId) { 
+    try {
+      const receivedApplications = await ReceivedApplication.find({ idUser: userId });
+      console.log(`DAO Received: ${userId}`);
+      return receivedApplications;
+    } catch (error) {
+      throw new Error(`Error retrieving received applications: ${error.message}`);
+    }
+  }
+
+
 };
 
 const singletonDAO = SingletonDAO.getInstance();

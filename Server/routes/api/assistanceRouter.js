@@ -31,4 +31,7 @@ router.route("/getAllAssistances").get(AssistanceController.getAllAssistances);
 router.route("/getTutoring").get(AssistanceController.getAllTutorship);
 
 router.route("/getAssistanceById/:id").get(AssistanceController.getAssistanceById);
+
+router.route("/getAssistanceByIdObject/:id").get(AssistanceController.getAssistanceByIdObject);
+
 module.exports = router;
