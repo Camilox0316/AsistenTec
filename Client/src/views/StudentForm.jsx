@@ -10,7 +10,9 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-import { AssistanceInfoPopUp } from '../components/AssistanceInfoPopUp';
+import { AssistanceTypeInfoPopUp } from '../components/AssitanceTypeInfoPopUp';
+import { BankInfoPopUp } from '../components/BankInfoPopUp';
+
 
 export const ApplyForm = () => { 
   const [scholarships, setScholarships] = useState(["Mauricio Campos", "Parcial", "Completa"]);
@@ -173,7 +175,7 @@ export const ApplyForm = () => {
           </div>
         </div>
         
-        {showPopup && <AssistanceInfoPopUp onClose={handleClosePopup} />}
+        {showPopup && <BankInfoPopUp onClose={handleClosePopup} />}
 
         <div className="animated-selection-container">
           {options.map((option) => (
@@ -198,7 +200,7 @@ export const ApplyForm = () => {
         </div>
 
         {showPopUpAssistance && (
-        <AssistanceInfoPopUp onClose={handleQuestionClickClose} />
+        <AssistanceTypeInfoPopUp onClose={handleQuestionClickClose} />
       )}
 
         <div className="input-row optional">

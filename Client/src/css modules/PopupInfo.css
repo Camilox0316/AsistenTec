@@ -30,3 +30,21 @@
     font-size: 1.5rem; /* o el tamaño que prefieras */
   }
   
+  .requirements-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .requirements-table th, .requirements-table td {
+    border: 1px solid #fff;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .requirements-table th {
+    background-color: #222;
+  }
+  
+  
+  
