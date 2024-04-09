@@ -2,7 +2,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-
+import axios from 'axios';
 import { AssistanceInfoPopUp } from '../components/AssistanceInfoPopUp'; // Asegúrate de que la ruta sea correcta según tu estructura de carpetas
 
 import Button from '@mui/material/Button';
@@ -17,36 +17,44 @@ export const ViewAssistanceDetails = () => {
     // const { courseCode } = useParams();
 
     const [courseDetails, setCourseDetails] = useState(null);
-  const [showPopup, setShowPopup] = useState(false);
-  const navigate = useNavigate();
-  const { courseCode } = useParams();
-  const hostUrl = import.meta.env.VITE_HOST_URL;
-
-    const applied = false  
-    // const terminated = true
-    const status = 'pendiente'
-
-    const courseDetails = {
-      title: "Programación Orientada a Objetos",
-      code: "IC-2345",
-      professor: "Isabel Peterson",
-      hours: 50,
-      requirements: [
-        "Ser estudiante activo del TEC",
-        "Promedio Ponderado superior a 70",
-        "Nota del curso igual o superior a 80"
-      ],
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pharetra diam erat, quis laoreet libero mattis a. Cras ex ipsum, scelerisque id gravida in, luctus vel sapien."
-    };
-
-    // Agrega un estado para manejar la visibilidad del Popup
     const [showPopup, setShowPopup] = useState(false);
     const navigate = useNavigate();
+    const { courseCode } = useParams();
+    const hostUrl = import.meta.env.VITE_HOST_URL;
+
+    const applied = false  
+    const terminated = false
+    const status = 'pendiente'
+
+    console.log(`courseCode${courseCode}`);
+
+    useEffect(() => {
+      // Make sure you handle the courseCode accordingly if it's undefined or null
+      if (courseCode) {
+        const fetchCourseDetails = async () => {
+          try {
+            const response = await axios.get(`${hostUrl}/assistance/getAssistanceById/${courseCode}`);
+            setCourseDetails(response.data);
+          } catch (error) {
+            console.error("Error fetching course details:", error);
+            // Handle the error, possibly navigate back or show an error message
+          }
+        };
+  
+        fetchCourseDetails();
+      }
+    }, [courseCode, hostUrl]);
+
+    if (!courseDetails) {
+      return <div>Loading...</div>; // Or some loading spinner
+    }
+
+    console.log(courseDetails) 
 
     const handleApply = () => {
       // Redirecciona al formulario con el código del curso
-      navigate(`/form/${courseDetails.code}`);
-  };
+      navigate(`/form/${courseDetails.courseCode}`);
+    };
 
     // Función para abrir el Popup
     const handleOpenPopup = () => {
@@ -77,12 +85,41 @@ export const ViewAssistanceDetails = () => {
         return <Button variant="contained" style={{ backgroundColor: color, color: 'black' }}>Estado: {status.charAt(0).toUpperCase() + status.slice(1)}</Button>;
       } 
     };
-  
+
+    const getRequirements = () => {
+      switch(courseDetails.assistanceType) {
+        case 'horas estudiante':
+            return [
+                "Ser estudiante activo del TEC",
+                "Promedio ponderado igual o superior a 70 en el último semestre cursado"
+            ];
+        case 'horas asistente':
+            return [
+                "Ser estudiante activo del TEC",
+                "Promedio ponderado igual o superior a 70 en el último semestre cursado.",
+                "Nota igual o superior a 80 en el curso de asistencia."
+            ];
+        case 'asistencia especial':
+          return [  
+            "Tener un año de ser un estudiante activo del TEC y haber aprobado 25 créditos.",
+            "Aprobar 12 créditos en el último semestre cursado."
+          ];
+        case 'tutoría' :
+          return [
+            "Ser estudiante activo del TEC",
+            "Tener un rendimiento académico no inferior a 70 en el último semestre cursado.",
+            "Haber obtenido una nota superior o igual a 80 en el curso en que se nombra tutor. "
+          ];
+        default:
+            return [];
+      }
+    };
+
     return (
       <div className="assistance-details">
       <div className="assistance-header">
         <div className="assistance-title">
-          {courseDetails.title}
+          {courseDetails.name}
           <div className="icon-circle"><BookIcon style={{ fontSize: '8.5rem'}} /></div>
         </div>
         <div className="help-circle" onClick={handleOpenPopup}>
@@ -92,10 +129,10 @@ export const ViewAssistanceDetails = () => {
       </div>
       <div className="assistance-body">
           <div className="course-info">
-            <p className="course-info__item"><strong>Código de curso:</strong> {courseDetails.code}</p>
+            <p className="course-info__item"><strong>Código de curso:</strong> {courseDetails.courseCode}</p>
           </div>
           <div className="course-info">
-            <p className="course-info__item"><strong>Profesor de curso:</strong> {courseDetails.professor}</p>
+            <p className="course-info__item"><strong>Profesor de curso:</strong> {courseDetails.professorName}</p>
           </div>
           <div className="course-info">
             <p className="course-info__item"><strong>Horas:</strong> {courseDetails.hours}</p>
@@ -103,12 +140,10 @@ export const ViewAssistanceDetails = () => {
           <div className="requirements">
             <p><strong>Requisitos:</strong></p>
             <ul>
-              {courseDetails.requirements.map(req => <li key={req}>{req}</li>)}
+              {getRequirements().map((req, index) => (
+                <li key={index}>{req}</li> // Continúa usando el índice como clave para elementos de lista simples
+              ))}
             </ul>
-          </div>
-          <div className="description">
-            <p><strong>Descripción:</strong></p>
-            <p>{courseDetails.description}</p>
           </div>
           <div className="actions">
                 {!terminated && applied && (
@@ -126,4 +161,4 @@ export const ViewAssistanceDetails = () => {
         </div>
       </div>
     );
-  };
+};

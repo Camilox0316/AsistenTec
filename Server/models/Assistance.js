@@ -67,6 +67,10 @@ const assistanceSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    courseCode: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 ); // Adds `createdAt` and `updatedAt` fields automatically

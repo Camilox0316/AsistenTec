@@ -204,11 +204,9 @@ class SingletonDAO {
       const assistances = await Assistance.find({ assistanceType: { $ne: 'tutoría' } }).exec();
       const assistancesWithProfessorName = await Promise.all(
         assistances.map(async (assistance) => {
-          console.log(assistance.proffesorId);
           const professorName = assistance.proffesorId
             ? await this.getUserById(assistance.proffesorId)
             : null;
-          console.log(professorName);
           return {
             ...assistance._doc,
             professorName: professorName
@@ -229,11 +227,9 @@ class SingletonDAO {
       const assistances = await Assistance.find({ assistanceType: 'tutoría' }).exec();
       const assistancesWithProfessorName = await Promise.all(
         assistances.map(async (assistance) => {
-          console.log(assistance.proffesorId);
           const professorName = assistance.proffesorId
             ? await this.getUserById(assistance.proffesorId)
             : null;
-          console.log(professorName);
           return {
             ...assistance._doc,
             professorName: professorName
@@ -265,6 +261,48 @@ class SingletonDAO {
       throw error;
     }
   }
+
+  async getAssistanceById(courseCode) {
+    try {
+      // Find the assistance document by course code
+      const assistance = await Assistance.findOne({ courseCode: courseCode }).exec();
+      console.log(`find:${assistance}`)
+      if (!assistance) {
+        throw new Error(`Assistance not found for courseCode: ${courseCode}`);
+      }
+      // If assistance has a professorId, use getUserById to retrieve professor details
+      let assistanceObject = assistance.toObject(); // Convert document to a plain JavaScript object
+
+      if (assistanceObject.proffesorId) {
+         const professorDetails = await this.getUserById(assistanceObject.proffesorId);
+         assistanceObject.professorName = `${professorDetails.name} ${professorDetails.lastName1} ${professorDetails.lastName2}`.trim();
+      }
+      
+      console.log(assistanceObject);
+      return assistanceObject; // Return the modified object
+    
+    } catch (error) {
+      console.error("Error retrieving assistance by ID:", error.message);
+      throw error;
+    }
+  }
+  
+  
+
+  // async updateCollection(){
+  //   try {
+  //     // This will update all documents in the collection
+  //     const result = await Assistance.updateMany(
+  //       {}, // empty filter, to update all documents
+  //       { $set: { "courseCode": "IC-8734" } }, // set the `courseCode` field for all documents
+  //       { strict: false } // option to not apply strict mode to the schema
+  //     );
+  //     console.log(result); // Log the result of the update operation
+  //   } catch (error) {
+  //     console.error("Error updating collection:", error.message);
+  //     throw error; // It's better to throw the error so you can handle it in the calling function
+  //   }
+  // }
 };
 
 const singletonDAO = SingletonDAO.getInstance();

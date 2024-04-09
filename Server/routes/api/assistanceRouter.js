@@ -29,4 +29,6 @@ router.route("/getAllAssistances").get(AssistanceController.getAllAssistances);
 
 //Obtener todas las tutorias
 router.route("/getTutoring").get(AssistanceController.getAllTutorship);
+
+router.route("/getAssistanceById/:id").get(AssistanceController.getAssistanceById);
 module.exports = router;

@@ -117,9 +117,23 @@ class AssistanceController {
   static async getAllTutorship(req, res) {
     try {
       const assistances = await SingletonDAO.getAllTutorship(req, res);
-      console.log(assistances);
       res.json(assistances);
     } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async getAssistanceById(req, res) {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).send({ message: "Invalid request." });
+    }
+    try {
+      const assistance = await SingletonDAO.getAssistanceById(id);
+      res.json(assistance);
+    }
+    catch (error) {
       res.status(500).json({ message: error.message });
     }
   }
