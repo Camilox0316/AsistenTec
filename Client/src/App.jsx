@@ -65,7 +65,10 @@ export default function App() {
 
         {/* Admin routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-          <Route path="/home-switch" element={<ViewActivityPage />} />
+          <Route path="/home-switch" element={<HomeSwitch />} />
+          <Route path="/home-admin" element={<ViewActivityPage />} />
+          <Route path="/administradores_profes" element={<VerAdmin_profes />} />
+          
         </Route>
 
         {/*Catch all*/}

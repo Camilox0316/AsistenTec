@@ -6,11 +6,11 @@ import PropTypes from 'prop-types';
 import UserIcon from "../../img/userLogo.png";
 import axios from "../../api/axios";
 
-const IngresarAdmin_prof = ({onClose ,onAgregarAsistencia, asistenciaTipos}) => {
+const IngresarAdmin_prof = ({onClose ,onAgregarAdmin}) => {
   
   IngresarAdmin_prof.propTypes = {
   onClose: PropTypes.func.isRequired,
-  onAgregarAsistencia: PropTypes.func.isRequired,
+  onAgregarAdmin: PropTypes.func.isRequired,
   
 };
 
@@ -85,6 +85,7 @@ const [tipoAdministrador, setTipoAdministrador] = useState(Object.keys(adminTipo
       console.log(response.data); // O manejar la respuesta como necesites
       //navigate('/'); // Redirige al usuario a la página de inicio de sesión
       setErrorMsg("Perfil ingresado exitosamente!!");
+      await onAgregarAdmin();
     } catch (error) {
       if (error.response && error.response.data && error.response.data.msg) {
         // Verifica específicamente si el mensaje es por un usuario duplicado
