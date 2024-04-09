@@ -16,8 +16,14 @@ export const ViewAssistanceDetails = () => {
     // Asumiendo que tendrás los datos disponibles aquí o los obtendrás de alguna API.
     // const { courseCode } = useParams();
 
+    const [courseDetails, setCourseDetails] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const navigate = useNavigate();
+  const { courseCode } = useParams();
+  const hostUrl = import.meta.env.VITE_HOST_URL;
+
     const applied = false  
-    const terminated = true
+    // const terminated = true
     const status = 'pendiente'
 
     const courseDetails = {

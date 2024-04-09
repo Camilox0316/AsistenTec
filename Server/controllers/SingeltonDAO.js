@@ -140,7 +140,7 @@ class SingletonDAO {
   //-------------------------------------------------------------------------------------
 
   // Obtener todas las asistencias
-  async getAllAssistances() {
+  async getAll() {
     try {
       const assistances = await Assistance.find();
       return assistances; // Simplemente retorna los datos
@@ -198,7 +198,74 @@ class SingletonDAO {
       res.status(500).json({ message: "Server error", error });
     }
   }
-}
+
+  async getAllAssistances() {
+    try {
+      const assistances = await Assistance.find({ assistanceType: { $ne: 'tutoría' } }).exec();
+      const assistancesWithProfessorName = await Promise.all(
+        assistances.map(async (assistance) => {
+          console.log(assistance.proffesorId);
+          const professorName = assistance.proffesorId
+            ? await this.getUserById(assistance.proffesorId)
+            : null;
+          console.log(professorName);
+          return {
+            ...assistance._doc,
+            professorName: professorName
+              ? `${professorName.name} ${professorName.lastName1} ${professorName.lastName2}`.trim()
+              : null
+          };
+        })
+      );
+      return assistancesWithProfessorName;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+  
+  async getAllTutorship() {
+    try {
+      const assistances = await Assistance.find({ assistanceType: 'tutoría' }).exec();
+      const assistancesWithProfessorName = await Promise.all(
+        assistances.map(async (assistance) => {
+          console.log(assistance.proffesorId);
+          const professorName = assistance.proffesorId
+            ? await this.getUserById(assistance.proffesorId)
+            : null;
+          console.log(professorName);
+          return {
+            ...assistance._doc,
+            professorName: professorName
+              ? `${professorName.name} ${professorName.lastName1} ${professorName.lastName2}`.trim()
+              : null
+          };
+        })
+      );
+      return assistancesWithProfessorName;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+  // Adjusted to accept just the `id` rather than `req, res, next`
+  async getUserById(userId) {
+    try {
+      const user = await User.findById(userId, 'name lastName1 lastName2').exec();
+      if (!user) {
+        throw new Error("Failed to retrieve user");
+      }
+      return {
+        name: user.name,
+        lastName1: user.lastName1,
+        lastName2: user.lastName2
+      };
+    } catch (error) {
+      console.error("Error retrieving user by ID:", error.message);
+      throw error;
+    }
+  }
+};
 
 const singletonDAO = SingletonDAO.getInstance();
 

@@ -46,6 +46,14 @@
     color: #22ea08; /* Yellow for pending */
   }
 
+  .status.pendiente {
+    color: #EAB308; /* Yellow for pending */
+  }
+
+  .status.finalizado {
+    color: #ea0808; /* Yellow for pending */
+  }
+
   .cointainerStyle {
     display: flex;
     justify-content: center;
@@ -67,13 +75,35 @@
     text-align: center;
     font-weight: bold;
   }
+
+  .assistance-container::-webkit-scrollbar,
+  .tutorship-container::-webkit-scrollbar {
+    display: none; /* Optional: Hide scrollbar for cleaner look */
+  }
+
+  /* Optional: Ensure items have a fixed width to better control layout */
+  .available-assistance {
+    min-width: 240px; /* Adjust based on your design */
+  }
+
+  .view-home-student-container .carousel-container {
+    position: relative;
+  }
+  
+  .view-home-student-container .carousel-controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px; /* Adjust the space between the cards and the controls */
+  }
   
   .assistance-container,
   .tutorship-container {
     display: flex;
-    justify-content: space-around; /* Ajusta esto según necesites */
-    margin-bottom: 20px;
+    overflow-x: auto;
+    gap: 20px;
   }
+
   
   
   

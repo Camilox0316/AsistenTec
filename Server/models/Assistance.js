@@ -3,9 +3,9 @@ const Schema = mongoose.Schema;
 
 const assistanceSchema = new mongoose.Schema(
   {
-    professorId: {
-      type: Schema.Types.ObjectId, // Cambio a ObjectId
-      ref: 'User', // Referencia al modelo de usuario
+    proffesorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
       required: true,
     },
     school: {

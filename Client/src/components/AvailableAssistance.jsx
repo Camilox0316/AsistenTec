@@ -20,6 +20,7 @@ export const AvailableAssistance = ({ title, semester, professor, type, status, 
     navigate(`/assistance-details/${courseCode}`); // Cambia a la ruta de detalles con el código del curso
   };
 
+
   const getIcon = (superType) => {
     switch (superType) {
       case 'Assistance':

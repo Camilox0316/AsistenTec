@@ -102,6 +102,19 @@ const getAdmins_profes = async (req, res, next) => {
   return response;
 };
 
+const getProfessorNameHandler = async (req, res, next) => {
+  try {
+    const professorId = req.params.id; // Make sure your route is correctly capturing the `id` param
+    const professor = await SingletonDAO.getUserById(professorId); // Adjusted to pass just the `id`
+    if (!professor) {
+      return res.status(404).json({ message: 'Professor not found' });
+    }
+    return res.json({ name: professor.name });
+  } catch (error) {
+    console.error("Error getting professor name:", error.message);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
 
 module.exports = {
   loginUser,
@@ -111,4 +124,5 @@ module.exports = {
   profile,
   logout,
   getAdmins_profes,
+  getProfessorNameHandler,
 };

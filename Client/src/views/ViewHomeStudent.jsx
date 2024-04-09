@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 
 import { AvailableAssistance } from "../components/AvailableAssistance";
 import '../css modules/AvailableAssistance.css'; // Asegúrate de que la ruta sea correcta según tu estructura de carpetas
+
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 export function ViewHomeStudent() {
 
@@ -11,54 +14,87 @@ export function ViewHomeStudent() {
 
   const hostUrl = import.meta.env.VITE_HOST_URL;
 
+  const [isLoading, setIsLoading] = useState(true);
+
+
   useEffect(() => {
-    const fetchAssistances = async () => {
-      const response = await axios.get(`${hostUrl}/assistance/getAssistances`);
-      setAssistances(response.data); // Asumiendo que la respuesta es un array de asistencias
+    const fetchTutorings = async () => {
+      const response = await axios.get(`${hostUrl}/assistance/getAllAssistances`);
+      console.log(response.data);
+      setAssistances(response.data);
     };
 
-    const fetchTutorings = async () => {
+    const fetchAssistances = async () => {
       const response = await axios.get(`${hostUrl}/assistance/getTutoring`);
-      setTutorings(response.data); // Asumiendo que la respuesta es un array de tutorías
+      setTutorings(response.data);
     };
 
     fetchAssistances();
     fetchTutorings();
   }, [hostUrl]);
 
+  function capitalizeEachWord(str) {
+    if (typeof str !== 'string') return ''; // Return an empty string or some default string if `str` is not a string
+    return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  }
+
+  const assistanceScrollRef = useRef(null);
+  const tutoringsScrollRef = useRef(null);
+
+  const scroll = (ref, direction) => {
+    const scrollAmount = ref.current.offsetWidth; // Adjust this value if needed
+    if (direction === 'left') {
+      ref.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    } else {
+      ref.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="view-home-student-container">
-      <h2 className="section-title">Asistencias</h2>
-      <div className="assistance-container">
-        {assistances.slice(0, 2).map(assistance => (
-          <AvailableAssistance
-            key={assistance._id} // Asume que cada asistencia tiene un 'id' único
-            title={assistance.name}
-            semester={assistance.semester}
-            professor={assistance.professor}
-            type={assistance.type}
-            status={assistance.status}
-            superType="Assistance"
-            courseCode={assistance.courseCode}
-          />
-        ))}
-      </div>
-
-      <h2 className="section-title">Tutorías</h2>
-      <div className="tutorship-container">
-        {tutorings.slice(0, 2).map(tutoring => (
-          <AvailableAssistance
-            key={tutoring._id} // Asume que cada tutoría tiene un 'id' único
-            title={tutoring.title}
-            semester={tutoring.semester}
-            professor={tutoring.professor}
-            type={tutoring.type}
-            status={tutoring.status}
-            superType="Tutorship"
-            courseCode={tutoring.courseCode}
-          />
-        ))}
+    <h2 className="section-title">Asistencias</h2>
+    <div className="carousel-container">
+      <div className="assistance-container" ref={assistanceScrollRef}>
+        {assistances.map(assistance => (
+        <AvailableAssistance
+          key={assistance._id}
+          title={assistance.name}
+          semester={`Semestre ${assistance.semester}`}
+          professor={assistance.professorName} // Make sure to adjust this to display the professor's name correctly
+          type={capitalizeEachWord(assistance.assistanceType)}
+          status={assistance.adminStatus === "aceptado" ? "Disponible" : assistance.adminStatus.charAt(0).toUpperCase() + assistance.adminStatus.slice(1)}
+          superType="Assistance"
+          courseCode={assistance.courseCode}
+        />
+      ))}
+    </div>
+      <div className="carousel-controls">
+        <ChevronLeftIcon onClick={() => scroll(assistanceScrollRef, 'left')} />
+        <ChevronRightIcon onClick={() => scroll(assistanceScrollRef, 'right')} />
       </div>
     </div>
+
+    <h2 className="section-title">Tutorías</h2>
+    <div className="carousel-container">
+      <div className="tutorship-container" ref={tutoringsScrollRef}>
+        {tutorings.map(tutoring => (
+        <AvailableAssistance
+          key={tutoring._id}
+          title={tutoring.name}
+          semester={`Semestre ${tutoring.semester}`}
+          professor={tutoring.professorName} // Adjust as needed
+          type={capitalizeEachWord(tutoring.assistanceType)}
+          status={tutoring.adminStatus === "aceptado" ? "Disponible" : tutoring.adminStatus.charAt(0).toUpperCase() + tutoring.adminStatus.slice(1)}
+          superType="Tutorship"
+          courseCode={tutoring.courseCode}
+        />
+      ))}
+    </div>
+      <div className="carousel-controls">
+        <ChevronLeftIcon onClick={() => scroll(tutoringsScrollRef, 'left')} />
+        <ChevronRightIcon onClick={() => scroll(tutoringsScrollRef, 'right')} />
+      </div>
+    </div>
+  </div>
   );
 }

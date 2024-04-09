@@ -4,7 +4,7 @@ const Assistance = require("../models/Assistance");
 class AssistanceController {
   static async getAll(req, res) {
     try {
-      const assistances = await SingletonDAO.getAllAssistances();
+      const assistances = await SingletonDAO.getAll();
       res.json(assistances); // Maneja la respuesta HTTP aquí
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -107,23 +107,23 @@ class AssistanceController {
 
   static async getAllAssistances(req, res) {
     try {
-      const assistances = await Assistance.find({ assistanceType: { $ne: 'tutorship' }});
-      res.json(assistances);
+      const assistances = await SingletonDAO.getAllAssistances();
+      res.json(assistances); // Send the response here
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: "Server error" });
     }
   }
 
   static async getAllTutorship(req, res) {
     try {
-      const assistances = await Assistance.find({ assistanceType: 'tutorship'});
+      const assistances = await SingletonDAO.getAllTutorship(req, res);
+      console.log(assistances);
       res.json(assistances);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   }
-
-
 }
+
 
 module.exports = AssistanceController;
