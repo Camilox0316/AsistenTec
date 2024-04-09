@@ -136,7 +136,6 @@ class SingletonDAO {
       throw new Error("Error fetching users by role");
     }
   }
-
   async getUserByCarnet(carnet) {
     try {
       const userFound = await User.findOne({ carnet: carnet }).exec();

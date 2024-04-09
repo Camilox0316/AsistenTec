@@ -89,19 +89,19 @@ export function SidebarContent() {
         </Link>
       </Item>
       <Item>
-        <Link to="/" className="flex items-center space-x-2">
+        <Link to="/home-switch" className="flex items-center space-x-2">
           <GroupIcon />
           <span>Consultar Estudiantes</span>
         </Link>
       </Item>
       <Item>
-        <Link to="/registrar-profesor" className="flex items-center space-x-2">
+        <Link to="/mostrar-solicitudes" className="flex items-center space-x-2">
           <GroupIcon />
           <span>Consultar Solicitudes</span>
         </Link>
       </Item>
       <Item>
-        <Link to="/registrar-profesor" className="flex items-center space-x-2">
+        <Link to="/home-switch" className="flex items-center space-x-2">
           <GroupIcon />
           <span>Consultar Asistencias Activas</span>
         </Link>
