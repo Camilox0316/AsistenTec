@@ -21,9 +21,11 @@ const SolicitarAsistencia = ({
   const [anio, setAnio] = useState(new Date().getFullYear());
   const [semestre, setSemestre] = useState("1");
   const [horas, setHoras] = useState(50);
-  const [grupo, setGrupo] = useState(0);
+  const [grupo, setGrupo] = useState("");
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
+  const [courseCode, setCourseCode] = useState(""); // Añadido estado para 'courseCode' con valor por defecto
+
 
   const onAgregarAsistencia = async (nuevaAsistencia) => {
     try {
@@ -33,13 +35,20 @@ const SolicitarAsistencia = ({
       alert('Error al crear la asistencia');
     }
   };
-
+  const isValidCourseCode = (code) => {
+    return /^[A-Z]{2}-\d{4}$/.test(code); // Expresión regular para validar el formato
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!nombre.trim() || !descripcion.trim() ) {
+    if (!nombre.trim() || !descripcion.trim() || !courseCode.trim()) {
       alert("Por favor, complete todos los campos.");
       return;
     }
+      // Verificación adicional para cuando el tipo de asistencia es "horas asistente"
+  if (tipoAsistencia === "horas asistente" && !isValidCourseCode(courseCode)) {
+    alert("Por favor, ingrese un código de curso válido. 'Dos Letras-4 números' EJ:MA-1010.");
+    return;
+  }
     const nuevaAsistencia = {
       proffesorId: auth.id,
       school: "matemáticas", // Valor por defecto
@@ -53,6 +62,7 @@ const SolicitarAsistencia = ({
       isEditable: true, 
       hours: horas,
       groupNumber:grupo,
+      courseCode: courseCode,
       isActive: true,
     };
 
@@ -63,6 +73,10 @@ const SolicitarAsistencia = ({
   useEffect(() => {
     if (tipoAsistencia !== "horas asistente") {
       setGrupo(0);
+      setCourseCode("NA-0000");
+    }
+    else{
+      setCourseCode("");
     }
   }, [tipoAsistencia]);
 
@@ -126,9 +140,23 @@ const SolicitarAsistencia = ({
                 />
               </label>
             </div>
+            {/* Condición para mostrar el campo de Código del Curso */}
+            {tipoAsistencia === "horas asistente" && (
+              <div className="campo-simple">
+                <label>
+                  Código del Curso
+                  <input
+                    type="text"
+                    placeholder="Ej: MA-0101"
+                    value={courseCode}
+                    onChange={(e) => setCourseCode(e.target.value)}
+                  />
+                </label>
+              </div>
+            )}
             <div className="campo-doble">
               {/* Renderizado condicional para el campo Número de Grupo */}
-              {tipoAsistencia === "Horas Asistente" && (
+              {tipoAsistencia === "horas asistente" && (
                 <label>
                   Número de Grupo
                   <input
