@@ -1,70 +1,70 @@
 .assistance-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 16px; /* Espacio entre tarjetas */
-    margin-left: 30px;
-    margin-right: 30px;
-    position: relative;
-  }
-  
-  .section-title {
-    font-size: 24px;
-    margin: 20px 0;
-    text-align: center;
-    font-weight: bold;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px; /* Espacio entre tarjetas */
+  margin-left: 30px;
+  margin-right: 30px;
+  position: relative;
+}
 
-  .assistance-card .icon {
-    /* Estilos para el ícono */
-  }
-  
-  .assistance-card .course-details {
-    flex-grow: 1;
-    margin-left: 64px; /* Espacio entre el ícono y el texto */
-  }
-  
-  .assistance-card .course-details h3 {
-    margin: 0;
-    color: #333;
-    font-size: 1.25rem;
-  }
-  
-  .assistance-card .course-details p {
-    margin: 4px 0 0;
-    color: #4f46e5;
-  }
-  
-  .assistance-card .details-link {
-    background-color: #4f46e5;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 4px;
-    text-decoration: none;
-    transition: background-color 0.3s;
-  }
-  
-  .assistance-card .details-link:hover {
-    background-color: #3730a3;
-  }
-  
-  .assistance-card .icon-circle {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    width: 50px; /* o el tamaño que prefieras */
-    height: 50px; /* o el tamaño que prefieras */
-    background-color: #e0f2fe; /* o el color de fondo que prefieras */
-    position: absolute;
-    left: 10px;
-  }
-  
-  .assistance-card .icon-circle .MuiSvgIcon-root {
-    color: #4f46e5; /* o el color que prefieras */
-    font-size: 30px; /* o el tamaño que prefieras */
-  }
+.section-title {
+  font-size: 24px;
+  margin: 20px 0;
+  text-align: center;
+  font-weight: bold;
+}
+
+.assistance-card .icon {
+  /* Estilos para el ícono */
+}
+
+.assistance-card .course-details {
+  flex-grow: 1;
+  margin-left: 64px; /* Espacio entre el ícono y el texto */
+}
+
+.assistance-card .course-details h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.25rem;
+}
+
+.assistance-card .course-details p {
+  margin: 4px 0 0;
+  color: #4f46e5;
+}
+
+.assistance-card .details-link {
+  background-color: #4f46e5;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.assistance-card .details-link:hover {
+  background-color: #3730a3;
+}
+
+.assistance-card .icon-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 50px; /* o el tamaño que prefieras */
+  height: 50px; /* o el tamaño que prefieras */
+  background-color: #e0f2fe; /* o el color de fondo que prefieras */
+  position: absolute;
+  left: 10px;
+}
+
+.assistance-card .icon-circle .MuiSvgIcon-root {
+  color: #4f46e5; /* o el color que prefieras */
+  font-size: 30px; /* o el tamaño que prefieras */
+}

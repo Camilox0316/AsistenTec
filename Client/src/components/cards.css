@@ -51,14 +51,20 @@
   font-weight: bold; /* Para hacer "Asistente", "Estado Administrador", "Estado Estudiante" en negrita */
 }
 
-.edit-icon {
-  width: 24px; /* Ajusta este tamaño para tu icono de edición */
-  height: 24px;
-  position: absolute; /* Posiciona el icono de edición absolutamente dentro de la tarjeta */
-  bottom: 1rem;
+.icon-container {
+  position: absolute;
+  top: 1rem;
   right: 1rem;
+  display: flex;
+  gap: 8px; /* Espaciado entre íconos */
 }
 
+.edit-icon,
+.delete-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
 /* Ajusta el flex-wrap para pantallas más pequeñas si es necesario */
 @media (max-width: 768px) {
   .asistencia-card {

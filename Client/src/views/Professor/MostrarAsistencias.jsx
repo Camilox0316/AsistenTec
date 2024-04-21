@@ -5,17 +5,17 @@ import axios from "axios";
 import SolicitarAsistencia from "./SolicitarAsistencia";
 import { Sidebar } from "../../components/Sidebar";
 import { useAuth } from "../../hooks/useAuth";
-// Datos simulados para las tarjetas de asistencia
-
-//Imagenes
-//import iconoFiltro from "../../img/lupa.png";
+import ConfirmDeletePopup from "../../components/ConfirmDeletePopup.jsx"
 
 export function MostrarAsistencias() {
   const [isSolicitarAsistenciaVisible, setIsSolicitarAsistenciaVisible] =
     useState(false);
+  const [asistenciaParaEditar, setAsistenciaParaEditar] = useState(null);
   const [asistencias, setAsistencias] = useState([]);
   const [filtro, setFiltro] = useState("");
   const [orden, setOrden] = useState("más reciente");
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [asistenciaParaEliminar, setAsistenciaParaEliminar] = useState(null);
   const { auth } = useAuth();
 
   const TIPOS_ASISTENCIA = ["horas estudiante", "horas asistente"];
@@ -48,6 +48,33 @@ export function MostrarAsistencias() {
     }
   };
 
+  const handleDelete = (asistencia) => {
+    // Lógica para mostrar el popup de confirmación de eliminación
+    setAsistenciaParaEliminar(asistencia); // Guarda la asistencia a editar
+    setShowConfirmDelete(true);
+  };
+  const confirmDelete = async () => {
+    if (!asistenciaParaEliminar) return;
+
+    try {
+      // Hace la llamada DELETE a tu API
+      await axios.delete(`http://localhost:3000/assistance/deleteAssistance/${asistenciaParaEliminar._id}`);
+      
+      // Actualiza el estado para reflejar el cambio
+      setAsistencias(asistencias.filter((item) => item._id !== asistenciaParaEliminar._id));
+      
+      // Oculta el popup de confirmación
+      setShowConfirmDelete(false);
+    } catch (error) {
+      console.error("Error deleting assistance:", error);
+      // Aquí puedes manejar errores, por ejemplo, mostrar un mensaje al usuario.
+    }
+  };
+  const handleEdit = (asistencia) => {
+    setAsistenciaParaEditar(asistencia); // Guarda la asistencia a editar
+    setIsSolicitarAsistenciaVisible(true); // Abre el popup
+  };
+
   useEffect(() => {
     fetchAsistencias();
   }, [orden]); // Agregar 'orden' como dependencia para refetch cuando cambie
@@ -64,7 +91,8 @@ export function MostrarAsistencias() {
   // Función para cerrar el modal
   const handleCloseModal = () => {
     setIsSolicitarAsistenciaVisible(false);
-    fetchAsistencias(); // Esto recargará las asistencias después de cerrar el modal
+    setAsistenciaParaEditar(null); // Limpia la asistencia a editar al cerrar
+    fetchAsistencias(); // Recarga las asistencias
   };
 
   return (
@@ -100,7 +128,7 @@ export function MostrarAsistencias() {
         </div>
         <div className="cards-alineadas">
           {asistenciasFiltradas.map((asistencia) => (
-            <AsistenciaCard key={asistencia.id} asistencia={asistencia} />
+            <AsistenciaCard key={asistencia.id} asistencia={asistencia} onEdit={handleEdit} onDelete={() => handleDelete(asistencia)} />
           ))}
         </div>
       </div>
@@ -108,6 +136,13 @@ export function MostrarAsistencias() {
         <SolicitarAsistencia
           onClose={handleCloseModal}
           asistenciaTipos={tiposAsistencia}
+          asistencia={asistenciaParaEditar} 
+        />
+      )}
+      {showConfirmDelete && (
+        <ConfirmDeletePopup
+          onConfirm={confirmDelete}
+          onCancel={() => setShowConfirmDelete(false)}
         />
       )}
     </div>

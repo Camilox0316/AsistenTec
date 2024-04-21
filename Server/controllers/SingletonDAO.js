@@ -161,7 +161,7 @@ class SingletonDAO {
       throw error;
     }
   }
-  
+
   //-------------------------------------------------------------------------------------
   //                      Assistences Functions
   //-------------------------------------------------------------------------------------
@@ -179,7 +179,6 @@ class SingletonDAO {
   async getAllAssistancesByProfessorId(proffesorId) {
     try {
       const assistances = await Assistance.find({ proffesorId: proffesorId });
-      console.log(assistances); 
       return assistances; // Retorna las asistencias que coinciden con el ID del profesor
     } catch (error) {
       throw new Error(
@@ -217,19 +216,25 @@ class SingletonDAO {
   }
 
   // Eliminar una asistencia
-  async deleteAssistance(req, res) {
-    try {
-      const { id } = req.params; // ID de la asistencia a eliminar
-      await Assistance.findByIdAndDelete(id);
-      res.json({ message: "Assistance deleted successfully" });
-    } catch (error) {
-      res.status(500).json({ message: "Server error", error });
-    }
-  }
 
+  async deleteAssistance(id) {
+    if (!id) {
+      throw new Error("Invalid request. No ID provided.");
+    }
+
+    const result = await Assistance.findByIdAndDelete(id);
+    if (!result) {
+      throw new Error("Assistance not found.");
+    }
+
+    // If the result is not null, the assistance was deleted successfully
+    // No return value needed; the absence of an error indicates success.
+  }
   async getAllAssistances() {
     try {
-      const assistances = await Assistance.find({ assistanceType: { $ne: 'tutoría' } }).exec();
+      const assistances = await Assistance.find({
+        assistanceType: { $ne: "tutoría" },
+      }).exec();
       const assistancesWithProfessorName = await Promise.all(
         assistances.map(async (assistance) => {
           const professorName = assistance.proffesorId
@@ -239,7 +244,7 @@ class SingletonDAO {
             ...assistance._doc,
             professorName: professorName
               ? `${professorName.name} ${professorName.lastName1} ${professorName.lastName2}`.trim()
-              : null
+              : null,
           };
         })
       );
@@ -249,10 +254,12 @@ class SingletonDAO {
       throw error;
     }
   }
-  
+
   async getAllTutorship() {
     try {
-      const assistances = await Assistance.find({ assistanceType: 'tutoría' }).exec();
+      const assistances = await Assistance.find({
+        assistanceType: "tutoría",
+      }).exec();
       const assistancesWithProfessorName = await Promise.all(
         assistances.map(async (assistance) => {
           const professorName = assistance.proffesorId
@@ -262,7 +269,7 @@ class SingletonDAO {
             ...assistance._doc,
             professorName: professorName
               ? `${professorName.name} ${professorName.lastName1} ${professorName.lastName2}`.trim()
-              : null
+              : null,
           };
         })
       );
@@ -275,14 +282,17 @@ class SingletonDAO {
   // Adjusted to accept just the `id` rather than `req, res, next`
   async getUserById(userId) {
     try {
-      const user = await User.findById(userId, 'name lastName1 lastName2').exec();
+      const user = await User.findById(
+        userId,
+        "name lastName1 lastName2"
+      ).exec();
       if (!user) {
         throw new Error("Failed to retrieve user");
       }
       return {
         name: user.name,
         lastName1: user.lastName1,
-        lastName2: user.lastName2
+        lastName2: user.lastName2,
       };
     } catch (error) {
       console.error("Error retrieving user by ID:", error.message);
@@ -293,8 +303,10 @@ class SingletonDAO {
   async getAssistanceById(courseCode) {
     try {
       // Find the assistance document by course code
-      const assistance = await Assistance.findOne({ courseCode: courseCode }).exec();
-      console.log(`find:${assistance}`)
+      const assistance = await Assistance.findOne({
+        courseCode: courseCode,
+      }).exec();
+      console.log(`find:${assistance}`);
       if (!assistance) {
         throw new Error(`Assistance not found for courseCode: ${courseCode}`);
       }
@@ -302,13 +314,15 @@ class SingletonDAO {
       let assistanceObject = assistance.toObject(); // Convert document to a plain JavaScript object
 
       if (assistanceObject.proffesorId) {
-         const professorDetails = await this.getUserById(assistanceObject.proffesorId);
-         assistanceObject.professorName = `${professorDetails.name} ${professorDetails.lastName1} ${professorDetails.lastName2}`.trim();
+        const professorDetails = await this.getUserById(
+          assistanceObject.proffesorId
+        );
+        assistanceObject.professorName =
+          `${professorDetails.name} ${professorDetails.lastName1} ${professorDetails.lastName2}`.trim();
       }
-      
+
       console.log(assistanceObject);
       return assistanceObject; // Return the modified object
-    
     } catch (error) {
       console.error("Error retrieving assistance by ID:", error.message);
       throw error;
@@ -324,15 +338,20 @@ class SingletonDAO {
       }
       console.log(assistances);
       // Map over the assistances to include professor details
-      const assistancesWithProfessorName = await Promise.all(assistances.map(async (assistanceDoc) => {
-        let assistanceObject = assistanceDoc.toObject(); // Convert document to a plain JavaScript object
-        if (assistanceObject.proffesorId) {
-          const professorDetails = await this.getUserById(assistanceObject.proffesorId);
-          assistanceObject.professorName = `${professorDetails.name} ${professorDetails.lastName1} ${professorDetails.lastName2}`.trim();
-        }
-        return assistanceObject;
-      }));
-  
+      const assistancesWithProfessorName = await Promise.all(
+        assistances.map(async (assistanceDoc) => {
+          let assistanceObject = assistanceDoc.toObject(); // Convert document to a plain JavaScript object
+          if (assistanceObject.proffesorId) {
+            const professorDetails = await this.getUserById(
+              assistanceObject.proffesorId
+            );
+            assistanceObject.professorName =
+              `${professorDetails.name} ${professorDetails.lastName1} ${professorDetails.lastName2}`.trim();
+          }
+          return assistanceObject;
+        })
+      );
+
       console.log(assistancesWithProfessorName);
       return assistancesWithProfessorName; // Return the array of modified objects
     } catch (error) {
@@ -340,11 +359,6 @@ class SingletonDAO {
       throw error; // It's important to throw the error to let the calling function know something went wrong
     }
   }
-  
-
-  
-  
-  
 
   // async updateCollection(){
   //   try {
@@ -367,7 +381,7 @@ class SingletonDAO {
   async addApplication(applicationData) {
     // You need to use await to get the result of the promise
     const userFound = await this.getUserByCarnet(applicationData.carnet);
-    
+
     // Now, you can check if userFound is not null and then access its properties
     if (!userFound) {
       throw new Error(`User not found for carnet: ${applicationData.carnet}`);
@@ -383,7 +397,7 @@ class SingletonDAO {
         idApplication: application._id,
         date: new Date(),
         selected: false,
-        status: true
+        status: true,
       });
       return application;
     } catch (error) {
@@ -417,7 +431,11 @@ class SingletonDAO {
   // Update an application
   async updateApplication(applicationId, updateData) {
     try {
-      const application = await Application.findByIdAndUpdate(applicationId, updateData, { new: true });
+      const application = await Application.findByIdAndUpdate(
+        applicationId,
+        updateData,
+        { new: true }
+      );
       return application;
     } catch (error) {
       throw new Error(`Error updating application: ${error.message}`);
@@ -439,7 +457,9 @@ class SingletonDAO {
   async addReceivedApplication(receivedApplicationData) {
     try {
       console.log(`DAO Received: ${receivedApplicationData.idUser}`);
-      const receivedApplication = new ReceivedApplication(receivedApplicationData);
+      const receivedApplication = new ReceivedApplication(
+        receivedApplicationData
+      );
       await receivedApplication.save();
       return receivedApplication;
     } catch (error) {
@@ -453,27 +473,39 @@ class SingletonDAO {
       const receivedApplications = await ReceivedApplication.find();
       return receivedApplications;
     } catch (error) {
-      throw new Error(`Error retrieving received applications: ${error.message}`);
+      throw new Error(
+        `Error retrieving received applications: ${error.message}`
+      );
     }
   }
 
   // Get a received application by ID
   async getReceivedApplicationById(receivedApplicationId) {
     try {
-      const receivedApplication = await ReceivedApplication.findById(receivedApplicationId);
+      const receivedApplication = await ReceivedApplication.findById(
+        receivedApplicationId
+      );
       if (!receivedApplication) {
-        throw new Error(`Received application not found with id: ${receivedApplicationId}`);
+        throw new Error(
+          `Received application not found with id: ${receivedApplicationId}`
+        );
       }
       return receivedApplication;
     } catch (error) {
-      throw new Error(`Error retrieving received application: ${error.message}`);
+      throw new Error(
+        `Error retrieving received application: ${error.message}`
+      );
     }
   }
 
   // Update a received application
   async updateReceivedApplication(receivedApplicationId, updateData) {
     try {
-      const receivedApplication = await ReceivedApplication.findByIdAndUpdate(receivedApplicationId, updateData, { new: true });
+      const receivedApplication = await ReceivedApplication.findByIdAndUpdate(
+        receivedApplicationId,
+        updateData,
+        { new: true }
+      );
       return receivedApplication;
     } catch (error) {
       throw new Error(`Error updating received application: ${error.message}`);
@@ -489,18 +521,20 @@ class SingletonDAO {
     }
   }
 
-  async getReceivedApplicationsByUserId(userId) { 
+  async getReceivedApplicationsByUserId(userId) {
     try {
-      const receivedApplications = await ReceivedApplication.find({ idUser: userId });
+      const receivedApplications = await ReceivedApplication.find({
+        idUser: userId,
+      });
       console.log(`DAO Received: ${userId}`);
       return receivedApplications;
     } catch (error) {
-      throw new Error(`Error retrieving received applications: ${error.message}`);
+      throw new Error(
+        `Error retrieving received applications: ${error.message}`
+      );
     }
   }
-
-
-};
+}
 
 const singletonDAO = SingletonDAO.getInstance();
 

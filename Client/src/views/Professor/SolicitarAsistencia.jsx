@@ -9,36 +9,51 @@ import axios from "axios";
 const SolicitarAsistencia = ({
   onClose,
   asistenciaTipos,
+  asistencia = null, // asistencia para editar, si es null, se crea una nueva
+
+
 }) => {
     const { auth } = useAuth();
     SolicitarAsistencia.propTypes = {
     onClose: PropTypes.func.isRequired,
-    onAgregarAsistencia: PropTypes.func.isRequired,
     asistenciaTipos: PropTypes.arrayOf(PropTypes.string).isRequired,
+    asistencia: PropTypes.shape({
+      _id: PropTypes.string, // Asumiendo que cada asistencia tiene un ID único
+      proffesorId: PropTypes.string.isRequired,
+      school: PropTypes.string.isRequired,
+      assistanceType: PropTypes.string.isRequired,
+      year: PropTypes.number.isRequired,
+      semester: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      courseDescription: PropTypes.string.isRequired,
+      adminStatus: PropTypes.string.isRequired,
+      studentStatus: PropTypes.string.isRequired,
+      isEditable: PropTypes.bool.isRequired,
+      hours: PropTypes.number.isRequired,
+      groupNumber: PropTypes.number,
+      courseCode: PropTypes.string, // Puede ser no requerido dependiendo de la lógica de tu aplicación
+      isActive: PropTypes.bool.isRequired,
+    }),
+    
   };
 
-  const [tipoAsistencia, setTipoAsistencia] = useState(asistenciaTipos[0]);
-  const [anio, setAnio] = useState(new Date().getFullYear());
-  const [semestre, setSemestre] = useState("1");
-  const [horas, setHoras] = useState(50);
-  const [grupo, setGrupo] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [descripcion, setDescripcion] = useState("");
-  const [courseCode, setCourseCode] = useState(""); // Añadido estado para 'courseCode' con valor por defecto
+  const [tipoAsistencia, setTipoAsistencia] = useState(asistencia ? asistencia.assistanceType : asistenciaTipos[0]);
+  const [anio, setAnio] = useState(asistencia ? asistencia.year : new Date().getFullYear());
+  const [semestre, setSemestre] = useState(asistencia ? asistencia.semester.toString() : "1");
+  const [horas, setHoras] = useState(asistencia ? asistencia.hours : 50);
+  const [grupo, setGrupo] = useState(asistencia && asistencia.groupNumber ? asistencia.groupNumber : 0);
+  const [nombre, setNombre] = useState(asistencia ? asistencia.name : "");
+  const [descripcion, setDescripcion] = useState(asistencia ? asistencia.courseDescription : "");
+  const [courseCode, setCourseCode] = useState(
+asistencia && asistencia.courseCode ? asistencia.courseCode : ''
+  );
 
 
-  const onAgregarAsistencia = async (nuevaAsistencia) => {
-    try {
-      await axios.post('http://localhost:3000/assistance/addAssistance', nuevaAsistencia);
-      onClose(); // Esto cerrará el modal y debería desencadenar la recarga de asistencias
-    } catch (error) {
-      alert('Error al crear la asistencia');
-    }
-  };
+  
   const isValidCourseCode = (code) => {
     return /^[A-Z]{2}-\d{4}$/.test(code); // Expresión regular para validar el formato
   };
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (!nombre.trim() || !descripcion.trim() || !courseCode.trim()) {
       alert("Por favor, complete todos los campos.");
@@ -50,7 +65,7 @@ const SolicitarAsistencia = ({
     return;
   }
     const nuevaAsistencia = {
-      proffesorId: auth.id,
+      proffesorId: asistencia ? asistencia.proffesorId : auth.id,
       school: "matemáticas", // Valor por defecto
       assistanceType: tipoAsistencia,
       year: parseInt(anio, 10), // Asegurándonos de que sea un número
@@ -60,25 +75,44 @@ const SolicitarAsistencia = ({
       adminStatus: "pendiente",
       studentStatus: "pendiente",
       isEditable: true, 
-      hours: horas,
-      groupNumber:grupo,
+      hours: parseInt(horas, 10),
+      groupNumber: grupo,
       courseCode: courseCode,
       isActive: true,
     };
 
-    onAgregarAsistencia(nuevaAsistencia);
+    try {
+      if (asistencia) {
+        await axios.put(`http://localhost:3000/assistance/updateAssistance/${asistencia._id}`, nuevaAsistencia);
+      } else {
+        await axios.post('http://localhost:3000/assistance/addAssistance', nuevaAsistencia);
+      }
+      onClose();
+    } catch (error) {
+      alert('Error al guardar la asistencia');
+    }
   };
+
 
   // Actualiza el estado de 'grupo' cada vez que cambia 'tipoAsistencia'
   useEffect(() => {
+    // Actualizar solo el estado del curso y grupo cuando el tipo de asistencia es "horas asistente"
     if (tipoAsistencia !== "horas asistente") {
+      // Aquí, asegúrate de manejar el cambio a 0 para el grupo si no es "horas asistente"
       setGrupo(0);
       setCourseCode("NA-0000");
+    } else {
+      // Si es "horas asistente" y la asistencia está definida, entonces usa los valores de la asistencia.
+      // Si no, usa un string vacío para courseCode y 0 para grupo para indicar que no está definido.
+      if (asistencia) {
+        setCourseCode(asistencia.courseCode ? asistencia.courseCode : '');
+        setGrupo(asistencia.groupNumber ? asistencia.groupNumber : 0);
+      } else {
+        setCourseCode('');
+        setGrupo(0);
+      }
     }
-    else{
-      setCourseCode("");
-    }
-  }, [tipoAsistencia]);
+  }, [tipoAsistencia, asistencia]);
 
   return (
     <div className="modal-overlay">

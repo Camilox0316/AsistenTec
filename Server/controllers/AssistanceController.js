@@ -22,7 +22,6 @@ class AssistanceController {
     }
   }
 
-
   static async addAssistance(req, res) {
     try {
       let {
@@ -104,7 +103,11 @@ class AssistanceController {
       await SingletonDAO.deleteAssistance(id);
       res.send({ message: "Assistance deleted successfully" });
     } catch (error) {
-      res.status(500).send({ message: "Server error", error });
+      if (error.message === "Assistance not found.") {
+        res.status(404).send({ message: "Assistance not found." });
+      } else {
+        res.status(500).send({ message: "Server error", error: error.message });
+      }
     }
   }
 
@@ -135,8 +138,7 @@ class AssistanceController {
     try {
       const assistance = await SingletonDAO.getAssistanceById(id);
       res.json(assistance);
-    }
-    catch (error) {
+    } catch (error) {
       res.status(500).json({ message: error.message });
     }
   }
@@ -150,12 +152,10 @@ class AssistanceController {
     try {
       const assistances = await SingletonDAO.getAssistanceByIdObject(id);
       res.json(assistances);
-    }
-    catch (error) {
+    } catch (error) {
       res.status(500).json({ message: error.message });
     }
   }
 }
-
 
 module.exports = AssistanceController;
