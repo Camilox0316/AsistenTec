@@ -18,10 +18,10 @@ import SolicitarAsistencia from "./views/Professor/SolicitarAsistencia";
 import { VerAdmin_profes } from "./views/Admin/VerAdmin_profes";
 
 //admin Student
-import { ViewHomeStudent } from "./views/ViewHomeStudent";
-import { ViewAssistanceDetails } from "./views/ViewAssitanceDetails";
-import { MyAssistancesPage } from "./views/MyAssistancesPage";
-import { ApplyForm } from "./views/StudentForm";
+import { ViewHomeStudent } from "./views/Student/ViewHomeStudent";
+import { ViewAssistanceDetails } from "./views/Student/ViewAssitanceDetails";
+import { MyAssistancesPage } from "./views/Student/MyAssistancesPage";
+import { ApplyForm } from "./views/Student/StudentForm";
 import { ViewAssistanceDetailsAdmin } from "./views/Admin/ViewAssitanceDetailsAdmin";
 
 
