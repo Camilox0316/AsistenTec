@@ -83,9 +83,9 @@ export function SidebarContent() {
   ) : auth?.roles?.find((role) => [3123].includes(role)) ? ( //Admin
     <>
       <Item>
-        <Link to="/home-switch" className="flex items-center space-x-2">
+        <Link to="/asistencias-aprobadas" className="flex items-center space-x-2">
           <HomeIcon />
-          <span>Inicio</span>
+          <span>Asistencias aprobadas</span>
         </Link>
       </Item>
       <Item>

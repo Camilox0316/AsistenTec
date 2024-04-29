@@ -7,7 +7,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import BlockIcon from '@mui/icons-material/Block';
 import '../css modules/AvailableAssistance.css'; // Asegúrate de que la ruta del CSS es correcta
 
-export const AvailableAssistance = ({ title, semester, professor, type, status, superType, courseCode }) => {
+export const AvailableAssistance = ({ title, semester, professor, type, status, superType, courseCode,auth }) => {
 
   const navigate = useNavigate();
 
@@ -15,9 +15,17 @@ export const AvailableAssistance = ({ title, semester, professor, type, status, 
     fontSize: '50px', // Ajusta el tamaño del ícono aquí
     color: '#4f46e5', // Ajusta el color del ícono aquí
   };
-
+  
   const handleViewDetails = () => {
-    navigate(`/assistance-details/${courseCode}`); // Cambia a la ruta de detalles con el código del curso
+    console.log(auth?.roles);
+    if (auth?.roles?.find((role) => [3123].includes(role))) {
+      navigate(`/assistance-details-admin/${courseCode}`);
+    }
+    else{
+      navigate(`/assistance-details/${courseCode}`); 
+    }
+    
+    
   };
 
 

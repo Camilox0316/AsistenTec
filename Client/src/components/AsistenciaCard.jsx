@@ -1,45 +1,59 @@
+import React, { useState } from 'react';
 import libroIcon from '../img/libro.png'; 
 import boligrafoIcon from '../img/boligrafo.png'; 
 import trash from '../img/trash.png';
-
+import AsistenciaDetails from './AsistenciaDetails';
 import "./cards.css";
 import PropTypes from 'prop-types';
 
-function AsistenciaCard({ asistencia , onEdit, onDelete}) {
+function AsistenciaCard({ asistencia, onEdit, onDelete , _onClick}) {
 
+ 
+
+  const [showDetails, setShowDetails] = useState(false);
+
+  const semestreAnio = `Semestre ${asistencia.semester} ${asistencia.year}`;
   
-    const semestreAnio = `Semestre ${asistencia.semester} ${asistencia.year}`;
-  
-    return (
-      <div className="asistencia-card">
-        <div className="asistencia-header">
-          <img src={libroIcon} alt="Icono Libro" className="asistencia-icon" />
-          <div className="asistencia-titulo">
-            <h3>{asistencia.name}</h3>
-            <p className="asistencia-semestre">{semestreAnio}</p>
-          </div>
+
+  const closeDetails = () => {
+    console.log("cerrando..");
+    setShowDetails(false);
+  };
+
+  return (
+    <div className={`asistencia-card`} onClick={() => _onClick(asistencia)}>
+      <div className="asistencia-header">
+        <img src={libroIcon} alt="Icono Libro" className="asistencia-icon" />
+        <div className="asistencia-titulo">
+          <h3>{asistencia.name}</h3>
+          <p className="asistencia-semestre">{semestreAnio}</p>
         </div>
-        <div className="asistencia-info">
-          <p><strong>Tipo de Asistencia:</strong> {asistencia.assistanceType}</p>
-          <p><strong>Estado de Administrador:</strong> {asistencia.adminStatus}</p>
-          <p><strong>Estado de Estudiante:</strong> {asistencia.studentStatus}</p>
-        </div>
-        <div className="icon-container">
-  {asistencia.isEditable && (
-    <img src={boligrafoIcon} alt="Editar" className="edit-icon" onClick={() => onEdit(asistencia)} />
-  )}
-  {asistencia.isEditable && (
-    <img src={trash} alt="Eliminar" className="delete-icon" onClick={() => onDelete(asistencia)} />
-  )}
-</div>
       </div>
-    );
+      <div className="asistencia-info">
+        <p><strong>Tipo de Asistencia:</strong> {asistencia.assistanceType}</p>
+        <p><strong>Estado de Aprobación:</strong> {asistencia.adminStatus}</p>
+        <p><strong>Estado de Estudiante:</strong> {asistencia.studentStatus}</p>
+      </div>
+      <div className="icon-container">
+        {asistencia.isEditable && (
+          <img src={boligrafoIcon} alt="Editar" className="edit-icon" onClick={() => onEdit(asistencia)} />
+        )}
+        {asistencia.isEditable && (
+          <img src={trash} alt="Eliminar" className="delete-icon" onClick={() => onDelete(asistencia)} />
+        )}
+      </div>
+      {showDetails && (
+        <AsistenciaDetails asistencia = {asistencia} onClose={closeDetails}/>
+
+      )}
+    </div>
+  );
 }
 
-// Actualización de PropTypes
+// PropTypes
 AsistenciaCard.propTypes = {
   asistencia: PropTypes.shape({
-    _id: PropTypes.string, // Asumiendo que cada asistencia tiene un ID único
+    _id: PropTypes.string, 
     proffesorId: PropTypes.string.isRequired,
     school: PropTypes.string.isRequired,
     assistanceType: PropTypes.string.isRequired,
@@ -52,11 +66,12 @@ AsistenciaCard.propTypes = {
     isEditable: PropTypes.bool.isRequired,
     hours: PropTypes.number.isRequired,
     groupNumber: PropTypes.number,
-    courseCode: PropTypes.string, // Puede ser no requerido dependiendo de la lógica de tu aplicación
+    courseCode: PropTypes.string,
     isActive: PropTypes.bool.isRequired,
   }),
-    onEdit: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired, // Asegúrate de pasar el objeto de autenticación como prop
 };
 
 export default AsistenciaCard;

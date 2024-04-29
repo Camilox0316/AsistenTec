@@ -22,6 +22,7 @@ import { ViewHomeStudent } from "./views/ViewHomeStudent";
 import { ViewAssistanceDetails } from "./views/ViewAssitanceDetails";
 import { MyAssistancesPage } from "./views/MyAssistancesPage";
 import { ApplyForm } from "./views/StudentForm";
+import { ViewAssistanceDetailsAdmin } from "./views/Admin/ViewAssitanceDetailsAdmin";
 
 
 
@@ -72,7 +73,8 @@ export default function App() {
           <Route path="/home-admin" element={<ViewActivityPage />} />
           <Route path="/administradores_profes" element={<VerAdmin_profes />} />
           <Route path="/mostrar-solicitudes" element={<MostrarAsistencias />} />
-          
+          <Route path="/asistencias-aprobadas" element={<ViewHomeStudent />} />
+          <Route path="/assistance-details-admin/:courseCode" element={<ViewAssistanceDetailsAdmin />} />
         </Route>
 
         {/*Catch all*/}

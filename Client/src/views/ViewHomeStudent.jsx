@@ -3,7 +3,7 @@ import axios from "axios";
 
 import { AvailableAssistance } from "../components/AvailableAssistance";
 import '../css modules/AvailableAssistance.css'; // Asegúrate de que la ruta sea correcta según tu estructura de carpetas
-
+import { useAuth } from "../hooks/useAuth";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
@@ -12,10 +12,12 @@ export function ViewHomeStudent() {
   const [assistances, setAssistances] = useState([]);
   const [tutorings, setTutorings] = useState([]);
 
-  const hostUrl = import.meta.env.VITE_HOST_URL;
+  const hostUrl = import.meta.env.VITE_HOST_URL || 'http://localhost:3000';
+  console.log("varaible de entorno",hostUrl)
 
   const [isLoading, setIsLoading] = useState(true);
-
+  
+  const {auth} = useAuth();
 
   useEffect(() => {
     const fetchTutorings = async () => {
@@ -55,16 +57,19 @@ export function ViewHomeStudent() {
     <h2 className="section-title">Asistencias</h2>
     <div className="carousel-container">
       <div className="assistance-container" ref={assistanceScrollRef}>
-        {assistances.map(assistance => (
+        {assistances  
+        .filter(assistance => assistance.adminStatus === "aceptado")
+        .map(assistance => (
         <AvailableAssistance
           key={assistance._id}
           title={assistance.name}
           semester={`Semestre ${assistance.semester}`}
           professor={assistance.professorName} // Make sure to adjust this to display the professor's name correctly
           type={capitalizeEachWord(assistance.assistanceType)}
-          status={assistance.adminStatus === "aceptado" ? "Disponible" : assistance.adminStatus.charAt(0).toUpperCase() + assistance.adminStatus.slice(1)}
+          status={"Disponible"}
           superType="Assistance"
           courseCode={assistance.courseCode}
+          auth={auth}
         />
       ))}
     </div>
@@ -77,7 +82,9 @@ export function ViewHomeStudent() {
     <h2 className="section-title">Tutorías</h2>
     <div className="carousel-container">
       <div className="tutorship-container" ref={tutoringsScrollRef}>
-        {tutorings.map(tutoring => (
+        {tutorings        
+        .filter(tutoring => tutoring.adminStatus === "aceptado")
+        .map(tutoring => (
         <AvailableAssistance
           key={tutoring._id}
           title={tutoring.name}
@@ -87,6 +94,7 @@ export function ViewHomeStudent() {
           status={tutoring.adminStatus === "aceptado" ? "Disponible" : tutoring.adminStatus.charAt(0).toUpperCase() + tutoring.adminStatus.slice(1)}
           superType="Tutorship"
           courseCode={tutoring.courseCode}
+          auth={auth}
         />
       ))}
     </div>

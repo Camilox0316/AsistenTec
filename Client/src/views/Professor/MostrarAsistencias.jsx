@@ -6,6 +6,7 @@ import SolicitarAsistencia from "./SolicitarAsistencia";
 import { Sidebar } from "../../components/Sidebar";
 import { useAuth } from "../../hooks/useAuth";
 import ConfirmDeletePopup from "../../components/ConfirmDeletePopup.jsx"
+import AsistenciaDetails from "../../components/AsistenciaDetails.jsx";
 
 export function MostrarAsistencias() {
   const [isSolicitarAsistenciaVisible, setIsSolicitarAsistenciaVisible] =
@@ -17,6 +18,14 @@ export function MostrarAsistencias() {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [asistenciaParaEliminar, setAsistenciaParaEliminar] = useState(null);
   const { auth } = useAuth();
+
+  const [showDetails, setShowDetails] = useState(false);
+  const closeDetails = () => {
+    console.log("cerrando..");
+    setShowDetails(false);
+  };
+
+  const [asistenciaActual, setAsistenciaActual] = useState(Object);
 
   const TIPOS_ASISTENCIA = ["horas estudiante", "horas asistente"];
   const TIPOS_ASISTENCIA_ADMIN = [
@@ -84,6 +93,17 @@ export function MostrarAsistencias() {
   );
 
   // Función para abrir el modal
+  const abrirDetallesAsistencia = (asistencia) => {
+    console.log("verificando roles")
+    console.log("rol:", auth.roles)
+    if (auth?.roles?.find((role) => [3123].includes(role))) {
+      setShowDetails(true);
+      setAsistenciaActual(asistencia);
+      console.log("detalles asistencias")
+    }
+  };
+
+  // Función para abrir el modal
   const handleAgregarClick = () => {
     setIsSolicitarAsistenciaVisible(true);
   };
@@ -94,6 +114,8 @@ export function MostrarAsistencias() {
     setAsistenciaParaEditar(null); // Limpia la asistencia a editar al cerrar
     fetchAsistencias(); // Recarga las asistencias
   };
+
+
 
   return (
     <div className="mostrar-asistencias-container">
@@ -127,8 +149,11 @@ export function MostrarAsistencias() {
           </div>
         </div>
         <div className="cards-alineadas">
-          {asistenciasFiltradas.map((asistencia) => (
-            <AsistenciaCard key={asistencia.id} asistencia={asistencia} onEdit={handleEdit} onDelete={() => handleDelete(asistencia)} />
+          {asistenciasFiltradas        
+          .filter(asistencia => asistencia.adminStatus === "pendiente")
+            .map(asistencia => (
+            <AsistenciaCard key={asistencia.id} asistencia={asistencia} onEdit={handleEdit} 
+            onDelete={() => handleDelete(asistencia)} auth={auth} _onClick={() => abrirDetallesAsistencia(asistencia)}/>
           ))}
         </div>
       </div>
@@ -143,6 +168,13 @@ export function MostrarAsistencias() {
         <ConfirmDeletePopup
           onConfirm={confirmDelete}
           onCancel={() => setShowConfirmDelete(false)}
+        />
+      )}
+      {showDetails && (
+        <AsistenciaDetails
+          asistencia={asistenciaActual}
+          onClose={closeDetails}
+
         />
       )}
     </div>

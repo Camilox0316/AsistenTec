@@ -1,0 +1,55 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background-color: rgba(100, 133, 233, 0.315);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto; 
+  z-index: 10000;
+}
+
+.asistencia-details {
+  position: relative;
+  max-width: 500px;
+  width: 100%;
+  margin: 2rem; /* Agrega espacio arriba y abajo */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+
+  border-radius: 8px;
+
+}
+
+.buttons{
+  margin-top: 10%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.aceptar-button {
+  padding: 0.5rem 1.0rem; /* Padding más grande para un botón más grande */
+  font-size: 1rem;
+  background-color: #0056b3; /* Color de fondo más fuerte */
+  color: #ffffff; /* Texto en blanco */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.rechazar-button {
+  padding: 0.5rem 1.0rem; /* Padding más grande para un botón más grande */
+  font-size: 1rem;
+  background-color: #b30000; /* Color de fondo más fuerte */
+  color: #ffffff; /* Texto en blanco */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
