@@ -155,8 +155,8 @@ export function MostrarAsistencias() {
         </div>
         <div className="cards-alineadas">
           {asistenciasFiltradas        
-          .filter(asistencia => asistencia.adminStatus === "pendiente")
-            .map(asistencia => (
+          .filter(asistencia => asistencia.adminStatus === "pendiente" || asistencia.adminStatus === "rechazado")
+            .map(asistencia => ( 
             <AsistenciaCard key={asistencia.id} asistencia={asistencia} onEdit={handleEdit} 
             onDelete={() => handleDelete(asistencia)} auth={auth} _onClick={() => abrirDetallesAsistencia(asistencia)} actualizarAsistencias={actualizarAsistencias}/>
           ))}

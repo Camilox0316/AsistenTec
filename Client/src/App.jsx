@@ -70,7 +70,7 @@ export default function App() {
         {/* Admin routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
           <Route path="/home-switch" element={<HomeSwitch />} />
-          <Route path="/home-admin" element={<ViewActivityPage />} />
+          <Route path="/home-admin" element={<MostrarAsistencias />} />
           <Route path="/administradores_profes" element={<VerAdmin_profes />} />
           <Route path="/mostrar-solicitudes" element={<MostrarAsistencias />} />
           <Route path="/asistencias-aprobadas" element={<ViewHomeStudent />} />
