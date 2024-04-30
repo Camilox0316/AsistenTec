@@ -7,7 +7,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import BlockIcon from '@mui/icons-material/Block';
 import '../css modules/AvailableAssistance.css'; // Asegúrate de que la ruta del CSS es correcta
 
-export const AvailableAssistance = ({ title, semester, professor, type, status, superType, courseCode,auth }) => {
+export const AvailableAssistance = ({id,title, semester, professor, type, status, superType, courseCode,auth }) => {
 
   const navigate = useNavigate();
 
@@ -17,12 +17,13 @@ export const AvailableAssistance = ({ title, semester, professor, type, status, 
   };
   
   const handleViewDetails = () => {
-    console.log(auth?.roles);
+    console.log(id);
+    console.log(title);
     if (auth?.roles?.find((role) => [3123].includes(role))) {
-      navigate(`/assistance-details-admin/${courseCode}`);
+      navigate(`/assistance-details-admin/${id}`);
     }
     else{
-      navigate(`/assistance-details/${courseCode}`); 
+      navigate(`/assistance-details/${id}`); 
     }
     
     

@@ -197,7 +197,28 @@ class SingletonDAO {
       throw new Error("Error creating assistance: " + error.message);
     }
   }
+  // Ruta para actualizar el adminStatus de una asistencia
+async updateStatusAssistant(assistanceId,newAdminStatus,res){
+  try {
 
+    // Verificar si newAdminStatus es un valor permitido
+    if (!["pendiente", "aceptado", "rechazado"].includes(newAdminStatus)) {
+      return res.status(400).json({ message: "El nuevo estado proporcionado no es válido." });
+    }
+
+    // Actualizar el adminStatus de la asistencia
+    const updatedAssistance = await Assistance.findByIdAndUpdate(assistanceId, { adminStatus: newAdminStatus }, { new: true });
+
+    if (!updatedAssistance) {
+      return res.status(404).json({ message: "No se encontró la asistencia con el ID proporcionado." });
+    }
+
+    res.status(200).json(updatedAssistance);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Hubo un error al actualizar la asistencia." });
+  }
+};
   // Actualizar una asistencia existente
   async updateAssistance(assistanceId, updateData) {
     try {
@@ -304,7 +325,7 @@ class SingletonDAO {
     try {
       // Find the assistance document by course code
       const assistance = await Assistance.findOne({
-        courseCode: courseCode,
+        _id: courseCode,
       }).exec();
       console.log(`find:${assistance}`);
       if (!assistance) {

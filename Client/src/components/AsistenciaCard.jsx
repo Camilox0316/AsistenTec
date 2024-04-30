@@ -6,7 +6,7 @@ import AsistenciaDetails from './AsistenciaDetails';
 import "./cards.css";
 import PropTypes from 'prop-types';
 
-function AsistenciaCard({ asistencia, onEdit, onDelete , _onClick}) {
+function AsistenciaCard({ asistencia, onEdit, onDelete , _onClick, actualizarAsistencias}) {
 
  
 
@@ -16,8 +16,10 @@ function AsistenciaCard({ asistencia, onEdit, onDelete , _onClick}) {
   
 
   const closeDetails = () => {
-    console.log("cerrando..");
+    
     setShowDetails(false);
+    console.log("actualizando..");
+    actualizarAsistencias();
   };
 
   return (

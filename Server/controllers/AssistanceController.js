@@ -73,6 +73,18 @@ class AssistanceController {
       res.status(500).json({ message: "Server error", error: error.message });
     }
   }
+  //Actualizar el estado de una asistencia'
+  static async updateStatusAssistant(req, res) {
+    try {
+      const assistanceId = req.params.id;
+      const { newAdminStatus } = req.body; // Suponiendo que el nuevo estado se envía en el cuerpo de la solicitud con la clave newAdminStatus
+      return await SingletonDAO.updateStatusAssistant(assistanceId,newAdminStatus,res);
+    }
+    catch(error){
+      res.status(500).send({ message: "Server error", error: error.message });
+    }
+
+  };
 
   static async updateAssistance(req, res) {
     const { id } = req.params;

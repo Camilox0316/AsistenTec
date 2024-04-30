@@ -20,9 +20,11 @@ export function MostrarAsistencias() {
   const { auth } = useAuth();
 
   const [showDetails, setShowDetails] = useState(false);
+
   const closeDetails = () => {
     console.log("cerrando..");
     setShowDetails(false);
+    fetchAsistencias();
   };
 
   const [asistenciaActual, setAsistenciaActual] = useState(Object);
@@ -115,7 +117,10 @@ export function MostrarAsistencias() {
     fetchAsistencias(); // Recarga las asistencias
   };
 
-
+  const actualizarAsistencias = () => {
+    console.log("actualizando..");
+    fetchAsistencias(); // Recarga las asistencias
+  }
 
   return (
     <div className="mostrar-asistencias-container">
@@ -153,7 +158,7 @@ export function MostrarAsistencias() {
           .filter(asistencia => asistencia.adminStatus === "pendiente")
             .map(asistencia => (
             <AsistenciaCard key={asistencia.id} asistencia={asistencia} onEdit={handleEdit} 
-            onDelete={() => handleDelete(asistencia)} auth={auth} _onClick={() => abrirDetallesAsistencia(asistencia)}/>
+            onDelete={() => handleDelete(asistencia)} auth={auth} _onClick={() => abrirDetallesAsistencia(asistencia)} actualizarAsistencias={actualizarAsistencias}/>
           ))}
         </div>
       </div>

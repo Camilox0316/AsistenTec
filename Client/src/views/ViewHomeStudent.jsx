@@ -22,13 +22,15 @@ export function ViewHomeStudent() {
   useEffect(() => {
     const fetchTutorings = async () => {
       const response = await axios.get(`${hostUrl}/assistance/getAllAssistances`);
-      console.log(response.data);
+
       setAssistances(response.data);
+
     };
 
     const fetchAssistances = async () => {
       const response = await axios.get(`${hostUrl}/assistance/getTutoring`);
       setTutorings(response.data);
+
     };
 
     fetchAssistances();
@@ -61,7 +63,7 @@ export function ViewHomeStudent() {
         .filter(assistance => assistance.adminStatus === "aceptado")
         .map(assistance => (
         <AvailableAssistance
-          key={assistance._id}
+          id={assistance._id}
           title={assistance.name}
           semester={`Semestre ${assistance.semester}`}
           professor={assistance.professorName} // Make sure to adjust this to display the professor's name correctly
@@ -86,7 +88,7 @@ export function ViewHomeStudent() {
         .filter(tutoring => tutoring.adminStatus === "aceptado")
         .map(tutoring => (
         <AvailableAssistance
-          key={tutoring._id}
+          id={tutoring._id}
           title={tutoring.name}
           semester={`Semestre ${tutoring.semester}`}
           professor={tutoring.professorName} // Adjust as needed

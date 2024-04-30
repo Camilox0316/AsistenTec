@@ -34,4 +34,6 @@ router.route("/getAssistanceById/:id").get(AssistanceController.getAssistanceByI
 
 router.route("/getAssistanceByIdObject/:id").get(AssistanceController.getAssistanceByIdObject);
 
+router.route("/update-status-assistance/:id").put(AssistanceController.updateStatusAssistant);
+
 module.exports = router;
