@@ -44,7 +44,7 @@ export function SidebarContent() {
         </Link>
       </Item>
       <Item>
-        <Link to="/home-student" className="flex items-center space-x-2">
+        <Link to="/profile" className="flex items-center space-x-2">
           <EventNoteIcon />
           <span>Mi Perfil</span>
         </Link>
@@ -132,7 +132,6 @@ export function SidebarContent() {
 
       />
       <Link to="/" className="flex justify-center items-center space-x-2">
-
         <span className="text-red-500">Cerrar session</span>
       </Link>
     </div> </>;

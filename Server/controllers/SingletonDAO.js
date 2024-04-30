@@ -149,7 +149,7 @@ class SingletonDAO {
     }
   }
 
-  async getUserById(userId) {
+  async getUserByIdAll(userId) {
     try {
       const user = await User.findById(userId).exec();
       if (!user) {

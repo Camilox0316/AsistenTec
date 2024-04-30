@@ -133,6 +133,18 @@
   line-height: 1; /* Asegura que el signo de interrogación esté centrado */
 }
 
+.profile-photo-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.profile-photo-icon {
+  font-size: 40px;
+  color: #4f46e5;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
 

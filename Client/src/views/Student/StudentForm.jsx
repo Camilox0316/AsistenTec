@@ -1,17 +1,17 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import '../css modules/StudentForm.css';
+import '../../css modules/StudentForm.css';
 import axios from 'axios';
 
-import {useAuth } from '../hooks/useAuth';
+import {useAuth } from '../../hooks/useAuth';
 
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-import { AssistanceTypeInfoPopUp } from '../components/AssitanceTypeInfoPopUp';
-import { BankInfoPopUp } from '../components/BankInfoPopUp';
+import { AssistanceTypeInfoPopUp } from '../../components/AssitanceTypeInfoPopUp';
+import { BankInfoPopUp } from '../../components/BankInfoPopUp';
 
 
 export const ApplyForm = () => { 

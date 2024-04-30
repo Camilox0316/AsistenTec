@@ -7,12 +7,20 @@
   }
   
   .card-image-container {
-    width: 100%;
     display: flex;
     justify-content: center;
-    padding-top: 20px; /* Ajusta según sea necesario */
+    align-items: center; /* Asegúrate de que el ícono esté centrado verticalmente */
+    width: 70px; /* Ajusta según sea necesario */
+    height: 70px; /* Ajusta según sea necesario */
+    border-radius: 50%; /* Esto crea el efecto circular para el contenedor */
+    background-color: #E0E7FF; /* El color de fondo para el contenedor del ícono */
+    margin: auto; /* Centra el contenedor si está dentro de un flexbox */
   }
-  
+
+  .padded-icon{
+    padding-left: 80px;
+  }
+
   .card-image {
     width: 60px; /* Ajusta el tamaño de la imagen */
     height: 60px; /* Ajusta el tamaño de la imagen */
@@ -91,7 +99,7 @@
   }
   
   .view-home-student-container .carousel-controls {
-    display: flex;
+    display: flex;  
     justify-content: center;
     gap: 20px;
     margin-top: 20px; /* Adjust the space between the cards and the controls */

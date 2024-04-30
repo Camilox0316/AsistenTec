@@ -25,8 +25,6 @@ export const AvailableAssistance = ({id,title, semester, professor, type, status
     else{
       navigate(`/assistance-details/${id}`); 
     }
-    
-    
   };
 
 
@@ -45,12 +43,14 @@ export const AvailableAssistance = ({id,title, semester, professor, type, status
     <div className="cointainerStyle">
         <div className="min-w-[420px] max-h-72 h-full p-6 bg-white border border-gray-200 rounded-lg shadow">
         <div className="flex justify-between items-center">
-            <div className="icon-container flex items-center place-content-center h-20 w-20 rounded-full bg-indigo-100">
-            {getIcon(superType)}
-            </div>
             <div className="card-header text-center">
             <div>{title}</div>
             <div>{semester}</div>
+            </div>
+            <div className="padded-icon">
+              <div className="card-image-container">
+                {getIcon(superType)}
+              </div>
             </div>
         </div>
         <div className="card-body mt-4">

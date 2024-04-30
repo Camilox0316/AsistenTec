@@ -3,13 +3,13 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { AssistanceInfoPopUp } from '../components/AssistanceInfoPopUp'; // Asegúrate de que la ruta sea correcta según tu estructura de carpetas
+import { AssistanceInfoPopUp } from '../../components/AssistanceInfoPopUp'; // Asegúrate de que la ruta sea correcta según tu estructura de carpetas
 
 import Button from '@mui/material/Button';
 
 import BookIcon from '@mui/icons-material/Book'; // Asumiendo que estás usando Material-UI para los íconos
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import '../css modules/AssitanceDetails.css'; // Asegúrate de que la ruta sea correcta según tu estructura de carpetas
+import '../../css modules/AssitanceDetails.css'; // Asegúrate de que la ruta sea correcta según tu estructura de carpetas
 
 
 export const ViewAssistanceDetails = () => {
@@ -20,7 +20,7 @@ export const ViewAssistanceDetails = () => {
     const [showPopup, setShowPopup] = useState(false);
     const navigate = useNavigate();
     const { courseCode } = useParams();
-    const hostUrl = import.meta.env.VITE_HOST_URL || 'http://localhost:3000';
+    const hostUrl = import.meta.env.VITE_HOST_URL;
 
     const applied = false  
     const terminated = false

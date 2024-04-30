@@ -16,6 +16,7 @@ router.route("/logout").put(adminUserControllers.logout);
 router.route("/getAdmins").get(adminUserControllers.getAdmins_profes);
 router.route("/getProfessorName/:id").get(adminUserControllers.getProfessorNameHandler);
 router.route("/getUserById/:id").get(adminUserControllers.getUserById);
+router.route("/getUserByIdAll/:id").get(adminUserControllers.getUserByIdAll);
 //Nota para el editar perfil se debe de tener el authRequiere
 
 module.exports = router;

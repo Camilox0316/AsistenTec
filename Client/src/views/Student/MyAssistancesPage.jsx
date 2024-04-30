@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { MyAssistanceCard } from '../components/MyAssistanceCard';
-import { useAuth } from '../hooks/useAuth'; // Assuming the useAuth hook is in a separate file
+import { MyAssistanceCard } from '../../components/MyAssistanceCard'; // Assuming the MyAssistanceCard component is in a separate file
+import { useAuth } from '../../hooks/useAuth'; // Assuming the useAuth hook is in a separate file
 import axios from 'axios';
 
 export const MyAssistancesPage = () => {
@@ -46,9 +46,7 @@ export const MyAssistancesPage = () => {
     }
   }, [auth.id, hostUrl]);
   
-  console.log(assistances);
-  
-  console.log(assistances);
+  console.log("Asistencias Disponibles: ",assistances);
   return (
     <div className="my-assistances">
       <h2 className="section-title">Mis Asistencias</h2>
