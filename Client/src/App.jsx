@@ -24,7 +24,9 @@ import { MyAssistancesPage } from "./views/Student/MyAssistancesPage";
 import { ApplyForm } from "./views/Student/StudentForm";
 import { ViewAssistanceDetailsAdmin } from "./views/Admin/ViewAssitanceDetailsAdmin";
 
+//User
 import { Profile } from "./views/Profile";
+import { EditProfile } from "./views/EditProfile"
 
 
 const ROLES = {
@@ -53,6 +55,7 @@ export default function App() {
         >
           <Route path="/home-switch" element={<HomeSwitch />} />
           <Route path="/profile" element={<Profile/>} />
+          <Route path="/edit-profile" element={<EditProfile/>} />
         </Route>
 
         {/* Student routes */}

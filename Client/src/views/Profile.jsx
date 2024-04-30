@@ -1,12 +1,16 @@
 import React from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+//Icons @mui
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import StarIcon from '@mui/icons-material/Star';
 import StarHalfIcon from '@mui/icons-material/StarHalf';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import EditIcon from '@mui/icons-material/Edit';
 
 import axiosInstance from "../api/axios";
 import axios from 'axios'
@@ -17,11 +21,17 @@ export const Profile = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { auth: activeUser } = useAuth(); // Destructure user from the auth object, if that's how your hook is structured.
+  
+  const navigate = useNavigate();
+  const handleEditClick = () => {
+    navigate('/edit-profile'); // Use the correct path for your edit profile page
+  };
 
   const hostUrl = import.meta.env.VITE_HOST_URL;
   const [user, setUser] = useState("");
   const iconSize = isSmallScreen ? '200px' : '200px'; // Adjust size for different screens
   const photoUrl = activeUser?.photo ? `${axiosInstance.defaults.baseURL}${activeUser.photo}` : "";
+
 
   //Calcular nota calificacion
   const rating = 3.7;
@@ -107,6 +117,9 @@ export const Profile = () => {
             ))}
             </tbody>
         </table>
+        </div>
+        <div style={{ position: 'absolute', top: 0, right: 0 }}>
+            <EditIcon onClick={handleEditClick} style={{ cursor: 'pointer', color: '#101828', fontSize:'4rem' }} />
         </div>
     </div>
   );
