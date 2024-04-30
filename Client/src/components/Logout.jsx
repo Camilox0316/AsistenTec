@@ -1,15 +1,23 @@
 
-//import { useNavigate} from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 
 
 export const Logout = ({ photoUrl, name, email,logout }) => {
+
+  const navigate = useNavigate();
+
+  const handleAvatarClick = () => {
+    navigate('/profile');
+  }
+
   return (
     <div className="mt-auto px-4 py-3 border-t border-gray-200">
-      <div className="flex items-center space-x-4">
+      <div onClick={handleAvatarClick} className="flex items-center space-x-4">
         <img
           className="h-8 w-8 rounded-full"
           src={photoUrl}
           alt="User Avatar"
+          href="/profile"
         />
         <div>
           <p className="text-sm font-bold text-white">{name}</p>

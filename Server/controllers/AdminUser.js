@@ -135,6 +135,20 @@ const getUserById = async (req, res, next) => {
   }
 };
 
+const getUserByIdAll = async (req,res,next) => {
+  try{
+    const userId = req.params.id;
+    const user = await SingletonDAO.getUserByIdAll(userId);
+    if(!user){
+      return res.status(404).json({message: 'User not found'});
+    }
+    return res.json(user);
+  } catch (error) {
+    console.error("Error getting user:", error.message);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
 
 module.exports = {
   loginUser,
@@ -146,4 +160,5 @@ module.exports = {
   getAdmins_profes,
   getProfessorNameHandler,
   getUserById,
+  getUserByIdAll,
 };
