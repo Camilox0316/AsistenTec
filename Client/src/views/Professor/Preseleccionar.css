@@ -86,7 +86,7 @@
   }
 
   .tabla-preseleccion {
-    min-width: 1200px;
+    min-width: 700px;
   }
 }
 
@@ -116,4 +116,22 @@
 
 .clickable:hover {
   color: #ffffff;
+}
+
+/* Añadir estos estilos al final del archivo CSS existente */
+.tabla-preseleccion select.calificacion-select {
+  width: auto;
+  padding: 8px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 1rem;
+  color: #6585e8;
+  background-color: #edf1fc;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.tabla-preseleccion select.calificacion-select:focus {
+  outline: none;
+  border-color: #101828;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
