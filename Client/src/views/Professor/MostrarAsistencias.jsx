@@ -7,6 +7,9 @@ import { Sidebar } from "../../components/Sidebar";
 import { useAuth } from "../../hooks/useAuth";
 import ConfirmDeletePopup from "../../components/ConfirmDeletePopup.jsx"
 import AsistenciaDetails from "../../components/AsistenciaDetails.jsx";
+import Preseleccionar from "./Preseleccionar.jsx"
+import Calificar from "./Calificar.jsx"
+
 
 export function MostrarAsistencias() {
   const [isSolicitarAsistenciaVisible, setIsSolicitarAsistenciaVisible] =
@@ -20,6 +23,8 @@ export function MostrarAsistencias() {
   const { auth } = useAuth();
 
   const [showDetails, setShowDetails] = useState(false);
+  const [showPreseleccionar, setShowPreseleccionar] = useState(false);
+  const [showCalificarPopup, setShowCalificarPopup] = useState(false);
 
   const closeDetails = () => {
     console.log("cerrando..");
@@ -98,11 +103,23 @@ export function MostrarAsistencias() {
   const abrirDetallesAsistencia = (asistencia) => {
     console.log("verificando roles")
     console.log("rol:", auth.roles)
-    if (auth?.roles?.find((role) => [3123].includes(role))) {
+    if (auth?.roles?.find((role) => [3123].includes(role))) {//Admin 
+      console.log("Admin")
       setShowDetails(true);
       setAsistenciaActual(asistencia);
       console.log("detalles asistencias")
     }
+    else if (auth?.roles?.includes(2264)) { // Professor role
+      console.log("Entra a Profe")
+        if (asistencia.adminStatus === 'aceptado' && asistencia.studentStatus !== 'aceptado') {
+          setShowPreseleccionar(true);
+          setAsistenciaActual(asistencia);
+        } else if (asistencia.adminStatus === 'aceptado' && asistencia.studentStatus === 'aceptado') {
+          setShowCalificarPopup(true);
+          setAsistenciaActual(asistencia);
+      }
+    }
+
   };
 
   // Función para abrir el modal
@@ -155,7 +172,7 @@ export function MostrarAsistencias() {
         </div>
         <div className="cards-alineadas">
           {asistenciasFiltradas        
-          .filter(asistencia => asistencia.adminStatus === "pendiente" || asistencia.adminStatus === "rechazado")
+          //.filter(asistencia => asistencia.adminStatus === "pendiente" || asistencia.adminStatus === "rechazado")
             .map(asistencia => ( 
             <AsistenciaCard key={asistencia.id} asistencia={asistencia} onEdit={handleEdit} 
             onDelete={() => handleDelete(asistencia)} auth={auth} _onClick={() => abrirDetallesAsistencia(asistencia)} actualizarAsistencias={actualizarAsistencias}/>
@@ -182,6 +199,19 @@ export function MostrarAsistencias() {
 
         />
       )}
+   {showPreseleccionar && (
+        <Preseleccionar
+          asistencia={asistenciaActual}
+          onClose={() => setShowPreseleccionar(false)}
+        />
+      )}
+      {showCalificarPopup && (
+        <Calificar
+          asistencia={asistenciaActual}
+          onClose={() => setShowCalificarPopup(false)}
+        />
+      )}
+      
     </div>
   );
 }

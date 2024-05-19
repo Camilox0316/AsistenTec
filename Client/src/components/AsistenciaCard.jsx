@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import libroIcon from '../img/libro.png'; 
 import boligrafoIcon from '../img/boligrafo.png'; 
 import trash from '../img/trash.png';
@@ -34,13 +34,13 @@ function AsistenciaCard({ asistencia, onEdit, onDelete , _onClick, actualizarAsi
       <div className="asistencia-info">
         <p><strong>Tipo de Asistencia:</strong> {asistencia.assistanceType}</p>
         <p><strong>Estado de Aprobación:</strong> {asistencia.adminStatus}</p>
-        <p><strong>Estado de Estudiante:</strong> {asistencia.studentStatus}</p>
+        <p><strong>Estado de Aprobación Estudiante:</strong> {asistencia.studentStatus}</p>
       </div>
       <div className="icon-container">
-        {asistencia.isEditable && (
+        {asistencia.isEditable && asistencia.adminStatus === 'pendiente' && (
           <img src={boligrafoIcon} alt="Editar" className="edit-icon" onClick={() => onEdit(asistencia)} />
         )}
-        {asistencia.isEditable && (
+        {asistencia.isEditable && asistencia.adminStatus === 'pendiente' &&(
           <img src={trash} alt="Eliminar" className="delete-icon" onClick={() => onDelete(asistencia)} />
         )}
       </div>
@@ -74,6 +74,8 @@ AsistenciaCard.propTypes = {
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired, // Asegúrate de pasar el objeto de autenticación como prop
+  _onClick:PropTypes.func.isRequired,
+  actualizarAsistencias: PropTypes.func
 };
 
 export default AsistenciaCard;

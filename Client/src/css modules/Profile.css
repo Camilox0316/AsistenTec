@@ -18,80 +18,79 @@
 
 /* Smaller size for stars on smaller screens */
 @media (max-width: 600px) {
-    .star {
-      font-size: 18px; /* This will apply to smaller screens */
-    }
+  .star {
+    font-size: 18px; /* This will apply to smaller screens */
   }
+}
 
-  .description-title {
-    font-size: 1.5em; /* Larger font size for the title */
-    margin-bottom: 0.5em; /* Space between title and text */
-    color: #101828;
-  }
-  
-  .description-text {
-    max-width: 100%; /* Ensures the container's width is not more than its parent */
-    height: auto; /* Height is set to auto to grow with the content */
-    margin-bottom: 1em; /* Space below the text */
-    padding: 1em; /* Padding inside the text box */
-    border: 1px solid #ddd; /* A border for the text box, if desired */
-    background-color: #101828;
-    overflow-y: visible; /* Ensures that there is no vertical scrollbar */
-    white-space: pre-wrap; /* Maintains whitespace and wraps text */
-    word-wrap: break-word; /* Breaks the words to prevent horizontal overflow */
-    color: #ffffff;
-    border-radius: 10px;
-  }
-  
-  .profile-table-container {
-    margin: 20px;
-    overflow-x: auto; /* Retains horizontal scroll for smaller screens */
-    display: flex; /* Enables flexbox properties */
-    justify-content: center; /* Centers the table horizontally */
-    padding: 20px; /* Adds some spacing around the table */
-  }
-  
-  .profile-table {
-    min-width: 100%; /* Ensures the table takes up at least the full width */
-    border-collapse: collapse;
-    font-size: 1.2rem; /* Increases the font size */
-  }
-  
-  .profile-table th,
+.description-title {
+  font-size: 1.5em; /* Larger font size for the title */
+  margin-bottom: 0.5em; /* Space between title and text */
+  color: #101828;
+}
+
+.description-text {
+  max-width: 100%; /* Ensures the container's width is not more than its parent */
+  height: auto; /* Height is set to auto to grow with the content */
+  margin-bottom: 1em; /* Space below the text */
+  padding: 1em; /* Padding inside the text box */
+  border: 1px solid #ddd; /* A border for the text box, if desired */
+  background-color: #101828;
+  overflow-y: visible; /* Ensures that there is no vertical scrollbar */
+  white-space: pre-wrap; /* Maintains whitespace and wraps text */
+  word-wrap: break-word; /* Breaks the words to prevent horizontal overflow */
+  color: #ffffff;
+  border-radius: 10px;
+}
+
+.profile-table-container {
+  margin: 20px;
+  overflow-x: auto; /* Retains horizontal scroll for smaller screens */
+  display: flex; /* Enables flexbox properties */
+  justify-content: center; /* Centers the table horizontally */
+  padding: 20px; /* Adds some spacing around the table */
+}
+
+.profile-table {
+  min-width: 100%; /* Ensures the table takes up at least the full width */
+  border-collapse: collapse;
+  font-size: 1.2rem; /* Increases the font size */
+}
+
+.profile-table th,
 .profile-table td {
-text-align: left;
-padding: 16px; /* Increases padding for a larger look */
-border-bottom: 1px solid #ddd;
-color: #6585E8;
+  text-align: left;
+  padding: 16px; /* Increases padding for a larger look */
+  border-bottom: 1px solid #ddd;
+  color: #6585e8;
 }
 
 /* Optional: Adjust for very large screens */
 @media (min-width: 1200px) {
-.profile-table-container {
+  .profile-table-container {
     width: 100%; /* You can adjust this to be larger if you have more space */
-}
+  }
 
-.profile-table {
+  .profile-table {
     min-width: 1200px; /* Or any other minimum width that fits your content */
+  }
 }
-}
-  
-  /* Zebra striping for rows */
-  .profile-table tr:nth-child(even) {
-    background-color: #EDF1FC;
-  }
-  
-  .profile-table th {
-    background-color: #101828;
-    color: white;
-    font-size: 1.2rem; /* Increase the size of the header text */
-  }
-  
-  .profile-table tr:hover {
-    background-color: rgb(229, 233, 253);
-  }
 
-  .profile-table tr {
-    background-color: #EDF1FC;
-  }
-  
+/* Zebra striping for rows */
+.profile-table tr:nth-child(even) {
+  background-color: #edf1fc;
+}
+
+.profile-table th {
+  background-color: #101828;
+  color: white;
+  font-size: 1.2rem; /* Increase the size of the header text */
+}
+
+.profile-table tr:hover {
+  background-color: rgb(229, 233, 253);
+}
+
+.profile-table tr {
+  background-color: #edf1fc;
+}
