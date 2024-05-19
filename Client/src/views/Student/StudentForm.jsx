@@ -42,7 +42,7 @@ export const ApplyForm = () => {
   
     // Gather the form data into an object
     const applicationData = {
-      idAssistance: courseDetails._id, // Assuming you have the assistance ID in the courseDetails
+      idAssistance: courseCode, // Assuming you have the assistance ID in the courseDetails
       carnet: event.target.carnet.value,
       phoneNumber: event.target.phone.value,
       email: event.target.email.value,

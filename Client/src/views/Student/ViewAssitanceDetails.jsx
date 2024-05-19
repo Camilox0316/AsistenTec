@@ -53,7 +53,7 @@ export const ViewAssistanceDetails = () => {
 
     const handleApply = () => {
       // Redirecciona al formulario con el código del curso
-      navigate(`/form/${courseDetails.courseCode}`);
+      navigate(`/form/${courseCode}`);
     };
 
     // Función para abrir el Popup
