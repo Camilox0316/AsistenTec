@@ -74,7 +74,7 @@ export function SidebarContent() {
         </Link>
       </Item>
       <Item>
-        <Link to="/home-switch" className="flex items-center space-x-2">
+        <Link to="/profile" className="flex items-center space-x-2">
           <PersonIcon />
           <span>Mi perfil</span>
         </Link>
