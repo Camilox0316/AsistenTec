@@ -265,8 +265,10 @@ class SingletonDAO {
       const assistances = await Assistance.find({
         assistanceType: { $ne: "tutoría" },
       }).exec();
+      console.log(assistances);
       const assistancesWithProfessorName = await Promise.all(
         assistances.map(async (assistance) => {
+          console.log(assistance.proffesorId);
           const professorName = assistance.proffesorId
             ? await this.getUserById(assistance.proffesorId)
             : null;
@@ -427,6 +429,7 @@ class SingletonDAO {
         idApplication: application._id,
         date: new Date(),
         selected: false,
+        score: 0,
         status: false,
       });
       return application;
