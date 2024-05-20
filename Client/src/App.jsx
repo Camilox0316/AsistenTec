@@ -69,7 +69,11 @@ export default function App() {
         {/* Professor routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Professor]} />}>
           <Route path="/home-professor" element={<MostrarAsistencias />} />
-          <Route path="/solicitar-asistencias-professor" element={<SolicitarAsistencia />} />
+          <Route path="/solicitar-asistencias-professor" element={<SolicitarAsistencia statusFilter="pendiente"/>} />
+          <Route path="/home-professor-rechazadas" element={<MostrarAsistencias statusFilter="rechazada"/>} />
+          <Route path="/home-professor-aprobadas" element={<MostrarAsistencias statusFilter="aprobada" />} />
+
+
         </Route>
 
         {/* Admin routes */}
@@ -79,6 +83,8 @@ export default function App() {
           <Route path="/administradores_profes" element={<VerAdmin_profes />} />
           <Route path="/mostrar-solicitudes" element={<MostrarAsistencias />} />
           <Route path="/asistencias-aprobadas" element={<ViewHomeStudent />} />
+          
+          <Route path="/asistencias-activas" element={<MostrarAsistencias statusFilter="aprobada" />} />
           <Route path="/assistance-details-admin/:courseCode" element={<ViewAssistanceDetailsAdmin />} />
         </Route>
 

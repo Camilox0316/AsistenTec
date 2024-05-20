@@ -52,12 +52,24 @@ export function SidebarContent() {
     <>
       <Item>
         <Link to="/home-professor" className="flex items-center space-x-2">
-          <HomeIcon />
-          <span >Inicio</span>
+          <GroupIcon />
+          <span >Asistencias Pendientes</span>
         </Link>
       </Item>
       <Item>
-        <Link to="/home-switch" className="flex items-center space-x-2">
+        <Link to="/home-professor-aprobadas" className="flex items-center space-x-2">
+          <GroupIcon />
+          <span >Asistencias Activas</span>
+        </Link>
+      </Item>
+      <Item>
+        <Link to="/home-professor-rechazadas" className="flex items-center space-x-2">
+          <GroupIcon />
+          <span >Asistencias Rechazadas</span>
+        </Link>
+      </Item>
+      <Item>
+        <Link to="/profile" className="flex items-center space-x-2">
           <PersonIcon />
           <span>Mi perfil</span>
         </Link>
@@ -84,7 +96,7 @@ export function SidebarContent() {
         </Link>
       </Item>
       <Item>
-        <Link to="/home-switch" className="flex items-center space-x-2">
+        <Link to="/asistencias-activas" className="flex items-center space-x-2">
           <GroupIcon />
           <span>Consultar Asistencias Activas</span>
         </Link>

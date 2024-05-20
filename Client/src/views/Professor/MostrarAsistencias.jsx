@@ -5,14 +5,14 @@ import axios from "axios";
 import SolicitarAsistencia from "./SolicitarAsistencia";
 import { Sidebar } from "../../components/Sidebar";
 import { useAuth } from "../../hooks/useAuth";
-import ConfirmDeletePopup from "../../components/ConfirmDeletePopup.jsx"
+import ConfirmDeletePopup from "../../components/ConfirmDeletePopup.jsx";
 import AsistenciaDetails from "../../components/AsistenciaDetails.jsx";
-import Preseleccionar from "./Preseleccionar.jsx"
-import Calificar from "./Calificar.jsx"
+import Preseleccionar from "./Preseleccionar.jsx";
+import Calificar from "./Calificar.jsx";
 const hostUrl = import.meta.env.VITE_HOST_URL;
-export function MostrarAsistencias() {
-  const [isSolicitarAsistenciaVisible, setIsSolicitarAsistenciaVisible] =
-    useState(false);
+
+export function MostrarAsistencias({ statusFilter }) {
+  const [isSolicitarAsistenciaVisible, setIsSolicitarAsistenciaVisible] = useState(false);
   const [asistenciaParaEditar, setAsistenciaParaEditar] = useState(null);
   const [asistencias, setAsistencias] = useState([]);
   const [filtro, setFiltro] = useState("");
@@ -65,9 +65,10 @@ export function MostrarAsistencias() {
 
   const handleDelete = (asistencia) => {
     // Lógica para mostrar el popup de confirmación de eliminación
-    setAsistenciaParaEliminar(asistencia); // Guarda la asistencia a editar
+    setAsistenciaParaEliminar(asistencia); // Guarda la asistencia a eliminar
     setShowConfirmDelete(true);
   };
+
   const confirmDelete = async () => {
     if (!asistenciaParaEliminar) return;
 
@@ -85,56 +86,69 @@ export function MostrarAsistencias() {
       // Aquí puedes manejar errores, por ejemplo, mostrar un mensaje al usuario.
     }
   };
+
   const handleEdit = (asistencia) => {
     setAsistenciaParaEditar(asistencia); // Guarda la asistencia a editar
     setIsSolicitarAsistenciaVisible(true); // Abre el popup
   };
+
   const [iseditableAdmin, setiseditableAdmin] = useState(false);
+
   const verificarSiEsAdmin = () => {
-    if (auth?.roles?.find((role) => [3123].includes(role))) {//Admin 
+    if (auth?.roles?.find((role) => [3123].includes(role))) { // Admin
       console.log("es admin");
       setiseditableAdmin(false);
-    }
-    else{ // Professor role
+    } else { // Professor role
       setiseditableAdmin(true);
     }
-  }
+  };
 
   useEffect(() => {
     fetchAsistencias();
     verificarSiEsAdmin();
   }, [orden]); // Agregar 'orden' como dependencia para refetch cuando cambie
 
-  const asistenciasFiltradas = asistencias.filter((asistencia) =>
+  const asistenciasFiltradas = asistencias.filter((asistencia) => {
+    if (statusFilter === "rechazada") {
+      return asistencia.adminStatus === "rechazado";
+    } else if (statusFilter === "aprobada") {
+      return asistencia.adminStatus === "aceptado" && asistencia.studentStatus === "aceptado";
+    } else {
+      return asistencia.adminStatus === "pendiente" || (asistencia.adminStatus === "aceptado" && asistencia.studentStatus !== "aceptado");
+    }
+  }).filter((asistencia) =>
     asistencia.name.toLowerCase().includes(filtro.toLowerCase())
   );
 
   // Función para abrir el modal
   const abrirDetallesAsistencia = (asistencia) => {
-    console.log("verificando roles")
-    console.log("rol:", auth.roles)
-    if (auth?.roles?.find((role) => [3123].includes(role))) {//Admin 
+    console.log("verificando roles");
+    console.log("rol:", auth.roles);
+    if (auth?.roles?.find((role) => [3123].includes(role))) { // Admin
       if (asistencia.adminStatus === 'aceptado' && asistencia.studentStatus !== 'aceptado') {
         setShowPreseleccionar(true);
         setAsistenciaActual(asistencia);
+      } else if (asistencia.adminStatus === 'pendiente' && asistencia.studentStatus === 'pendiente'){
+        console.log("Admin");
+        setShowDetails(true);
+        setAsistenciaActual(asistencia);
+        console.log("detalles asistencias");
       }
-      else{
-      console.log("Admin")
-      setShowDetails(true);
-      setAsistenciaActual(asistencia);
-      console.log("detalles asistencias")}
-    }
-    else if (auth?.roles?.includes(2264)) { // Professor role
-      console.log("Entra a Profe")
-        if (asistencia.adminStatus === 'aceptado' && asistencia.studentStatus !== 'aceptado') {
-          setShowPreseleccionar(true);
-          setAsistenciaActual(asistencia);
-        } else if (asistencia.adminStatus === 'aceptado' && asistencia.studentStatus === 'aceptado') {
-          setShowCalificarPopup(true);
-          setAsistenciaActual(asistencia);
+      else if (asistencia.adminStatus === 'aceptado' && asistencia.studentStatus === 'aceptado') {
+        setShowCalificarPopup(true);
+        setAsistenciaActual(asistencia);
+      }
+      
+    } else if (auth?.roles?.includes(2264)) { // Professor role
+      console.log("Entra a Profe");
+      if (asistencia.adminStatus === 'aceptado' && asistencia.studentStatus !== 'aceptado') {
+        setShowPreseleccionar(true);
+        setAsistenciaActual(asistencia);
+      } else if (asistencia.adminStatus === 'aceptado' && asistencia.studentStatus === 'aceptado') {
+        setShowCalificarPopup(true);
+        setAsistenciaActual(asistencia);
       }
     }
-
   };
 
   // Función para abrir el modal
@@ -152,7 +166,7 @@ export function MostrarAsistencias() {
   const actualizarAsistencias = () => {
     console.log("actualizando..");
     fetchAsistencias(); // Recarga las asistencias
-  }
+  };
 
   return (
     <div className="mostrar-asistencias-container">
@@ -186,19 +200,18 @@ export function MostrarAsistencias() {
           </div>
         </div>
         <div className="cards-alineadas">
-          {asistenciasFiltradas        
-          //.filter(asistencia => asistencia.adminStatus === "pendiente" || asistencia.adminStatus === "rechazado")
-            .map(asistencia => ( 
-            <AsistenciaCard key={asistencia.id} asistencia={asistencia} onEdit={handleEdit} 
-            onDelete={() => handleDelete(asistencia)} auth={auth} _onClick={() => abrirDetallesAsistencia(asistencia)} actualizarAsistencias={actualizarAsistencias} isAdmin= {iseditableAdmin}/>
-          ))}
+          {asistenciasFiltradas
+            .map(asistencia => (
+              <AsistenciaCard key={asistencia.id} asistencia={asistencia} onEdit={handleEdit}
+                onDelete={() => handleDelete(asistencia)} auth={auth} _onClick={() => abrirDetallesAsistencia(asistencia)} actualizarAsistencias={actualizarAsistencias} isAdmin={iseditableAdmin} />
+            ))}
         </div>
       </div>
       {isSolicitarAsistenciaVisible && (
         <SolicitarAsistencia
           onClose={handleCloseModal}
           asistenciaTipos={tiposAsistencia}
-          asistencia={asistenciaParaEditar} 
+          asistencia={asistenciaParaEditar}
         />
       )}
       {showConfirmDelete && (
@@ -211,10 +224,9 @@ export function MostrarAsistencias() {
         <AsistenciaDetails
           asistencia={asistenciaActual}
           onClose={closeDetails}
-
         />
       )}
-   {showPreseleccionar && (
+      {showPreseleccionar && (
         <Preseleccionar
           asistencia={asistenciaActual}
           onClose={() => setShowPreseleccionar(false)}
@@ -226,7 +238,6 @@ export function MostrarAsistencias() {
           onClose={() => setShowCalificarPopup(false)}
         />
       )}
-      
     </div>
   );
 }
