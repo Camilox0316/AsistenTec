@@ -95,6 +95,22 @@ class ReceivedApplicationController {
       return res.status(500).json({ message: 'Server error' });
     }
   }
+
+  static async removeApplication(req, res, next) {
+    try {
+      const { courseCode, userId } = req.params;
+      const result = await SingletonDAO.removeApplication(courseCode, userId);
+      if (result) {
+        return res.status(200).json({ message: 'Application removed successfully' });
+      } else {
+        return res.status(404).json({ message: 'Application not found' });
+      }
+    } catch (error) {
+      console.error("Error removing application:", error.message);
+      return res.status(500).json({ message: 'Server error' });
+    }
+  };
+  
   
 }
 module.exports = ReceivedApplicationController;

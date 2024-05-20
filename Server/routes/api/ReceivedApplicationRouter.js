@@ -20,4 +20,7 @@ router
   .route("/getAssistanceStatus/:courseCode/:userId")
   .get(ReceivedApplicationController.getAssistanceStatus);
 
+router.route("/removeApplication/:courseCode/:userId").delete(ReceivedApplicationController.removeApplication);
+
+
 module.exports = router;

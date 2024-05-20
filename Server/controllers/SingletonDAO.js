@@ -626,6 +626,15 @@ class SingletonDAO {
       throw new Error(`Failed to check assistance status: ${error.message}`);
     }
   }
+  async removeApplication(courseCode, userId) {
+    try {
+      const result = await ReceivedApplication.findOneAndDelete({ idAssistance: courseCode, idUser: userId });
+      return result;
+    } catch (error) {
+      throw new Error(`Failed to remove application: ${error.message}`);
+    }
+  }
+  
 }
 
 const singletonDAO = SingletonDAO.getInstance();
