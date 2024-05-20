@@ -118,7 +118,7 @@ const VisualizarInfo = ({ asistencia, applicationId, receivedApplicationId, onCl
         </div>
         {auth?.roles?.includes(3123) && (
           <div className="button-group">
-            <button className="reject-button">Rechazar</button>
+      
             <button className="accept-button" onClick={handleAccept}>Aceptar</button>
           </div>
         )}
