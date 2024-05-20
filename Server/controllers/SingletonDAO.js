@@ -162,6 +162,22 @@ class SingletonDAO {
     }
   }
 
+  async updateUser(userId, updateData) {
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        updateData,
+        { new: true }
+      );
+      if (!updatedUser) {
+        throw new Error("User not found");
+      }
+      return updatedUser;
+    } catch (error) {
+      throw new Error(`Failed to update user: ${error.message}`);
+    }
+  }
+
   //-------------------------------------------------------------------------------------
   //                      Assistences Functions
   //-------------------------------------------------------------------------------------

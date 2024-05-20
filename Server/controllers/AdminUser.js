@@ -41,6 +41,7 @@ const registerUser = async (req, res, next) => {
       lastName2: lastName2,
       photo: req.file ? `/uploads/profilePhotos/${req.file.filename}` : "",
       roles: userRoles,
+      description: "Estudiante",
     });
 
     res.status(200).json({ msg: "User created", userId: newUser._id });
@@ -149,6 +150,29 @@ const getUserByIdAll = async (req,res,next) => {
   }
 };
 
+const updateUser = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const updateData = { ...req.body };
+
+    // If a new password is provided, hash it
+    if (req.body.newPwd) {
+      updateData.password = await bcrypt.hash(req.body.newPwd, 10);
+    }
+
+    // If a new profile picture is uploaded, update the photo path
+    if (req.file) {
+      updateData.photo = `/uploads/profilePhotos/${req.file.filename}`;
+    }
+
+    const updatedUser = await SingletonDAO.updateUser(userId, updateData);
+
+    return res.json(updatedUser);
+  } catch (error) {
+    console.error("Error updating user:", error.message);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
 
 module.exports = {
   loginUser,
@@ -161,4 +185,5 @@ module.exports = {
   getProfessorNameHandler,
   getUserById,
   getUserByIdAll,
+  updateUser,
 };

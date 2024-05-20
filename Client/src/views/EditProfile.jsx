@@ -9,22 +9,61 @@ import Button from '@mui/material/Button';
 import '../css modules/EditProfile.css'; // Ensure this path matches your CSS file's actual location
 
 export const EditProfile = () => {
-  const { auth: user, setAuth: setUser } = useAuth();
+  const { auth: activeUser } = useAuth(); 
+  const [user, setUser] = useState("");
+  const [fileName, setFileName] = useState('Max 2 MB');
+  const hostUrl = import.meta.env.VITE_HOST_URL;
+
+  useEffect(() => {
+    try {
+      const fetchUser = async () => {
+        const response = await axios.get(`${hostUrl}/user/getUserByIdAll/${activeUser.id}`);
+        setUser(response.data);
+        // Initialize formData state with fetched user data
+        setFormData({
+          name: response.data.name,
+          carnet: response.data.carnet,
+          lastName1: response.data.lastName1,
+          lastName2: response.data.lastName2,
+          email: response.data.email,
+          newPwd: '',
+          confirmPwd: '',
+          description: response.data.description,
+        });
+      }
+      fetchUser();
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  }, [activeUser.id, hostUrl]);
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: user.name,
-    idNumber: user.idNumber,
-    firstLastName: user.firstLastName,
-    secondLastName: user.secondLastName,
-    email: user.email,
+    name: '',
+    carnet: '',
+    lastName1: '',
+    lastName2: '',
+    email: '',
     newPwd: '',
     confirmPwd: '',
-    bio: user.bio
+    description: '',
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    if (files.length > 0) {
+      const file = files[0];
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        [name]: file
+      }));
+      setFileName(file.name); // Update the file name state
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -33,11 +72,21 @@ export const EditProfile = () => {
       alert("Passwords do not match!");
       return;
     }
+
+    const data = new FormData();
+    Object.keys(formData).forEach(key => {
+      data.append(key, formData[key]);
+    });
+
     try {
-      // Here you would handle the API request to update the user details
-      const response = await axios.post('http://yourapi.com/updateUser', formData);
-      setUser(response.data); // Assuming your API returns the updated user object
-      navigate('/profile'); // Redirect to the profile page or confirmation page
+      const response = await axios.put(`${hostUrl}/user/updateUser/${activeUser.id}`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      navigate('/profile');
+      alert("Profile updated successfully!");
+      console.log(response);
     } catch (error) {
       console.error("Error updating profile:", error);
     }
@@ -47,19 +96,20 @@ export const EditProfile = () => {
     <div className="edit-profile-container">
       <h2 className="edit-profile-title">Editar Perfil</h2>
       <div className="profile-photo-section">
-          <IconButton color="primary" aria-label="upload picture" component="label">
-            <input hidden accept="image/*" type="file" />
-            <PhotoCamera />
-          </IconButton>
-          <span>Nueva foto</span>
-        </div>
+        <IconButton color="primary" aria-label="upload picture" component="label">
+          <input hidden accept="image/*" type="file" name="photoFile" onChange={handleFileChange} />
+          <PhotoCamera />
+        </IconButton>
+        <span>Nueva foto</span>
+        <span className="file-name">{fileName}</span>
+      </div>
       <form className="edit-profile-form" onSubmit={handleSubmit}>
         <TextField
           label="Biografía"
           multiline
           maxRows={4}
-          name="bio"
-          value={formData.bio}
+          name="description"
+          value={formData.description}
           onChange={handleChange}
           fullWidth
           className="biography-field"
@@ -72,12 +122,10 @@ export const EditProfile = () => {
             onChange={handleChange}
             fullWidth
           />
-        </div>
-        <div className="input-row">
           <TextField
             label="1º Apellido"
-            name="firstLastName"
-            value={formData.firstLastName}
+            name="lastName1"
+            value={formData.lastName1}
             onChange={handleChange}
             fullWidth
           />
@@ -85,17 +133,15 @@ export const EditProfile = () => {
         <div className="input-row">
           <TextField
             label="2º Apellido"
-            name="secondLastName"
-            value={formData.secondLastName}
+            name="lastName2"
+            value={formData.lastName2}
             onChange={handleChange}
             fullWidth
           />
-        </div>
-        <div className="input-row">
           <TextField
             label="Número de carné"
-            name="idNumber"
-            value={formData.idNumber}
+            name="carnet"
+            value={formData.carnet}
             onChange={handleChange}
             fullWidth
           />
@@ -109,8 +155,6 @@ export const EditProfile = () => {
             onChange={handleChange}
             fullWidth
           />
-          </div>
-          <div className="input-row">
           <TextField
             label="Confirmar Contraseña"
             type="password"
@@ -119,7 +163,7 @@ export const EditProfile = () => {
             onChange={handleChange}
             fullWidth
           />
-          </div>
+        </div>
         <Button type="submit" variant="contained" color="primary" className="save-button">
           Guardar datos
         </Button>

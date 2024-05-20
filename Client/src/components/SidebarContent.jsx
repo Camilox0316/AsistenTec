@@ -18,18 +18,16 @@ function Item({ children }) {
   );
 }
 
-
 export function SidebarContent() {
   const { auth, logout } = useAuth();
   const location = useLocation();
 
   const photoUrl = auth?.photo ? `${axiosInstance.defaults.baseURL}${auth.photo}` : fotoPerfilDefault;
-  console.log(photoUrl);
   const name = auth?.name || "Nombre no disponible"; // Cambia "Nombre no disponible" por lo que prefieras
   const email = auth?.email || "Correo no disponible"; // Cambia "Correo no disponible" por lo que prefieras
 
   let options;
-  options = auth?.roles?.find((role) => [1597].includes(role)) ? ( //Student
+  options = auth?.roles?.find((role) => role === 1597) ? ( //Student
     <>
       <Item>
         <Link to="/home-switch" className="flex items-center space-x-2">
@@ -49,23 +47,8 @@ export function SidebarContent() {
           <span>Mi Perfil</span>
         </Link>
       </Item>
-      {/*       <Item>
-        <Link to="/crear-plan" className="flex items-center space-x-2">
-          <GroupIcon />
-          <span>Crear Plan</span>
-        </Link>
-      </Item>
-      <Item>
-        <Link to="/viewStudents" className="flex items-center space-x-2">
-          <GroupIcon />
-          <span>Estudiantes</span>
-        </Link>
-
-      </Item> */}
-
-
     </>
-  ) : auth?.roles?.find((role) => [2264].includes(role)) ? ( //Profesor
+  ) : auth?.roles?.find((role) => role === 2264) ? ( //Profesor
     <>
       <Item>
         <Link to="/home-professor" className="flex items-center space-x-2">
@@ -80,7 +63,7 @@ export function SidebarContent() {
         </Link>
       </Item>
     </>
-  ) : auth?.roles?.find((role) => [3123].includes(role)) ? ( //Admin
+  ) : auth?.roles?.find((role) => role === 3123) ? ( //Admin
     <>
       <Item>
         <Link to="/asistencias-aprobadas" className="flex items-center space-x-2">
@@ -114,25 +97,25 @@ export function SidebarContent() {
       </Item>
     </>
   ) : auth?.email ? (
-
     <Navigate to="/unauthorized" state={{ from: location }} replace />
-
   ) : (
     <Navigate to="/" state={{ from: location }} replace />
   );
 
-  return <>{options}
-
-    <div className="fixed bottom-0">
-      <Logout
-        photoUrl={photoUrl}//{auth.user.photoUrl}
-        name={name}//{auth.user.name}
-        email={email}
-        logout={logout} // Envuelve la función dentro de una función de flecha
-
-      />
-      <Link to="/" className="flex justify-center items-center space-x-2">
-        <span className="text-red-500">Cerrar session</span>
-      </Link>
-    </div> </>;
+  return (
+    <>
+      {options}
+      <div className="fixed bottom-0">
+        <Logout
+          photoUrl={photoUrl}
+          name={name}
+          email={email}
+          logout={logout}
+        />
+        <Link to="/" className="flex justify-center items-center space-x-2">
+          <span className="text-red-500">Cerrar sesión</span>
+        </Link>
+      </div>
+    </>
+  );
 }
