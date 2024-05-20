@@ -57,7 +57,7 @@ export const MyAssistancesPage = () => {
           courseName={assistance.assistanceDetails[0].name}
           semester={`Semestre ${assistance.assistanceDetails[0].semester}`}
           type={assistance.assistanceDetails[0].assistanceType}
-          courseCode={assistance.assistanceDetails[0].courseCode}
+          courseCode={assistance.assistanceDetails[0]._id}
         />
       ))}
     </div>

@@ -2,6 +2,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useAuth } from '../../hooks/useAuth';
 import axios from 'axios';
 import { AssistanceInfoPopUp } from '../../components/AssistanceInfoPopUp'; // Asegúrate de que la ruta sea correcta según tu estructura de carpetas
 
@@ -15,18 +16,14 @@ import '../../css modules/AssitanceDetails.css'; // Asegúrate de que la ruta se
 export const ViewAssistanceDetails = () => {
     // Asumiendo que tendrás los datos disponibles aquí o los obtendrás de alguna API.
     // const { courseCode } = useParams();
+    const {auth} = useAuth();
 
     const [courseDetails, setCourseDetails] = useState(null);
     const [showPopup, setShowPopup] = useState(false);
     const navigate = useNavigate();
     const { courseCode } = useParams();
     const hostUrl = import.meta.env.VITE_HOST_URL;
-
-    const applied = false  
-    const terminated = false
-    const status = 'pendiente'
-
-    console.log(`courseCode${courseCode}`);
+    const [assistanceStatus, setAssistanceStatus] = useState(false);
 
     useEffect(() => {
       // Make sure you handle the courseCode accordingly if it's undefined or null
@@ -40,16 +37,28 @@ export const ViewAssistanceDetails = () => {
             // Handle the error, possibly navigate back or show an error message
           }
         };
-  
+
+        const fetchAssistanceStatus = async () => {
+          try {
+            const response = await axios.get(`${hostUrl}/received/getAssistanceStatus/${courseDetails._id}/${auth.id}`);
+            setAssistanceStatus(response.data.hasApplied);
+          } catch (error) {
+            console.error("Error fetching course details:", error);
+            // Handle the error, possibly navigate back or show an error message
+          }
+        };
+        fetchAssistanceStatus();
         fetchCourseDetails();
       }
-    }, [courseCode, hostUrl]);
+    }, [courseCode, hostUrl, auth, courseDetails]);
 
     if (!courseDetails) {
       return <div>Loading...</div>; // Or some loading spinner
     }
 
-    console.log(courseDetails) 
+    const applied = assistanceStatus  
+    const terminated = courseDetails.studentStatus !== 'pendiente'
+    const status = courseDetails.studentStatus
 
     const handleApply = () => {
       // Redirecciona al formulario con el código del curso

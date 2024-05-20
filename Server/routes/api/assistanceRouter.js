@@ -32,6 +32,8 @@ router.route("/getTutoring").get(AssistanceController.getAllTutorship);
 
 router.route("/getAssistanceById/:id").get(AssistanceController.getAssistanceById);
 
+router.route("/getAssistanceByCode/:code").get(AssistanceController.getAssistanceByCode);
+
 router.route("/getAssistanceByIdObject/:id").get(AssistanceController.getAssistanceByIdObject);
 
 router.route("/update-status-assistance/:id").put(AssistanceController.updateStatusAssistant);

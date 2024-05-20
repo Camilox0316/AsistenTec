@@ -16,4 +16,8 @@ router
   .route("/updateReceivedApplication/:id")
   .patch(ReceivedApplicationController.updateReceivedApplication);
 
+router
+  .route("/getAssistanceStatus/:courseCode/:userId")
+  .get(ReceivedApplicationController.getAssistanceStatus);
+
 module.exports = router;

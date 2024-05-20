@@ -124,7 +124,6 @@ const getProfessorNameHandler = async (req, res, next) => {
 const getUserById = async (req, res, next) => {
   try{
     const userId = req.params.id;
-    console.log(userId);
     const user = await SingletonDAO.getUserById(userId);
     if(!user){
       return res.status(404).json({message: 'User not found'});

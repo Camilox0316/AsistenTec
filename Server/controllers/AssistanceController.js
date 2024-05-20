@@ -155,9 +155,22 @@ class AssistanceController {
     }
   }
 
-  static async getAssistanceByIdObject(req, res) {
+  static async getAssistanceByCode(req, res) {
     const { id } = req.params;
 
+    if (!id) {
+      return res.status(400).send({ message: "Invalid request." });
+    }
+    try {
+      const assistance = await SingletonDAO.getAssistanceByCode(id);
+      res.json(assistance);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async getAssistanceByIdObject(req, res) {
+    const { id } = req.params;
     if (!id) {
       return res.status(400).send({ message: "Invalid request." });
     }

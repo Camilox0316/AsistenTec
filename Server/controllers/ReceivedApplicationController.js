@@ -83,5 +83,18 @@ class ReceivedApplicationController {
       res.status(404).json({ message: error.message });
     }
   }
+
+  static async getAssistanceStatus (req, res, next) {
+    const { courseCode, userId } = req.params;
+  
+    try {
+      const hasApplied = await SingletonDAO.checkIfStudentApplied(courseCode, userId);
+      return res.json({ hasApplied });
+    } catch (error) {
+      console.error("Error checking assistance status:", error);
+      return res.status(500).json({ message: 'Server error' });
+    }
+  }
+  
 }
 module.exports = ReceivedApplicationController;

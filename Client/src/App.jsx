@@ -23,6 +23,7 @@ import { ViewAssistanceDetails } from "./views/Student/ViewAssitanceDetails";
 import { MyAssistancesPage } from "./views/Student/MyAssistancesPage";
 import { ApplyForm } from "./views/Student/StudentForm";
 import { ViewAssistanceDetailsAdmin } from "./views/Admin/ViewAssitanceDetailsAdmin";
+import {ViewMyAssistanceDetails} from "./views/Student/ViewMyAssistanceDetails";
 
 //User
 import { Profile } from "./views/Profile";
@@ -64,6 +65,7 @@ export default function App() {
           <Route path="/assistance-details/:courseCode" element={<ViewAssistanceDetails />} />
           <Route path="/my-assists" element={<MyAssistancesPage />} />
           <Route path="/form/:courseCode" element={<ApplyForm />} />
+          <Route path="/my-assistance-details/:courseCode" element={<ViewMyAssistanceDetails />} />
         </Route>
 
         {/* Professor routes */}

@@ -281,10 +281,8 @@ class SingletonDAO {
       const assistances = await Assistance.find({
         assistanceType: { $ne: "tutoría" },
       }).exec();
-      console.log(assistances);
       const assistancesWithProfessorName = await Promise.all(
         assistances.map(async (assistance) => {
-          console.log(assistance.proffesorId);
           const professorName = assistance.proffesorId
             ? await this.getUserById(assistance.proffesorId)
             : null;
@@ -354,7 +352,6 @@ class SingletonDAO {
       const assistance = await Assistance.findOne({
         _id: courseCode,
       }).exec();
-      console.log(`find:${assistance}`);
       if (!assistance) {
         throw new Error(`Assistance not found for courseCode: ${courseCode}`);
       }
@@ -369,7 +366,33 @@ class SingletonDAO {
           `${professorDetails.name} ${professorDetails.lastName1} ${professorDetails.lastName2}`.trim();
       }
 
-      console.log(assistanceObject);
+      return assistanceObject; // Return the modified object
+    } catch (error) {
+      console.error("Error retrieving assistance by ID:", error.message);
+      throw error;
+    }
+  }
+
+  async getAssistanceByCode(code) {
+    try {
+      // Find the assistance document by course code
+      const assistance = await Assistance.findOne({
+        courseCode: code,
+      }).exec();
+      if (!assistance) {
+        throw new Error(`Assistance not found for courseCode: ${code}`);
+      }
+      // If assistance has a professorId, use getUserById to retrieve professor details
+      let assistanceObject = assistance.toObject(); // Convert document to a plain JavaScript object
+
+      if (assistanceObject.proffesorId) {
+        const professorDetails = await this.getUserById(
+          assistanceObject.proffesorId
+        );
+        assistanceObject.professorName =
+          `${professorDetails.name} ${professorDetails.lastName1} ${professorDetails.lastName2}`.trim();
+      }
+
       return assistanceObject; // Return the modified object
     } catch (error) {
       console.error("Error retrieving assistance by ID:", error.message);
@@ -384,7 +407,6 @@ class SingletonDAO {
       if (assistances.length === 0) {
         throw new Error(`No assistances found for ID: ${id}`);
       }
-      console.log(assistances);
       // Map over the assistances to include professor details
       const assistancesWithProfessorName = await Promise.all(
         assistances.map(async (assistanceDoc) => {
@@ -400,7 +422,6 @@ class SingletonDAO {
         })
       );
 
-      console.log(assistancesWithProfessorName);
       return assistancesWithProfessorName; // Return the array of modified objects
     } catch (error) {
       console.error("Error retrieving assistances by ID:", error.message);
@@ -594,6 +615,15 @@ class SingletonDAO {
       throw new Error(
         `Error retrieving received applications by assistance id: ${error.message}`
       );
+    }
+  }
+
+  async checkIfStudentApplied(courseCode, userId) {
+    try {
+      const application = await ReceivedApplication.findOne({ idAssistance: courseCode, idUser: userId }).exec();
+      return application !== null;
+    } catch (error) {
+      throw new Error(`Failed to check assistance status: ${error.message}`);
     }
   }
 }
