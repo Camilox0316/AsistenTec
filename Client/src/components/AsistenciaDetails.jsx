@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import axios from "axios";
 import "./asistenciaDetails.css";
 import CerrarIcono from '../img/cancelar.png';
+const hostUrl = import.meta.env.VITE_HOST_URL;
 function AsistenciaDetails({ asistencia, onClose }) {
 
   const handleUpdateAssistance = async (estado) => {
     try {
-      const { data } = await axios.put(`http://localhost:3000/assistance/update-status-assistance/${asistencia._id}`, {
+      const { data } = await axios.put(`${hostUrl}/assistance/update-status-assistance/${asistencia._id}`, {
         newAdminStatus: estado// Nuevo estado que deseas asignar a adminStatus
       });
       //setResponse(data);

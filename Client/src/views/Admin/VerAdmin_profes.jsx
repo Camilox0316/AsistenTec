@@ -6,10 +6,10 @@ import { Sidebar } from "../../components/Sidebar";
 // Datos simulados para las tarjetas de asistencia
 import IngresarAdmin_prof from "./IngresarAdmin_prof";
 import axios from "axios";
-
+const hostUrl = import.meta.env.VITE_HOST_URL;
 //Imagenes
 //import iconoFiltro from "../../img/lupa.png";
-const URI = 'http://localhost:3000/user/getAdmins'
+const URI = `${hostUrl}/user/getAdmins`
 
 
 let response = await axios.get(URI);

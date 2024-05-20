@@ -9,8 +9,7 @@ import ConfirmDeletePopup from "../../components/ConfirmDeletePopup.jsx"
 import AsistenciaDetails from "../../components/AsistenciaDetails.jsx";
 import Preseleccionar from "./Preseleccionar.jsx"
 import Calificar from "./Calificar.jsx"
-
-
+const hostUrl = import.meta.env.VITE_HOST_URL;
 export function MostrarAsistencias() {
   const [isSolicitarAsistenciaVisible, setIsSolicitarAsistenciaVisible] =
     useState(false);
@@ -48,8 +47,8 @@ export function MostrarAsistencias() {
   const fetchAsistencias = async () => {
     try {
       const endpoint = auth.roles?.includes(2264)
-        ? `http://localhost:3000/assistance/getProfAssistances/${auth.id}`
-        : `http://localhost:3000/assistance/getAssistances`;
+        ? `${hostUrl}/assistance/getProfAssistances/${auth.id}`
+        : `${hostUrl}/assistance/getAssistances`;
       const response = await axios.get(endpoint);
       let asistenciasOrdenadas = response.data;
       // Ordenar por fecha de creación, de más reciente a menos reciente o viceversa
@@ -74,7 +73,7 @@ export function MostrarAsistencias() {
 
     try {
       // Hace la llamada DELETE a tu API
-      await axios.delete(`http://localhost:3000/assistance/deleteAssistance/${asistenciaParaEliminar._id}`);
+      await axios.delete(`${hostUrl}/assistance/deleteAssistance/${asistenciaParaEliminar._id}`);
       
       // Actualiza el estado para reflejar el cambio
       setAsistencias(asistencias.filter((item) => item._id !== asistenciaParaEliminar._id));

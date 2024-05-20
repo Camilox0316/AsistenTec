@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import VisualizarInfo from './VisualizarInfo'; // Asegúrate de importar el nuevo componente
 import { useAuth } from '../../hooks/useAuth';
-
+const hostUrl = import.meta.env.VITE_HOST_URL;
 const Preseleccionar = ({ asistencia, onClose }) => {
   const [postulantes, setPostulantes] = useState([]);
   const [selectedApplicationId, setSelectedApplicationId] = useState(null);
@@ -14,11 +14,11 @@ const Preseleccionar = ({ asistencia, onClose }) => {
   useEffect(() => {
     const fetchPostulantes = async () => {
       try {
-        const receivedApplicationsResponse = await axios.get(`http://localhost:3000/received/receivedApplications/${asistencia._id}`);
+        const receivedApplicationsResponse = await axios.get(`${hostUrl}/received/receivedApplications/${asistencia._id}`);
         const receivedApplications = receivedApplicationsResponse.data;
 
         const postulantesData = await Promise.all(receivedApplications.map(async (application) => {
-          const userResponse = await axios.get(`http://localhost:3000/user/getUserByIdAll/${application.idUser}`);
+          const userResponse = await axios.get(`${hostUrl}/user/getUserByIdAll/${application.idUser}`);
           const user = userResponse.data;
 
           return {
@@ -50,7 +50,7 @@ const Preseleccionar = ({ asistencia, onClose }) => {
     try {
       const applicationId = updatedPostulantes[index].applicationId;
       const status = updatedPostulantes[index].preseleccionar === "Sí";
-      await axios.patch(`http://localhost:3000/received/updateReceivedApplication/${applicationId}`, { status });
+      await axios.patch(`${hostUrl}/received/updateReceivedApplication/${applicationId}`, { status });
       console.log("Estado actualizado exitosamente en la base de datos.");
     } catch (error) {
       console.error("Error actualizando el estado:", error);

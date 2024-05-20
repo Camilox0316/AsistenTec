@@ -5,7 +5,7 @@ import CerrarIcono from "../../img/cancelar.png"; // Asegúrate de tener un íco
 import PropTypes from "prop-types";
 import { useAuth } from "../../hooks/useAuth";
 import axios from "axios";
-
+const hostUrl = import.meta.env.VITE_HOST_URL;
 const SolicitarAsistencia = ({
   onClose,
   asistenciaTipos,
@@ -83,9 +83,9 @@ asistencia && asistencia.courseCode ? asistencia.courseCode : ''
 
     try {
       if (asistencia) {
-        await axios.put(`http://localhost:3000/assistance/updateAssistance/${asistencia._id}`, nuevaAsistencia);
+        await axios.put(`${hostUrl}/assistance/updateAssistance/${asistencia._id}`, nuevaAsistencia);
       } else {
-        await axios.post('http://localhost:3000/assistance/addAssistance', nuevaAsistencia);
+        await axios.post(`${hostUrl}/assistance/addAssistance`, nuevaAsistencia);
       }
       onClose();
     } catch (error) {

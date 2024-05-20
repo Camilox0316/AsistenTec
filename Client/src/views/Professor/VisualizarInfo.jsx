@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useAuth } from '../../hooks/useAuth';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+const hostUrl = import.meta.env.VITE_HOST_URL;
 const VisualizarInfo = ({ asistencia, applicationId, onClose }) => {
   const [application, setApplication] = useState(null);
   const { auth } = useAuth();
@@ -13,7 +13,7 @@ const VisualizarInfo = ({ asistencia, applicationId, onClose }) => {
   useEffect(() => {
     const fetchApplication = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/application/getById/${applicationId}`);
+        const response = await axios.get(`${hostUrl}/application/getById/${applicationId}`);
         setApplication(response.data);
       } catch (error) {
         console.error('Error fetching application:', error);
@@ -26,10 +26,10 @@ const VisualizarInfo = ({ asistencia, applicationId, onClose }) => {
   const handleAccept = async () => {
     try {
       // Update the `selected` field in the received application
-      await axios.patch(`http://localhost:3000/received/updateReceivedApplication/${application._id}`, { selected: true });
+      await axios.patch(`${hostUrl}/received/updateReceivedApplication/${application._id}`, { selected: true });
 
       // Update the `studentStatus` field in the assistance
-      await axios.put(`http://localhost:3000/assistance/updateAssistance/${asistencia._id}`, { studentStatus: 'aceptado' });
+      await axios.put(`${hostUrl}/assistance/updateAssistance/${asistencia._id}`, { studentStatus: 'aceptado' });
 
       console.log('Application accepted successfully.');
       onClose(); // Close the popup after successful update
