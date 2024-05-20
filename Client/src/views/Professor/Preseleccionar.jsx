@@ -3,9 +3,11 @@ import libroIcon from '../../img/libro.png';
 import "./Preseleccionar.css";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import VisualizarInfo from './VisualizarInfo'; // Asegúrate de importar el nuevo componente
 
 const Preseleccionar = ({ asistencia, onClose }) => {
   const [postulantes, setPostulantes] = useState([]);
+  const [selectedApplicationId, setSelectedApplicationId] = useState(null);
 
   useEffect(() => {
     const fetchPostulantes = async () => {
@@ -57,68 +59,81 @@ const Preseleccionar = ({ asistencia, onClose }) => {
     console.log(`Redirigir al perfil del estudiante con carnet: ${carne}`);
   };
 
-  const handlePostulacionClick = (postulacion) => {
-    console.log(`Mostrar la postulación del estudiante: ${postulacion}`);
+  const handlePostulacionClick = (applicationId) => {
+    setSelectedApplicationId(applicationId);
   };
 
   const handleNombreClick = (carne) => {
     console.log(`Carnet del estudiante: ${carne}`);
   };
 
+  const handleClosePopup = () => {
+    setSelectedApplicationId(null);
+  };
+
   return (
-    <div className="preseleccionar-popup">
-      <button className="close-button" onClick={onClose}>X</button>
-      <img src={libroIcon} alt="Icono Libro" className="libro-icon" />
-      <div className="popup-content">
-        <h1>{asistencia.name}</h1>
-        <p>{`Semestre ${asistencia.semester} ${asistencia.year}`}</p>
-        <p><strong>Estado</strong></p>
-        <p>{asistencia.adminStatus}</p>
-        <h3>Postulantes</h3>
-        <div className="contenedor-tabla-preseleccion">
-          <table className="tabla-preseleccion">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Carné</th>
-                <th>Preseleccionar</th>
-                <th>Postulaciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {postulantes.map((postulante, index) => (
-                <tr key={index}>
-                  <td 
-                    className="clickable"
-                    onClick={() => handleNombreClick(postulante.carne)}
-                  >
-                    {postulante.nombre}
-                  </td>
-                  <td 
-                    className="clickable" 
-                    onClick={() => handleCarnetClick(postulante.carne)}
-                  >
-                    {postulante.carne}
-                  </td>
-                  <td>
-                    <input 
-                      type="checkbox" 
-                      checked={postulante.preseleccionar === "Sí"} 
-                      onChange={() => handlePreseleccionar(index)} 
-                    />
-                  </td>
-                  <td 
-                    className="clickable" 
-                    onClick={() => handlePostulacionClick(postulante.postulaciones)}
-                  >
-                    {postulante.postulaciones}
-                  </td>
+    <div>
+      <div className="preseleccionar-popup">
+        <button className="close-button" onClick={onClose}>X</button>
+        <img src={libroIcon} alt="Icono Libro" className="libro-icon" />
+        <div className="popup-content">
+          <h1>{asistencia.name}</h1>
+          <p>{`Semestre ${asistencia.semester} ${asistencia.year}`}</p>
+          <p><strong>Estado</strong></p>
+          <p>{asistencia.adminStatus}</p>
+          <h3>Postulantes</h3>
+          <div className="contenedor-tabla-preseleccion">
+            <table className="tabla-preseleccion">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Carné</th>
+                  <th>Preseleccionar</th>
+                  <th>Postulaciones</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {postulantes.map((postulante, index) => (
+                  <tr key={index}>
+                    <td 
+                      className="clickable"
+                      onClick={() => handleNombreClick(postulante.carne)}
+                    >
+                      {postulante.nombre}
+                    </td>
+                    <td 
+                      className="clickable" 
+                      onClick={() => handleCarnetClick(postulante.carne)}
+                    >
+                      {postulante.carne}
+                    </td>
+                    <td>
+                      <input 
+                        type="checkbox" 
+                        checked={postulante.preseleccionar === "Sí"} 
+                        onChange={() => handlePreseleccionar(index)} 
+                      />
+                    </td>
+                    <td 
+                      className="clickable" 
+                      onClick={() => handlePostulacionClick(postulante.postulaciones)}
+                    >
+                      {postulante.postulaciones}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+      {selectedApplicationId && (
+        <VisualizarInfo 
+          asistencia={asistencia} 
+          applicationId={selectedApplicationId} 
+          onClose={handleClosePopup} 
+        />
+      )}
     </div>
   );
 };
