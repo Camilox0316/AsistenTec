@@ -61,7 +61,8 @@ export function ViewHomeStudent() {
     <h2 className="section-title">Asistencias</h2>
     <div className="carousel-container">
       <div className="assistance-container" ref={assistanceScrollRef}>
-        {assistances.map(assistance => (
+        {assistances.filter(assistance => assistance.adminStatus === "aceptado")
+        .map(assistance => (
         <AvailableAssistance
           id={assistance._id}
           title={assistance.name}
@@ -83,7 +84,8 @@ export function ViewHomeStudent() {
     <h2 className="section-title">Tutorías</h2>
     <div className="carousel-container">
       <div className="tutorship-container" ref={tutoringsScrollRef}>
-        {tutorings.map(tutoring => (
+        {tutorings.filter(tutoring => tutoring.adminStatus === "aceptado")
+        .map(tutoring => (
         <AvailableAssistance
           id={tutoring._id}
           title={tutoring.name}
