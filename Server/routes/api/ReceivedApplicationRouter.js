@@ -22,5 +22,6 @@ router
 
 router.route("/removeApplication/:courseCode/:userId").delete(ReceivedApplicationController.removeApplication);
 
+router.route("/getStudentAssistances/:userId").get(ReceivedApplicationController.getStudentAssistances);
 
 module.exports = router;

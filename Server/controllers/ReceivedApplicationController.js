@@ -111,6 +111,16 @@ class ReceivedApplicationController {
     }
   };
   
+  static async  getStudentAssistances (req, res, next) {
+    try {
+      const { userId } = req.params;
+      const assistances = await SingletonDAO.getStudentAssistances(userId);
+      return res.status(200).json(assistances);
+    } catch (error) {
+      console.error("Error fetching student assistances:", error.message);
+      return res.status(500).json({ message: 'Server error' });
+    }
+  };
   
 }
 module.exports = ReceivedApplicationController;

@@ -69,6 +69,7 @@ class SingletonDAO {
             name: userFound.name,
             photo: userFound.photo,
             roles: [userFound.roles],
+            carnet: userFound.carnet,
             message: "User logged perfectly ",
           });
 
@@ -632,6 +633,29 @@ class SingletonDAO {
       return result;
     } catch (error) {
       throw new Error(`Failed to remove application: ${error.message}`);
+    }
+  }
+
+  async getStudentAssistances(userId) {
+    try {
+      const applications = await ReceivedApplication.find({
+        idUser: userId,
+        selected: true,
+        score: { $gt: 0 }
+      });
+  
+      const assistancesDetailsPromises = applications.map(async (application) => {
+        const assistanceDetails = await Assistance.findById(application.idAssistance);
+        return {
+          ...application._doc, // Spread the application document
+          assistanceDetails,
+        };
+      });
+  
+      const resolvedAssistancesDetails = await Promise.all(assistancesDetailsPromises);
+      return resolvedAssistancesDetails;
+    } catch (error) {
+      throw new Error(`Failed to fetch student assistances: ${error.message}`);
     }
   }
   

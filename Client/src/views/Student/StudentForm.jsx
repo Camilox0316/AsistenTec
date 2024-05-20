@@ -10,7 +10,7 @@ import { AssistanceTypeInfoPopUp } from '../../components/AssitanceTypeInfoPopUp
 import { BankInfoPopUp } from '../../components/BankInfoPopUp';
 
 export const ApplyForm = () => {
-  const [scholarships, setScholarships] = useState(["Mauricio Campos", "Parcial", "Completa"]);
+  const [scholarships, setScholarships] = useState(["Mauricio Campos", "Beca Préstamo", "Beca de Exoneración Porcentual", "Egresado del Colegio Científico ", "No Aplica"]);
   const { courseCode } = useParams();
   const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(false);
@@ -19,6 +19,7 @@ export const ApplyForm = () => {
   const [courseDetails, setCourseDetails] = useState(null);
   const hostUrl = import.meta.env.VITE_HOST_URL;
   const [otherAssistance, setOtherAssistance] = useState(false);
+  const { auth: activeUser } = useAuth();
 
   const handleOtherAssistanceChange = (event) => {
     setOtherAssistance(event.target.value === "Sí");
@@ -113,6 +114,7 @@ export const ApplyForm = () => {
     setSelectedOption(option);
   };
 
+  console.log(activeUser);
   return (
     <div className="request-form-container">
       <h2 className="form-title">Solicitud de {courseDetails.assistanceType === 'tutoría' ? "Tutoría" : "Asistencia"}</h2>
@@ -123,7 +125,7 @@ export const ApplyForm = () => {
       <form className="request-form" onSubmit={handleSubmit}>
         <div className="input-row">
           <label htmlFor="carnet">N° de carnet</label>
-          <input type="text" id="carnet" name="carnet" required />
+          <input type="text" id="carnet" name="carnet" value={activeUser.carnet} required />
 
           <label htmlFor="idNumber">N° de cédula</label>
           <input type="text" id="idNumber" name="idNumber" required />
@@ -134,7 +136,7 @@ export const ApplyForm = () => {
           <input type="text" id="phone" name="phone" required />
 
           <label htmlFor="email">Correo @estudiantec</label>
-          <input type="email" id="email" name="email" required />
+          <input type="email" id="email" name="email" value={activeUser.email} required />
         </div>
 
         <div className="input-row">

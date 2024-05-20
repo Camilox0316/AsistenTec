@@ -43,7 +43,8 @@ export function LoginPage() {
       let name = response?.data?.name;
       let photo = response?.data?.photo;
       let id = response?.data?.id;
-      setAuth({id,name,photo,email, password, roles: [roles[0]]});
+      let carnet = response?.data?.carnet;
+      setAuth({id,name,photo,email, password, roles: [roles[0]],carnet});
       setEmail("");
       setPassword("");
       navigate("/home-switch");
