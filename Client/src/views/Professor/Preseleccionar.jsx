@@ -1,36 +1,67 @@
 import PropTypes from 'prop-types';
 import libroIcon from '../../img/libro.png';
 import "./Preseleccionar.css";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Preseleccionar = ({ asistencia, onClose }) => {
-  // JSON de ejemplo incluido directamente en el componente
-  const [postulantes, setPostulantes] = useState([
-    { nombre: "Mario Barboza", carne: "2021075241", preseleccionar: "Sí", postulaciones: "Postulación" },
-    { nombre: "Sebastian Chavez", carne: "2021075242", preseleccionar: "No", postulaciones: "Postulación" },
-    { nombre: "Camilo Sanchez", carne: "2021075243", preseleccionar: "No", postulaciones: "Postulación" }
-  ]);
+  const [postulantes, setPostulantes] = useState([]);
 
-  const handlePreseleccionar = (index) => {
+  useEffect(() => {
+    const fetchPostulantes = async () => {
+      try {
+        const receivedApplicationsResponse = await axios.get(`http://localhost:3000/received/receivedApplications/${asistencia._id}`);
+        const receivedApplications = receivedApplicationsResponse.data;
+
+        const postulantesData = await Promise.all(receivedApplications.map(async (application) => {
+          const userResponse = await axios.get(`http://localhost:3000/user/getUserByIdAll/${application.idUser}`);
+          const user = userResponse.data;
+
+          return {
+            nombre: `${user.name} ${user.lastName1} ${user.lastName2}`,
+            carne: user.carnet,
+            preseleccionar: application.status ? "Sí" : "No",
+            postulaciones: application.idApplication,
+            applicationId: application._id
+          };
+        }));
+
+        setPostulantes(postulantesData);
+      } catch (error) {
+        console.error("Error fetching postulantes:", error);
+      }
+    };
+
+    fetchPostulantes();
+  }, [asistencia]);
+
+  const handlePreseleccionar = async (index) => {
     const updatedPostulantes = postulantes.map((postulante, i) => ({
       ...postulante,
-      preseleccionar: i === index ? "Sí" : "No"
+      preseleccionar: i === index ? (postulante.preseleccionar === "Sí" ? "No" : "Sí") : postulante.preseleccionar
     }));
+
     setPostulantes(updatedPostulantes);
+
+    try {
+      const applicationId = updatedPostulantes[index].applicationId;
+      const status = updatedPostulantes[index].preseleccionar === "Sí";
+      await axios.patch(`http://localhost:3000/received/updateReceivedApplication/${applicationId}`, { status });
+      console.log("Estado actualizado exitosamente en la base de datos.");
+    } catch (error) {
+      console.error("Error actualizando el estado:", error);
+    }
   };
 
   const handleCarnetClick = (carne) => {
-    // Redirigir al perfil del estudiante
     console.log(`Redirigir al perfil del estudiante con carnet: ${carne}`);
   };
 
   const handlePostulacionClick = (postulacion) => {
-    // Mostrar la postulación del estudiante
     console.log(`Mostrar la postulación del estudiante: ${postulacion}`);
   };
 
   const handleNombreClick = (carne) => {
-    // Imprimir el carnet del estudiante
     console.log(`Carnet del estudiante: ${carne}`);
   };
 
@@ -71,8 +102,7 @@ const Preseleccionar = ({ asistencia, onClose }) => {
                   </td>
                   <td>
                     <input 
-                      type="radio" 
-                      name="preseleccionar" 
+                      type="checkbox" 
                       checked={postulante.preseleccionar === "Sí"} 
                       onChange={() => handlePreseleccionar(index)} 
                     />
@@ -99,6 +129,7 @@ Preseleccionar.propTypes = {
     semester: PropTypes.number.isRequired,
     year: PropTypes.number.isRequired,
     adminStatus: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
   }).isRequired,
   onClose: PropTypes.func.isRequired,
 };

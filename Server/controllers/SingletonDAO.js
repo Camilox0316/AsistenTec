@@ -427,7 +427,7 @@ class SingletonDAO {
         idApplication: application._id,
         date: new Date(),
         selected: false,
-        status: true,
+        status: false,
       });
       return application;
     } catch (error) {
@@ -561,6 +561,19 @@ class SingletonDAO {
     } catch (error) {
       throw new Error(
         `Error retrieving received applications: ${error.message}`
+      );
+    }
+  }
+
+  async getReceivedApplicationsByAssistanceId(assistanceId) {
+    try {
+      const receivedApplications = await ReceivedApplication.find({
+        idAssistance: assistanceId,
+      });
+      return receivedApplications;
+    } catch (error) {
+      throw new Error(
+        `Error retrieving received applications by assistance id: ${error.message}`
       );
     }
   }
