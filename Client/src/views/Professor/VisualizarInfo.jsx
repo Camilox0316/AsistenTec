@@ -21,6 +21,36 @@ const VisualizarInfo = ({ asistencia, applicationId, onClose }) => {
     fetchApplication();
   }, [applicationId]);
 
+  const handleAccept = async () => {
+    try {
+      // Find the received application by applicationId to get its _id
+      const receivedApplicationsResponse = await axios.get(`http://localhost:3000/received/receivedApplications/${asistencia._id}`);
+      const receivedApplications = receivedApplicationsResponse.data;
+      const receivedApplication = receivedApplications.find(app => app.idApplication === applicationId);
+
+      if (!receivedApplication) {
+        throw new Error('Received application not found.');
+      }
+
+      // Update the `selected` field in the received application
+      await axios.patch(`http://localhost:3000/received/updateReceivedApplication/${receivedApplication._id}`, { selected: true });
+
+      // Update the `studentStatus` field in the assistance
+      await axios.put(`http://localhost:3000/assistance/updateAssistance/${asistencia._id}`, { studentStatus: 'aceptado' });
+
+      console.log('Application accepted successfully.');
+      onClose(); // Close the popup after successful update
+
+      // Display success notification
+      toast.success('Application accepted successfully.');
+    } catch (error) {
+      console.error('Error accepting application:', error);
+
+      // Display error notification
+      toast.error('Error accepting application.');
+    }
+  };
+
   if (!application) {
     return <div>Loading...</div>;
   }
@@ -94,7 +124,7 @@ const VisualizarInfo = ({ asistencia, applicationId, onClose }) => {
         {auth?.roles?.includes(3123) && (
           <div className="button-group">
             <button className="reject-button">Rechazar</button>
-            <button className="accept-button">Aceptar</button>
+            <button className="accept-button" onClick={handleAccept}>Aceptar</button>
           </div>
         )}
       </div>
@@ -108,6 +138,7 @@ VisualizarInfo.propTypes = {
     semester: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     courseCode: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
   }).isRequired,
   applicationId: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,

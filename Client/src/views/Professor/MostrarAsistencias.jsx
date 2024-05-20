@@ -115,10 +115,15 @@ export function MostrarAsistencias() {
     console.log("verificando roles")
     console.log("rol:", auth.roles)
     if (auth?.roles?.find((role) => [3123].includes(role))) {//Admin 
+      if (asistencia.adminStatus === 'aceptado' && asistencia.studentStatus !== 'aceptado') {
+        setShowPreseleccionar(true);
+        setAsistenciaActual(asistencia);
+      }
+      else{
       console.log("Admin")
       setShowDetails(true);
       setAsistenciaActual(asistencia);
-      console.log("detalles asistencias")
+      console.log("detalles asistencias")}
     }
     else if (auth?.roles?.includes(2264)) { // Professor role
       console.log("Entra a Profe")

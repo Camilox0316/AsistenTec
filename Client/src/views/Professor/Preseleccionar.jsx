@@ -4,10 +4,12 @@ import "./Preseleccionar.css";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import VisualizarInfo from './VisualizarInfo'; // Asegúrate de importar el nuevo componente
+import { useAuth } from '../../hooks/useAuth';
 
 const Preseleccionar = ({ asistencia, onClose }) => {
   const [postulantes, setPostulantes] = useState([]);
   const [selectedApplicationId, setSelectedApplicationId] = useState(null);
+  const { auth } = useAuth(); // Obtener la información de autenticación
 
   useEffect(() => {
     const fetchPostulantes = async () => {
@@ -108,11 +110,15 @@ const Preseleccionar = ({ asistencia, onClose }) => {
                       {postulante.carne}
                     </td>
                     <td>
-                      <input 
-                        type="checkbox" 
-                        checked={postulante.preseleccionar === "Sí"} 
-                        onChange={() => handlePreseleccionar(index)} 
-                      />
+                      {auth.roles?.includes(3123) ? ( // Si es Admin, solo mostrar el estado
+                        <span>{postulante.preseleccionar}</span>
+                      ) : ( // Si no es Admin, permitir edición
+                        <input 
+                          type="checkbox" 
+                          checked={postulante.preseleccionar === "Sí"} 
+                          onChange={() => handlePreseleccionar(index)} 
+                        />
+                      )}
                     </td>
                     <td 
                       className="clickable" 
