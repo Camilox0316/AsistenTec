@@ -1,35 +1,27 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import '../../css modules/StudentForm.css';
 import axios from 'axios';
-
-import {useAuth } from '../../hooks/useAuth';
-
+import { useAuth } from '../../hooks/useAuth';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-
 import { AssistanceTypeInfoPopUp } from '../../components/AssitanceTypeInfoPopUp';
 import { BankInfoPopUp } from '../../components/BankInfoPopUp';
 
-
-export const ApplyForm = () => { 
+export const ApplyForm = () => {
   const [scholarships, setScholarships] = useState(["Mauricio Campos", "Parcial", "Completa"]);
   const { courseCode } = useParams();
   const navigate = useNavigate();
-
   const [showPopup, setShowPopup] = useState(false);
   const [showPopUpAssistance, setShowPopUpAssistance] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
-
   const [courseDetails, setCourseDetails] = useState(null);
   const hostUrl = import.meta.env.VITE_HOST_URL;
-
   const [otherAssistance, setOtherAssistance] = useState(false);
 
   const handleOtherAssistanceChange = (event) => {
-    setOtherAssistance(event.target.checked);
+    setOtherAssistance(event.target.value === "Sí");
   };
 
   function capitalizeEachWord(str) {
@@ -39,7 +31,7 @@ export const ApplyForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission
-  
+
     // Gather the form data into an object
     const applicationData = {
       idAssistance: courseCode, // Assuming you have the assistance ID in the courseDetails
@@ -56,7 +48,7 @@ export const ApplyForm = () => {
       otherHours: parseFloat(event.target.requestedHours.value) || 0, // Make sure to parse string to number
       status: false // Assuming this should be set to false initially
     };
-    
+
     console.log(applicationData);
 
     // You need to validate that email has the domain @estudiantec here
@@ -65,19 +57,19 @@ export const ApplyForm = () => {
       console.error("Invalid email domain. It must end with @estudiantec.");
       return;
     }
-  
+
     try {
       // Make the API call to register the application
       const response = await axios.post(`${hostUrl}/application/create`, applicationData);
       // Handle the response, such as navigating to a thank-you page or displaying a success message
       console.log('Application submitted:', response.data);
+      alert('Solicitud enviada con éxito');
       // navigate('/thank-you'); // Redirect to a thank-you page, for example
     } catch (error) {
       // Handle errors, such as displaying an error message to the user
       console.error("Error submitting application:", error);
     }
   };
-  
 
   useEffect(() => {
     // Make sure you handle the courseCode accordingly if it's undefined or null
@@ -100,9 +92,6 @@ export const ApplyForm = () => {
     }
   }, [courseCode, hostUrl]);
 
-
-  
-
   if (!courseDetails) {
     return <div>Loading...</div>; // Or some loading spinner
   }
@@ -117,8 +106,6 @@ export const ApplyForm = () => {
   const handleQuestionClickClose = () => {
     setShowPopUpAssistance(false);
   };
-  
-  
 
   const options = ['Horas Asistente', 'Horas Estudiante', 'Asistencia Especial', 'Tutoría'];
 
@@ -128,7 +115,7 @@ export const ApplyForm = () => {
 
   return (
     <div className="request-form-container">
-      <h2 className="form-title">Solicitud de {courseDetails.assistanceType == 'tutoría' ? "Tutoría" : "Asistencia"}</h2>
+      <h2 className="form-title">Solicitud de {courseDetails.assistanceType === 'tutoría' ? "Tutoría" : "Asistencia"}</h2>
       <div className="course-info">
         <p className="course-name">Curso: {courseDetails.name}</p>
         <p className="professor-name">Profesor: {courseDetails.professorName}</p>
@@ -159,23 +146,22 @@ export const ApplyForm = () => {
 
           <label htmlFor="scholarship">Beca</label>
           <select id="scholarship" name="scholarship">
-          {scholarships.map(scholarship => (
-            <option key={scholarship} value={scholarship}>
-              {scholarship}
-            </option>
-          ))}
-        </select>
+            {scholarships.map(scholarship => (
+              <option key={scholarship} value={scholarship}>
+                {scholarship}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="input-row">
           <label htmlFor="accountNumber">Número de cuenta</label>
           <input type="text" id="accountNumber" name="accountNumber" />
-          {/* Add the button to open the AssistanceInfoPopUp */}
           <div className="help-circle" type="button" onClick={handleOpenPopup}>
             <HelpOutlineIcon />
           </div>
         </div>
-        
+
         {showPopup && <BankInfoPopUp onClose={handleClosePopup} />}
 
         <div className="animated-selection-container">
@@ -191,7 +177,7 @@ export const ApplyForm = () => {
           ))}
           <div className="question-button-container">
             <button
-              type = "button"
+              type="button"
               className="question-button"
               onClick={handleQuestionClick}
             >
@@ -201,15 +187,15 @@ export const ApplyForm = () => {
         </div>
 
         {showPopUpAssistance && (
-        <AssistanceTypeInfoPopUp onClose={handleQuestionClickClose} />
-      )}
+          <AssistanceTypeInfoPopUp onClose={handleQuestionClickClose} />
+        )}
 
         <div className="input-row optional">
           <label htmlFor="otherSchool">¿Tiene asistencias en otra escuela o departamento?</label>
           <div className="toggle-switch">
-          <input type="checkbox" id="otherSchool" name="otherSchool" onChange={handleOtherAssistanceChange} />
-          <label htmlFor="otherSchool">Sí</label>
-            <input type="checkbox" id="otherSchoolNo" name="otherSchool" />
+            <input type="radio" id="otherSchoolYes" name="otherSchool" value="Sí" checked={otherAssistance === true} onChange={handleOtherAssistanceChange} />
+            <label htmlFor="otherSchoolYes">Sí</label>
+            <input type="radio" id="otherSchoolNo" name="otherSchool" value="No" checked={otherAssistance === false} onChange={handleOtherAssistanceChange} />
             <label htmlFor="otherSchoolNo">No</label>
           </div>
 
@@ -221,9 +207,9 @@ export const ApplyForm = () => {
         </div>
 
         <div className="submit-row">
-          <button className= "apply-button" type="submit">Enviar</button>
+          <button className="apply-button" type="submit">Enviar</button>
         </div>
       </form>
     </div>
   );
-}
+};
