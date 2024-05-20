@@ -128,12 +128,17 @@ export function MostrarAsistencias({ statusFilter }) {
       if (asistencia.adminStatus === 'aceptado' && asistencia.studentStatus !== 'aceptado') {
         setShowPreseleccionar(true);
         setAsistenciaActual(asistencia);
-      } else {
+      } else if (asistencia.adminStatus === 'pendiente' && asistencia.studentStatus === 'pendiente'){
         console.log("Admin");
         setShowDetails(true);
         setAsistenciaActual(asistencia);
         console.log("detalles asistencias");
       }
+      else if (asistencia.adminStatus === 'aceptado' && asistencia.studentStatus === 'aceptado') {
+        setShowCalificarPopup(true);
+        setAsistenciaActual(asistencia);
+      }
+      
     } else if (auth?.roles?.includes(2264)) { // Professor role
       console.log("Entra a Profe");
       if (asistencia.adminStatus === 'aceptado' && asistencia.studentStatus !== 'aceptado') {

@@ -3,12 +3,15 @@ import libroIcon from '../../img/libro.png';
 import "./Preseleccionar.css"; // Reuse the same CSS file
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useAuth } from '../../hooks/useAuth';
 
 const Calificar = ({ asistencia, onClose }) => {
   const [postulantes, setPostulantes] = useState([]);
-
+  const [isAdmin, setisAdmin] = useState(false);
+  
   useEffect(() => {
     const fetchPostulantes = async () => {
+      verificarSiEsAdmin();
       try {
         const response = await axios.get(`http://localhost:3000/received/receivedApplications/${asistencia._id}`);
         const receivedApplications = response.data;
@@ -37,6 +40,18 @@ const Calificar = ({ asistencia, onClose }) => {
 
     fetchPostulantes();
   }, [asistencia]);
+
+  const {auth} = useAuth();
+
+  const verificarSiEsAdmin = () => {
+   
+    if (auth?.roles?.find((role) => [3123].includes(role))) {
+        setisAdmin(true);
+     }
+    else{
+      setisAdmin(false);
+    }
+  }
 
   const handleCalificar = async (index, value) => {
     const updatedPostulantes = postulantes.map((postulante, i) => ({
@@ -73,7 +88,8 @@ const Calificar = ({ asistencia, onClose }) => {
             <thead>
               <tr>
                 <th>Nombre</th>
-                <th>Calificar 0 - 5</th>
+                {!isAdmin && (
+                <th>Calificar 0 - 5</th>)}
               </tr>
             </thead>
             <tbody>
@@ -85,6 +101,7 @@ const Calificar = ({ asistencia, onClose }) => {
                   >
                     {postulante.nombre}
                   </td>
+                  {!isAdmin && (
                   <td>
                     <select 
                       value={postulante.calificacion} 
@@ -96,6 +113,7 @@ const Calificar = ({ asistencia, onClose }) => {
                       ))}
                     </select>
                   </td>
+                )}
                 </tr>
               ))}
             </tbody>

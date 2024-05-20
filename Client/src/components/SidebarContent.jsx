@@ -76,7 +76,7 @@ export function SidebarContent() {
       <Item>
         <Link to="/home-professor-aprobadas" className="flex items-center space-x-2">
           <GroupIcon />
-          <span >Asistencias Aprobadas</span>
+          <span >Asistencias Activas</span>
         </Link>
       </Item>
       <Item>
@@ -113,7 +113,7 @@ export function SidebarContent() {
         </Link>
       </Item>
       <Item>
-        <Link to="/home-switch" className="flex items-center space-x-2">
+        <Link to="/asistencias-activas" className="flex items-center space-x-2">
           <GroupIcon />
           <span>Consultar Asistencias Activas</span>
         </Link>

@@ -129,7 +129,8 @@ const Preseleccionar = ({ asistencia, onClose }) => {
                       className="clickable" 
                       onClick={() => handlePostulacionClick(postulante.applicationId, postulante.receivedApplicationId)} // Adjust this line
                     >
-                      {postulante.postulaciones}
+                      {/* {postulante.postulaciones} */}
+                          Ver postulación
                     </td>
                   </tr>
                 ))}

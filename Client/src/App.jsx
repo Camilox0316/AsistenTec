@@ -83,6 +83,8 @@ export default function App() {
           <Route path="/administradores_profes" element={<VerAdmin_profes />} />
           <Route path="/mostrar-solicitudes" element={<MostrarAsistencias />} />
           <Route path="/asistencias-aprobadas" element={<ViewHomeStudent />} />
+          
+          <Route path="/asistencias-activas" element={<MostrarAsistencias statusFilter="aprobada" />} />
           <Route path="/assistance-details-admin/:courseCode" element={<ViewAssistanceDetailsAdmin />} />
         </Route>
 
