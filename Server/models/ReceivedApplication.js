@@ -24,6 +24,10 @@ const ReceivedApplicationSchema = new mongoose.Schema({
       type: Boolean,
       default: false
     },
+    score: {
+      type: Number,
+      required: true
+    },
     status: {
       type: Boolean,
       required: true
