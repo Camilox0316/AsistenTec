@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import './VisualizarInfo.css';
 import axios from 'axios';
 import { useAuth } from '../../hooks/useAuth';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const VisualizarInfo = ({ asistencia, applicationId, onClose }) => {
   const [application, setApplication] = useState(null);
@@ -23,17 +25,8 @@ const VisualizarInfo = ({ asistencia, applicationId, onClose }) => {
 
   const handleAccept = async () => {
     try {
-      // Find the received application by applicationId to get its _id
-      const receivedApplicationsResponse = await axios.get(`http://localhost:3000/received/receivedApplications/${asistencia._id}`);
-      const receivedApplications = receivedApplicationsResponse.data;
-      const receivedApplication = receivedApplications.find(app => app.idApplication === applicationId);
-
-      if (!receivedApplication) {
-        throw new Error('Received application not found.');
-      }
-
       // Update the `selected` field in the received application
-      await axios.patch(`http://localhost:3000/received/updateReceivedApplication/${receivedApplication._id}`, { selected: true });
+      await axios.patch(`http://localhost:3000/received/updateReceivedApplication/${application._id}`, { selected: true });
 
       // Update the `studentStatus` field in the assistance
       await axios.put(`http://localhost:3000/assistance/updateAssistance/${asistencia._id}`, { studentStatus: 'aceptado' });
@@ -57,6 +50,7 @@ const VisualizarInfo = ({ asistencia, applicationId, onClose }) => {
 
   return (
     <div className="visualizar-info-popup">
+      <ToastContainer />
       <button className="close-button" onClick={onClose}>X</button>
       <div className="popup-content">
         <h1>Formulario-estudiante</h1>
