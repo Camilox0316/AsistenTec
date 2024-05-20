@@ -85,7 +85,7 @@ const VisualizarInfo = ({ asistencia, applicationId, onClose }) => {
           </div>
           <div className="info-item">
             <strong>Nota del curso</strong>
-            <span>{application.avgLastGrade}</span>
+            <span>{application.courseGrade}</span>
           </div>
           <div className="info-item">
             <strong>carnet</strong>

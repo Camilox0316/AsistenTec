@@ -47,6 +47,7 @@ export const ApplyForm = () => {
       phoneNumber: event.target.phone.value,
       email: event.target.email.value,
       avgLastGrade: parseFloat(event.target.previousAverage.value),
+      courseGrade: parseFloat(event.target.courseGrade.value),
       hours: selectedOption, // Assuming this corresponds to the hours in your schema
       scholarship: event.target.scholarship.value,
       bankAccount: event.target.accountNumber.value,
