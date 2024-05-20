@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import  { useState ,useEffect} from 'react';
 import libroIcon from '../img/libro.png'; 
 import boligrafoIcon from '../img/boligrafo.png'; 
 import trash from '../img/trash.png';
@@ -6,14 +6,14 @@ import AsistenciaDetails from './AsistenciaDetails';
 import "./cards.css";
 import PropTypes from 'prop-types';
 
-function AsistenciaCard({ asistencia, onEdit, onDelete , _onClick, actualizarAsistencias}) {
+function AsistenciaCard({ asistencia, onEdit, onDelete , _onClick, actualizarAsistencias,isAdmin}) {
 
  
 
   const [showDetails, setShowDetails] = useState(false);
 
   const semestreAnio = `Semestre ${asistencia.semester} ${asistencia.year}`;
-  
+
 
   const closeDetails = () => {
     
@@ -22,6 +22,7 @@ function AsistenciaCard({ asistencia, onEdit, onDelete , _onClick, actualizarAsi
     actualizarAsistencias();
   };
 
+  //
   return (
     <div className={`asistencia-card`} onClick={() => _onClick(asistencia)}>
       <div className="asistencia-header">
@@ -37,10 +38,10 @@ function AsistenciaCard({ asistencia, onEdit, onDelete , _onClick, actualizarAsi
         <p><strong>Estado de Aprobación Estudiante:</strong> {asistencia.studentStatus}</p>
       </div>
       <div className="icon-container">
-        {asistencia.isEditable && asistencia.adminStatus === 'pendiente' && (
+        {isAdmin && asistencia.isEditable && asistencia.adminStatus === 'pendiente' && (
           <img src={boligrafoIcon} alt="Editar" className="edit-icon" onClick={() => onEdit(asistencia)} />
         )}
-        {asistencia.isEditable && asistencia.adminStatus === 'pendiente' &&(
+        {isAdmin && asistencia.isEditable && asistencia.adminStatus === 'pendiente' &&(
           <img src={trash} alt="Eliminar" className="delete-icon" onClick={() => onDelete(asistencia)} />
         )}
       </div>

@@ -21,7 +21,7 @@ export function MostrarAsistencias() {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [asistenciaParaEliminar, setAsistenciaParaEliminar] = useState(null);
   const { auth } = useAuth();
-
+  
   const [showDetails, setShowDetails] = useState(false);
   const [showPreseleccionar, setShowPreseleccionar] = useState(false);
   const [showCalificarPopup, setShowCalificarPopup] = useState(false);
@@ -90,9 +90,20 @@ export function MostrarAsistencias() {
     setAsistenciaParaEditar(asistencia); // Guarda la asistencia a editar
     setIsSolicitarAsistenciaVisible(true); // Abre el popup
   };
+  const [iseditableAdmin, setiseditableAdmin] = useState(false);
+  const verificarSiEsAdmin = () => {
+    if (auth?.roles?.find((role) => [3123].includes(role))) {//Admin 
+      console.log("es admin");
+      setiseditableAdmin(false);
+    }
+    else{ // Professor role
+      setiseditableAdmin(true);
+    }
+  }
 
   useEffect(() => {
     fetchAsistencias();
+    verificarSiEsAdmin();
   }, [orden]); // Agregar 'orden' como dependencia para refetch cuando cambie
 
   const asistenciasFiltradas = asistencias.filter((asistencia) =>
@@ -175,7 +186,7 @@ export function MostrarAsistencias() {
           //.filter(asistencia => asistencia.adminStatus === "pendiente" || asistencia.adminStatus === "rechazado")
             .map(asistencia => ( 
             <AsistenciaCard key={asistencia.id} asistencia={asistencia} onEdit={handleEdit} 
-            onDelete={() => handleDelete(asistencia)} auth={auth} _onClick={() => abrirDetallesAsistencia(asistencia)} actualizarAsistencias={actualizarAsistencias}/>
+            onDelete={() => handleDelete(asistencia)} auth={auth} _onClick={() => abrirDetallesAsistencia(asistencia)} actualizarAsistencias={actualizarAsistencias} isAdmin= {iseditableAdmin}/>
           ))}
         </div>
       </div>

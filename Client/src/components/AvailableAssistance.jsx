@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
+import { useAuth } from '../hooks/useAuth';
 import BookIcon from '@mui/icons-material/Book';
 import SchoolIcon from '@mui/icons-material/School';
 import BlockIcon from '@mui/icons-material/Block';
 import '../css modules/AvailableAssistance.css'; // Asegúrate de que la ruta del CSS es correcta
 
-export const AvailableAssistance = ({id,title, semester, professor, type, status, superType, courseCode,auth }) => {
+export const AvailableAssistance = ({id,title, semester, professor, type, status, superType, courseCode }) => {
 
   const navigate = useNavigate();
 
@@ -15,10 +15,11 @@ export const AvailableAssistance = ({id,title, semester, professor, type, status
     fontSize: '50px', // Ajusta el tamaño del ícono aquí
     color: '#4f46e5', // Ajusta el color del ícono aquí
   };
-  
+  const {auth} = useAuth();
+
   const handleViewDetails = () => {
     console.log(id);
-    console.log(title);
+    console.log(auth.roles);
     if (auth?.roles?.find((role) => [3123].includes(role))) {
       navigate(`/assistance-details-admin/${id}`);
     }
