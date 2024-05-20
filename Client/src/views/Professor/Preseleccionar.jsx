@@ -6,9 +6,11 @@ import axios from 'axios';
 import VisualizarInfo from './VisualizarInfo'; // Asegúrate de importar el nuevo componente
 import { useAuth } from '../../hooks/useAuth';
 const hostUrl = import.meta.env.VITE_HOST_URL;
+
 const Preseleccionar = ({ asistencia, onClose }) => {
   const [postulantes, setPostulantes] = useState([]);
   const [selectedApplicationId, setSelectedApplicationId] = useState(null);
+  const [selectedReceivedApplicationId, setSelectedReceivedApplicationId] = useState(null); // Add this line
   const { auth } = useAuth(); // Obtener la información de autenticación
 
   useEffect(() => {
@@ -26,7 +28,8 @@ const Preseleccionar = ({ asistencia, onClose }) => {
             carne: user.carnet,
             preseleccionar: application.status ? "Sí" : "No",
             postulaciones: application.idApplication,
-            applicationId: application._id
+            applicationId: application.idApplication, // Adjust this line
+            receivedApplicationId: application._id // Add this line
           };
         }));
 
@@ -48,9 +51,9 @@ const Preseleccionar = ({ asistencia, onClose }) => {
     setPostulantes(updatedPostulantes);
 
     try {
-      const applicationId = updatedPostulantes[index].applicationId;
+      const receivedApplicationId = updatedPostulantes[index].receivedApplicationId;
       const status = updatedPostulantes[index].preseleccionar === "Sí";
-      await axios.patch(`${hostUrl}/received/updateReceivedApplication/${applicationId}`, { status });
+      await axios.patch(`${hostUrl}/received/updateReceivedApplication/${receivedApplicationId}`, { status });
       console.log("Estado actualizado exitosamente en la base de datos.");
     } catch (error) {
       console.error("Error actualizando el estado:", error);
@@ -61,8 +64,9 @@ const Preseleccionar = ({ asistencia, onClose }) => {
     console.log(`Redirigir al perfil del estudiante con carnet: ${carne}`);
   };
 
-  const handlePostulacionClick = (applicationId) => {
+  const handlePostulacionClick = (applicationId, receivedApplicationId) => { // Adjust this line
     setSelectedApplicationId(applicationId);
+    setSelectedReceivedApplicationId(receivedApplicationId); // Add this line
   };
 
   const handleNombreClick = (carne) => {
@@ -71,6 +75,7 @@ const Preseleccionar = ({ asistencia, onClose }) => {
 
   const handleClosePopup = () => {
     setSelectedApplicationId(null);
+    setSelectedReceivedApplicationId(null); // Add this line
   };
 
   return (
@@ -122,7 +127,7 @@ const Preseleccionar = ({ asistencia, onClose }) => {
                     </td>
                     <td 
                       className="clickable" 
-                      onClick={() => handlePostulacionClick(postulante.postulaciones)}
+                      onClick={() => handlePostulacionClick(postulante.applicationId, postulante.receivedApplicationId)} // Adjust this line
                     >
                       {postulante.postulaciones}
                     </td>
@@ -137,6 +142,7 @@ const Preseleccionar = ({ asistencia, onClose }) => {
         <VisualizarInfo 
           asistencia={asistencia} 
           applicationId={selectedApplicationId} 
+          receivedApplicationId={selectedReceivedApplicationId} // Add this line
           onClose={handleClosePopup} 
         />
       )}

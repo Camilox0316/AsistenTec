@@ -6,7 +6,8 @@ import { useAuth } from '../../hooks/useAuth';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const hostUrl = import.meta.env.VITE_HOST_URL;
-const VisualizarInfo = ({ asistencia, applicationId, onClose }) => {
+
+const VisualizarInfo = ({ asistencia, applicationId, receivedApplicationId, onClose }) => {
   const [application, setApplication] = useState(null);
   const { auth } = useAuth();
 
@@ -26,7 +27,7 @@ const VisualizarInfo = ({ asistencia, applicationId, onClose }) => {
   const handleAccept = async () => {
     try {
       // Update the `selected` field in the received application
-      await axios.patch(`${hostUrl}/received/updateReceivedApplication/${application._id}`, { selected: true });
+      await axios.patch(`${hostUrl}/received/updateReceivedApplication/${receivedApplicationId}`, { selected: true });
 
       // Update the `studentStatus` field in the assistance
       await axios.put(`${hostUrl}/assistance/updateAssistance/${asistencia._id}`, { studentStatus: 'aceptado' });
@@ -135,6 +136,7 @@ VisualizarInfo.propTypes = {
     _id: PropTypes.string.isRequired,
   }).isRequired,
   applicationId: PropTypes.string.isRequired,
+  receivedApplicationId: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
