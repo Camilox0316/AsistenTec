@@ -69,7 +69,11 @@ export default function App() {
         {/* Professor routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.Professor]} />}>
           <Route path="/home-professor" element={<MostrarAsistencias />} />
-          <Route path="/solicitar-asistencias-professor" element={<SolicitarAsistencia />} />
+          <Route path="/solicitar-asistencias-professor" element={<SolicitarAsistencia statusFilter="pendiente"/>} />
+          <Route path="/home-professor-rechazadas" element={<MostrarAsistencias statusFilter="rechazada"/>} />
+          <Route path="/home-professor-aprobadas" element={<MostrarAsistencias statusFilter="aprobada" />} />
+
+
         </Route>
 
         {/* Admin routes */}
