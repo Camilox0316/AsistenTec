@@ -9,10 +9,6 @@ const ActiveAssistanceSchema = new mongoose.Schema({
       ref: 'User',
       required: true
     },
-    hours: {
-      type: Number,
-      required: true
-    },
     score: {
       type: Number,
       required: true
