@@ -4,13 +4,15 @@ import "./Preseleccionar.css";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import VisualizarInfo from './VisualizarInfo'; // Asegúrate de importar el nuevo componente
+import VerPerfil from './VerPerfil'; // Importa el nuevo componente
 import { useAuth } from '../../hooks/useAuth';
 const hostUrl = import.meta.env.VITE_HOST_URL;
 
-const Preseleccionar = ({ asistencia, onClose ,refrescarAsistencias}) => {
+const Preseleccionar = ({ asistencia, onClose, refrescarAsistencias }) => {
   const [postulantes, setPostulantes] = useState([]);
   const [selectedApplicationId, setSelectedApplicationId] = useState(null);
   const [selectedReceivedApplicationId, setSelectedReceivedApplicationId] = useState(null); // Add this line
+  const [selectedUser, setSelectedUser] = useState(null); // Add this line
   const { auth } = useAuth(); // Obtener la información de autenticación
 
   const fetchPostulantes = async () => {
@@ -28,7 +30,8 @@ const Preseleccionar = ({ asistencia, onClose ,refrescarAsistencias}) => {
           preseleccionar: application.status ? "Sí" : "No",
           postulaciones: application.idApplication,
           applicationId: application.idApplication, // Adjust this line
-          receivedApplicationId: application._id // Add this line
+          receivedApplicationId: application._id, // Add this line
+          user: user // Add this line
         };
       }));
 
@@ -39,7 +42,6 @@ const Preseleccionar = ({ asistencia, onClose ,refrescarAsistencias}) => {
   };
 
   useEffect(() => {
-
     fetchPostulantes();
   }, [asistencia]);
 
@@ -61,23 +63,24 @@ const Preseleccionar = ({ asistencia, onClose ,refrescarAsistencias}) => {
     }
   };
 
-  const handleCarnetClick = (carne) => {
-    console.log(`Redirigir al perfil del estudiante con carnet: ${carne}`);
+  const handleCarnetClick = (index) => {
+    setSelectedUser(postulantes[index].user); // Add this line
   };
 
-  const handlePostulacionClick = (applicationId, receivedApplicationId) => { // Adjust this line
+  const handlePostulacionClick = (applicationId, receivedApplicationId) => {
     setSelectedApplicationId(applicationId);
     setSelectedReceivedApplicationId(receivedApplicationId); // Add this line
   };
 
-  const handleNombreClick = (carne) => {
-    console.log(`Carnet del estudiante: ${carne}`);
+  const handleNombreClick = (index) => {
+    setSelectedUser(postulantes[index].user); // Add this line
   };
 
   const handleClosePopup = () => {
     refrescarAsistencias();
     setSelectedApplicationId(null);
     setSelectedReceivedApplicationId(null); // Add this line
+    setSelectedUser(null); // Add this line
   };
 
   return (
@@ -106,13 +109,13 @@ const Preseleccionar = ({ asistencia, onClose ,refrescarAsistencias}) => {
                   <tr key={index}>
                     <td 
                       className="clickable"
-                      onClick={() => handleNombreClick(postulante.carne)}
+                      onClick={() => handleNombreClick(index)}
                     >
                       {postulante.nombre}
                     </td>
                     <td 
                       className="clickable" 
-                      onClick={() => handleCarnetClick(postulante.carne)}
+                      onClick={() => handleCarnetClick(index)}
                     >
                       {postulante.carne}
                     </td>
@@ -131,8 +134,7 @@ const Preseleccionar = ({ asistencia, onClose ,refrescarAsistencias}) => {
                       className="clickable" 
                       onClick={() => handlePostulacionClick(postulante.applicationId, postulante.receivedApplicationId)} // Adjust this line
                     >
-                      {/* {postulante.postulaciones} */}
-                          Ver postulación
+                      Ver postulación
                     </td>
                   </tr>
                 ))}
@@ -147,8 +149,13 @@ const Preseleccionar = ({ asistencia, onClose ,refrescarAsistencias}) => {
           applicationId={selectedApplicationId} 
           receivedApplicationId={selectedReceivedApplicationId} // Add this line
           onClose={handleClosePopup} 
-          refrescarPostulaciones = {fetchPostulantes}
-          
+          refrescarPostulaciones={fetchPostulantes}
+        />
+      )}
+      {selectedUser && (
+        <VerPerfil 
+          user={selectedUser} 
+          onClose={handleClosePopup} 
         />
       )}
     </div>

@@ -4,26 +4,31 @@ import "./Preseleccionar.css"; // Reuse the same CSS file
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../hooks/useAuth';
+import VerPerfil from './VerPerfil'; // Importa el componente VerPerfil
+
+const hostUrl = import.meta.env.VITE_HOST_URL;
 
 const Calificar = ({ asistencia, onClose }) => {
   const [postulantes, setPostulantes] = useState([]);
   const [isAdmin, setisAdmin] = useState(false);
-  
+  const [selectedUser, setSelectedUser] = useState(null); // Add this line
+
   useEffect(() => {
     const fetchPostulantes = async () => {
       verificarSiEsAdmin();
       try {
-        const response = await axios.get(`http://localhost:3000/received/receivedApplications/${asistencia._id}`);
+        const response = await axios.get(`${hostUrl}/received/receivedApplications/${asistencia._id}`);
         const receivedApplications = response.data;
 
         const postulantesData = await Promise.all(receivedApplications.map(async (application) => {
           if (application.selected) {
-            const userResponse = await axios.get(`http://localhost:3000/user/getUserByIdAll/${application.idUser}`);
+            const userResponse = await axios.get(`${hostUrl}/user/getUserByIdAll/${application.idUser}`);
             const user = userResponse.data;
 
             return {
               nombre: `${user.name} ${user.lastName1} ${user.lastName2}`,
               calificacion: application.score,
+              user,
               applicationId: application._id
             };
           } else {
@@ -41,17 +46,15 @@ const Calificar = ({ asistencia, onClose }) => {
     fetchPostulantes();
   }, [asistencia]);
 
-  const {auth} = useAuth();
+  const { auth } = useAuth();
 
   const verificarSiEsAdmin = () => {
-   
     if (auth?.roles?.find((role) => [3123].includes(role))) {
-        setisAdmin(true);
-     }
-    else{
+      setisAdmin(true);
+    } else {
       setisAdmin(false);
     }
-  }
+  };
 
   const handleCalificar = async (index, value) => {
     const updatedPostulantes = postulantes.map((postulante, i) => ({
@@ -62,15 +65,19 @@ const Calificar = ({ asistencia, onClose }) => {
 
     try {
       const applicationId = updatedPostulantes[index].applicationId;
-      await axios.patch(`http://localhost:3000/received/updateReceivedApplication/${applicationId}`, { score: value });
+      await axios.patch(`${hostUrl}/received/updateReceivedApplication/${applicationId}`, { score: value });
       console.log("Score updated successfully in the database.");
     } catch (error) {
       console.error("Error updating score:", error);
     }
   };
 
-  const handleNombreClick = (nombre) => {
-    console.log(`Nombre del estudiante: ${nombre}`);
+  const handleNombreClick = (user) => {
+    setSelectedUser(user); // Open the profile popup
+  };
+
+  const handleCloseProfile = () => {
+    setSelectedUser(null); // Close the profile popup
   };
 
   return (
@@ -89,7 +96,8 @@ const Calificar = ({ asistencia, onClose }) => {
               <tr>
                 <th>Nombre</th>
                 {!isAdmin && (
-                <th>Calificar 0 - 5</th>)}
+                  <th>Calificar 0 - 5</th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -97,29 +105,35 @@ const Calificar = ({ asistencia, onClose }) => {
                 <tr key={index}>
                   <td 
                     className="clickable"
-                    onClick={() => handleNombreClick(postulante.nombre)}
+                    onClick={() => handleNombreClick(postulante.user)}
                   >
                     {postulante.nombre}
                   </td>
                   {!isAdmin && (
-                  <td>
-                    <select 
-                      value={postulante.calificacion} 
-                      onChange={(e) => handleCalificar(index, Number(e.target.value))} 
-                      className="calificacion-select"
-                    >
-                      {[...Array(6).keys()].slice(1).map(value => (
-                        <option key={value} value={value}>{value}</option>
-                      ))}
-                    </select>
-                  </td>
-                )}
+                    <td>
+                      <select 
+                        value={postulante.calificacion} 
+                        onChange={(e) => handleCalificar(index, Number(e.target.value))} 
+                        className="calificacion-select"
+                      >
+                        {[...Array(6).keys()].slice(1).map(value => (
+                          <option key={value} value={value}>{value}</option>
+                        ))}
+                      </select>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
+      {selectedUser && (
+        <VerPerfil 
+          user={selectedUser} 
+          onClose={handleCloseProfile} 
+        />
+      )}
     </div>
   );
 };
