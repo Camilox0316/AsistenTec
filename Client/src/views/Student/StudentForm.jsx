@@ -46,7 +46,7 @@ export const ApplyForm = () => {
       bankAccount: event.target.accountNumber.value,
       otherAssistance: otherAssistance, // Assuming this field is a boolean
       otherDepartment: event.target.departmentNumber.value || "N/A",
-      otherHours: parseFloat(event.target.requestedHours.value) || 0, // Make sure to parse string to number
+      otherHours: event.target.requestedHours.value || 0, // Make sure to parse string to number
       status: false // Assuming this should be set to false initially
     };
 

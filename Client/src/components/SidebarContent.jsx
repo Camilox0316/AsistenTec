@@ -53,7 +53,7 @@ export function SidebarContent() {
       <Item>
         <Link to="/home-professor" className="flex items-center space-x-2">
           <GroupIcon />
-          <span >Asistencias Pendientes</span>
+          <span >Inicio</span>
         </Link>
       </Item>
       <Item>
@@ -83,12 +83,12 @@ export function SidebarContent() {
           <span>Asistencias aprobadas</span>
         </Link>
       </Item>
-      <Item>
+      {/* <Item>
         <Link to="/home-switch" className="flex items-center space-x-2">
           <GroupIcon />
           <span>Consultar Estudiantes</span>
         </Link>
-      </Item>
+      </Item> */}
       <Item>
         <Link to="/mostrar-solicitudes" className="flex items-center space-x-2">
           <GroupIcon />

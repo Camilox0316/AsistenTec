@@ -49,7 +49,7 @@ export const MyAssistancesPage = () => {
   console.log("Asistencias Disponibles: ",assistances);
   return (
     <div className="my-assistances">
-      <h2 className="section-title">Mis Asistencias</h2>
+      <h2 className="section-title">Mis Solicitudes</h2>
       {assistances.map((assistance, index) => (
         console.log(`inside map: ${assistance}`),
         <MyAssistanceCard

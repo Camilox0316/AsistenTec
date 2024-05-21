@@ -41,7 +41,7 @@ const registerUser = async (req, res, next) => {
       lastName2: lastName2,
       photo: req.file ? `/uploads/profilePhotos/${req.file.filename}` : "",
       roles: userRoles,
-      description: "Estudiante",
+      description: "Usuario del Sistema AsistenTEC",
     });
 
     res.status(200).json({ msg: "User created", userId: newUser._id });
