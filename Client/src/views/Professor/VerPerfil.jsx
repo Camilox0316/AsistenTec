@@ -19,6 +19,7 @@ const VerPerfil = ({ user, onClose }) => {
   
   const iconSize = isSmallScreen ? '200px' : '200px';
   const [assistanceData, setAssistanceData] = useState([]);
+  const [rating, setRating] = useState(0); // Initialize rating state
 
   useEffect(() => {
     const fetchAssistances = async () => {
@@ -37,8 +38,15 @@ const VerPerfil = ({ user, onClose }) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
+  useEffect(() => {
+    if (assistanceData.length > 0) {
+      const totalScore = assistanceData.reduce((sum, row) => sum + row.score, 0);
+      const averageScore = totalScore / assistanceData.length;
+      setRating(averageScore);
+    }
+  }, [assistanceData])
+
   const photoUrl = user?.photo ? `${axiosInstance.defaults.baseURL}${user.photo}` : "";
-  const rating = 3.7; // This would typically come from user data
   const fullStars = Math.floor(rating);
   const halfStar = rating % 1 > 0.5 ? 1 : 0;
   const emptyStars = 5 - fullStars - halfStar;
