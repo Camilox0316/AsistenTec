@@ -1,41 +1,62 @@
 import AdminProfeCard from "../../components/AdminProfeCard";
 import "./VerAdmin_profes.css";
-import { useState } from "react";
+import { useState,useEffect} from "react";
 //import IngresarAdmin_prof from "./IngresarAdmin_prof";
 import { Sidebar } from "../../components/Sidebar";
 // Datos simulados para las tarjetas de asistencia
 import IngresarAdmin_prof from "./IngresarAdmin_prof";
 import axios from "axios";
+import ConfirmDeletePopup from "../../components/ConfirmDeletePopup";
+import { any } from "prop-types";
 const hostUrl = import.meta.env.VITE_HOST_URL;
 //Imagenes
 //import iconoFiltro from "../../img/lupa.png";
 const URI = `${hostUrl}/user/getAdmins`
+// let response = await axios.get(URI);
+// console.log("response:", response.data);
+// setAdmin_profes(response.data);
 
 
-let response = await axios.get(URI);
-console.log("response:", response.data);
-let admins_profesData = response.data;
-
-const recargarDatos = async () => {
-  response = await axios.get(URI);
-  console.log("response:", response.data);
-  admins_profesData = response.data;
-};
  
 
 export function VerAdmin_profes() {
+const [adminParaEliminar, setadminParaEliminar] = useState(null);
+const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+const [admin_profes, setAdmin_profes] = useState([]);
   const [isSolicitarAsistenciaVisible, setIsSolicitarAsistenciaVisible] = useState(false);
-  const [admin_profes, setAdmin_profes] = useState(admins_profesData);
+  const [admins_profesData, setAdmins_profesData] = useState([]);
+  const [orden, setOrden] = useState("más reciente");
 
-  // Mock data for dropdown
-// const TIPOS_ASISTENCIA = [
-//   "Horas Estudiante",
-//   "Asistencia Especial",
-//   "Horas Asistente",
-// ];
-  // Función para abrir el modal
+  const cargarDatos = async () => {
+    let response = await axios.get(URI);
 
-  // Función para abrir el modal
+    console.log("response:", response.data);
+    setAdmin_profes(response.data);
+  };
+
+  const handleDelete = (admin_profe) => {
+    // Lógica para mostrar el popup de confirmación de eliminación
+    setadminParaEliminar(admin_profe); // Guarda la asistencia a eliminar
+    setShowConfirmDelete(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!adminParaEliminar) return;
+
+    try {
+      // Hace la llamada DELETE a tu API
+      await axios.delete(`${hostUrl}/login/deleteAdmin_profe/${adminParaEliminar._id}`);
+      
+      // Actualiza el estado para reflejar el cambio
+      setAdmin_profes(admin_profes.filter((item) => item._id !== adminParaEliminar._id));
+      
+      // Oculta el popup de confirmación
+      setShowConfirmDelete(false);
+    } catch (error) {
+      console.error("Error deleting assistance:", error);
+      // Aquí puedes manejar errores, por ejemplo, mostrar un mensaje al usuario.
+    }
+  };
   const handleAgregarClick = () => {
     setIsSolicitarAsistenciaVisible(true);
   };
@@ -44,14 +65,19 @@ export function VerAdmin_profes() {
   const handleCloseModal = () => {
     setIsSolicitarAsistenciaVisible(false);
   };
+
+  useEffect(() => {
+    cargarDatos();
+  }, [orden]); // Agregar 'orden' como dependencia para refetch cuando cambie
+
   // Puedes usar el estado para manejar los filtrosß
   const [filtro, setFiltro] = useState("");
 
   const admins_profesFiltrados = filtro
-    ? admins_profesData.filter((admin_profe) =>
+    ? admin_profes.filter((admin_profe) =>
       admin_profe.name.toLowerCase().includes(filtro.toLowerCase())
       )
-    : admins_profesData; // si no hay filtro, muestra todas las asistencias
+    : admin_profes; // si no hay filtro, muestra todas las asistencias
 
   console.log("filtrado", admins_profesFiltrados);
   return (
@@ -73,20 +99,26 @@ export function VerAdmin_profes() {
               placeholder="Buscar o filtrar..."
             />
             <datalist id="asistencias-nombres">
-              {admins_profesData.map((admin_profe) => (
-                <option key={admin_profe.Objectid} value={admin_profe.Objectid} />
+              {admin_profes.map((admin_profe) => (
+                <option key={admin_profe._id} value={admin_profe._id} />
               ))}
             </datalist>
           </div>
         </div>
         <div className="cards-alineadas">
         {admins_profesFiltrados.map((admin_profe) => (
-          <AdminProfeCard key={admin_profe._id} admin_profe={admin_profe} />
+          <AdminProfeCard key={admin_profe._id} admin_profe={admin_profe} onDelete={() => handleDelete(admin_profe)}/>
         ))}
         </div>
       </div>
        {isSolicitarAsistenciaVisible && (
-        <IngresarAdmin_prof onClose={handleCloseModal} onAgregarAdmin={recargarDatos}/>
+        <IngresarAdmin_prof onClose={handleCloseModal} onAgregarAdmin={cargarDatos}/>
+      )}
+      {showConfirmDelete && (
+        <ConfirmDeletePopup
+          onConfirm={confirmDelete}
+          onCancel={() => setShowConfirmDelete(false)}
+        />
       )}
     </div>
        

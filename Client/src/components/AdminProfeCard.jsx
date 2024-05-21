@@ -1,9 +1,9 @@
 import UserIcon from '../img/userLogo.png';
-import boligrafoIcon from '../img/boligrafo.png'; // Si es necesario
+//import boligrafoIcon from '../img/boligrafo.png'; // Si es necesario
 import "./cards.css"
 import PropTypes from 'prop-types';
-
-function AdminProfeCard({ admin_profe }) {
+import trash from '../img/trash.png';
+function AdminProfeCard({ admin_profe ,onDelete}) {
     const {
       name,
       carnet,
@@ -21,6 +21,9 @@ function AdminProfeCard({ admin_profe }) {
   
     return (
       <div className="asistencia-card">
+        <div className="icon-container">
+          <img src={trash} alt="Eliminar" className="delete-icon" onClick={() => onDelete(admin_profe)} />
+          </div>
         <div className="asistencia-header">
           <img src={UserIcon} alt="Icono User" className="asistencia-icon" />
           <div className="asistencia-titulo">
@@ -38,12 +41,13 @@ function AdminProfeCard({ admin_profe }) {
           {/* <p><strong>Estado Estudiante:</strong> </p>
           <p>{estadoEstudiante}</p> */}
         </div>
-        {/* {editable && <img src={boligrafoIcon} alt="Editar" className="edit-icon" />} */}
+      
       </div>
     );
   }
   AdminProfeCard.propTypes = {
     admin_profe: PropTypes.arrayOf(PropTypes.string).isRequired,
+    onDelete: PropTypes.func.isRequired,
   };
   export default AdminProfeCard;
   

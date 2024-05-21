@@ -18,6 +18,7 @@ router.route("/getProfessorName/:id").get(adminUserControllers.getProfessorNameH
 router.route("/getUserById/:id").get(adminUserControllers.getUserById);
 router.route("/getUserByIdAll/:id").get(adminUserControllers.getUserByIdAll);
 router.route("/updateUser/:id").put(uploadProfileImage, adminUserControllers.updateUser);
+router.route("/deleteAdmin_profe/:id").delete(adminUserControllers.deleteAdminProfe);
 //Nota para el editar perfil se debe de tener el authRequiere
 
 module.exports = router;

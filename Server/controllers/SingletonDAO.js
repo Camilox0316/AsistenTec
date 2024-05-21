@@ -658,6 +658,17 @@ class SingletonDAO {
       throw new Error(`Failed to fetch student assistances: ${error.message}`);
     }
   }
+  async deleteUser(userId) {
+    try {
+
+      // Finally, delete the user
+      await User.findByIdAndDelete(userId);
+  
+      return { message: 'User deleted successfully' };
+    } catch (error) {
+      return Error(`Failed to delete user: ${error.message}`);
+    }
+  }
   
 }
 

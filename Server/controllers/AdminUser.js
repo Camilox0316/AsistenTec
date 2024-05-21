@@ -172,6 +172,25 @@ const updateUser = async (req, res, next) => {
     return res.status(500).json({ message: 'Server error' });
   }
 };
+const deleteAdminProfe = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+
+    // Verify if the user is an admin or professor (optional, depending on your requirements)
+    const user = await SingletonDAO.getUserById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Proceed with user deletion
+    await SingletonDAO.deleteUser(userId);
+
+    return res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error("Error deleting user:", error.message);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
 
 module.exports = {
   loginUser,
@@ -185,4 +204,5 @@ module.exports = {
   getUserById,
   getUserByIdAll,
   updateUser,
+  deleteAdminProfe
 };
