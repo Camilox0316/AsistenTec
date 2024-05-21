@@ -61,7 +61,8 @@ export function ViewHomeStudent() {
     <h2 className="section-title">Asistencias</h2>
     <div className="carousel-container">
       <div className="assistance-container" ref={assistanceScrollRef}>
-        {assistances.filter(assistance => assistance.adminStatus === "aceptado")
+        {/* fitro para que solo salgan las aprobadas y que no tengan estudiante asignado */}
+        {assistances.filter(assistance => assistance.adminStatus === "aceptado" && assistance.studentStatus != "aceptado")
         .map(assistance => (
         <AvailableAssistance
           id={assistance._id}
@@ -84,7 +85,8 @@ export function ViewHomeStudent() {
     <h2 className="section-title">Tutorías</h2>
     <div className="carousel-container">
       <div className="tutorship-container" ref={tutoringsScrollRef}>
-        {tutorings.filter(tutoring => tutoring.adminStatus === "aceptado")
+      {/* fitro para que solo salgan las aprobadas y que no tengan estudiante asignado */}
+        {tutorings.filter(tutoring => tutoring.adminStatus === "aceptado" && tutoring.studentStatus != "aceptado")
         .map(tutoring => (
         <AvailableAssistance
           id={tutoring._id}

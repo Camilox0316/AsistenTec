@@ -7,37 +7,38 @@ import VisualizarInfo from './VisualizarInfo'; // Asegúrate de importar el nuev
 import { useAuth } from '../../hooks/useAuth';
 const hostUrl = import.meta.env.VITE_HOST_URL;
 
-const Preseleccionar = ({ asistencia, onClose }) => {
+const Preseleccionar = ({ asistencia, onClose ,refrescarAsistencias}) => {
   const [postulantes, setPostulantes] = useState([]);
   const [selectedApplicationId, setSelectedApplicationId] = useState(null);
   const [selectedReceivedApplicationId, setSelectedReceivedApplicationId] = useState(null); // Add this line
   const { auth } = useAuth(); // Obtener la información de autenticación
 
+  const fetchPostulantes = async () => {
+    try {
+      const receivedApplicationsResponse = await axios.get(`${hostUrl}/received/receivedApplications/${asistencia._id}`);
+      const receivedApplications = receivedApplicationsResponse.data;
+
+      const postulantesData = await Promise.all(receivedApplications.map(async (application) => {
+        const userResponse = await axios.get(`${hostUrl}/user/getUserByIdAll/${application.idUser}`);
+        const user = userResponse.data;
+
+        return {
+          nombre: `${user.name} ${user.lastName1} ${user.lastName2}`,
+          carne: user.carnet,
+          preseleccionar: application.status ? "Sí" : "No",
+          postulaciones: application.idApplication,
+          applicationId: application.idApplication, // Adjust this line
+          receivedApplicationId: application._id // Add this line
+        };
+      }));
+
+      setPostulantes(postulantesData);
+    } catch (error) {
+      console.error("Error fetching postulantes:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchPostulantes = async () => {
-      try {
-        const receivedApplicationsResponse = await axios.get(`${hostUrl}/received/receivedApplications/${asistencia._id}`);
-        const receivedApplications = receivedApplicationsResponse.data;
-
-        const postulantesData = await Promise.all(receivedApplications.map(async (application) => {
-          const userResponse = await axios.get(`${hostUrl}/user/getUserByIdAll/${application.idUser}`);
-          const user = userResponse.data;
-
-          return {
-            nombre: `${user.name} ${user.lastName1} ${user.lastName2}`,
-            carne: user.carnet,
-            preseleccionar: application.status ? "Sí" : "No",
-            postulaciones: application.idApplication,
-            applicationId: application.idApplication, // Adjust this line
-            receivedApplicationId: application._id // Add this line
-          };
-        }));
-
-        setPostulantes(postulantesData);
-      } catch (error) {
-        console.error("Error fetching postulantes:", error);
-      }
-    };
 
     fetchPostulantes();
   }, [asistencia]);
@@ -74,6 +75,7 @@ const Preseleccionar = ({ asistencia, onClose }) => {
   };
 
   const handleClosePopup = () => {
+    refrescarAsistencias();
     setSelectedApplicationId(null);
     setSelectedReceivedApplicationId(null); // Add this line
   };
@@ -145,6 +147,8 @@ const Preseleccionar = ({ asistencia, onClose }) => {
           applicationId={selectedApplicationId} 
           receivedApplicationId={selectedReceivedApplicationId} // Add this line
           onClose={handleClosePopup} 
+          refrescarPostulaciones = {fetchPostulantes}
+          
         />
       )}
     </div>

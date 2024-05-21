@@ -7,7 +7,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const hostUrl = import.meta.env.VITE_HOST_URL;
 
-const VisualizarInfo = ({ asistencia, applicationId, receivedApplicationId, onClose }) => {
+const VisualizarInfo = ({ asistencia, applicationId, receivedApplicationId, onClose,refrescarPostulaciones }) => {
   const [application, setApplication] = useState(null);
   const { auth } = useAuth();
 
@@ -34,7 +34,8 @@ const VisualizarInfo = ({ asistencia, applicationId, receivedApplicationId, onCl
 
       console.log('Application accepted successfully.');
       onClose(); // Close the popup after successful update
-
+      console.log("refrescando postulaciones...");
+      refrescarPostulaciones();
       // Display success notification
       toast.success('Application accepted successfully.');
     } catch (error) {

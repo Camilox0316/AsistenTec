@@ -230,6 +230,7 @@ export function MostrarAsistencias({ statusFilter }) {
         <Preseleccionar
           asistencia={asistenciaActual}
           onClose={() => setShowPreseleccionar(false)}
+          refrescarAsistencias = {fetchAsistencias}
         />
       )}
       {showCalificarPopup && (
