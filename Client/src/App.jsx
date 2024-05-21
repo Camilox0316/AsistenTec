@@ -9,7 +9,7 @@ import { HomeSwitch } from "./components/HomeSwitch";
 
 import RegisterUserPage from "./views/RegisterUserPage";
 
-import { ViewActivityPage } from "./views/ViewActivityPage";
+//import { ViewActivityPage } from "./views/ViewActivityPage";
 
 //Professor Views
 import { MostrarAsistencias } from "./views/Professor/MostrarAsistencias";
