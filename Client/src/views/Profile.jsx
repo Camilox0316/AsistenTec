@@ -13,7 +13,7 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import EditIcon from '@mui/icons-material/Edit';
 
 import axiosInstance from "../api/axios";
-import axios from 'axios'
+import axios from 'axios';
 
 import '../css modules/Profile.css';
 
@@ -29,13 +29,8 @@ export const Profile = () => {
 
   const hostUrl = import.meta.env.VITE_HOST_URL;
   const [user, setUser] = useState("");
+  const [rating, setRating] = useState(0); // Initialize rating state
   const iconSize = isSmallScreen ? '200px' : '200px';
-
-  // Calcular nota calificación
-  const rating = 3.7;
-  const fullStars = Math.floor(rating);
-  const halfStar = rating % 1 > 0.5 ? 1 : 0;
-  const emptyStars = 5 - fullStars - halfStar;
 
   // Tabla
   const [assistanceData, setAssistanceData] = useState([]);
@@ -56,12 +51,23 @@ export const Profile = () => {
     fetchUserAndAssistances();
   }, [activeUser.id, hostUrl]);
 
+  useEffect(() => {
+    if (assistanceData.length > 0) {
+      const totalScore = assistanceData.reduce((sum, row) => sum + row.score, 0);
+      const averageScore = totalScore / assistanceData.length;
+      setRating(averageScore);
+    }
+  }, [assistanceData]);
+
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
-}
+  }
 
+  const fullStars = Math.floor(rating);
+  const halfStar = rating % 1 > 0.5 ? 1 : 0;
+  const emptyStars = 5 - fullStars - halfStar;
   const photoUrl = user?.photo ? `${axiosInstance.defaults.baseURL}${user.photo}` : "";
-  console.log(assistanceData);
+
   return (
     <div style={{
       display: 'flex',
