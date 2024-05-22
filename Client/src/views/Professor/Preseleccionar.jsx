@@ -81,6 +81,7 @@ const Preseleccionar = ({ asistencia, onClose, refrescarAsistencias }) => {
     setSelectedApplicationId(null);
     setSelectedReceivedApplicationId(null); // Add this line
     setSelectedUser(null); // Add this line
+    onClose();
   };
 
   return (

@@ -65,6 +65,7 @@ export const ApplyForm = () => {
       // Handle the response, such as navigating to a thank-you page or displaying a success message
       console.log('Application submitted:', response.data);
       alert('Solicitud enviada con éxito');
+      navigate('/home-student');
       // navigate('/thank-you'); // Redirect to a thank-you page, for example
     } catch (error) {
       // Handle errors, such as displaying an error message to the user
