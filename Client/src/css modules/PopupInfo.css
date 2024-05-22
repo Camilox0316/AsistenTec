@@ -7,13 +7,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
+    
   }
   
   .popup-content {
     position: relative;
     width: 90%;
     max-width: 600px; /* o el tamaño que prefieras */
+    background-color: rgba(255, 255, 255);
+    color: rgb(0, 0, 0);
   }
   
   .close-btn {
@@ -23,7 +25,7 @@
     border: none;
     background: transparent;
     cursor: pointer;
-    color: #fff; /* o el color que prefieras para el ícono */
+    color: #000000; /* o el color que prefieras para el ícono */
   }
 
   .close-btn .MuiSvgIcon-root {

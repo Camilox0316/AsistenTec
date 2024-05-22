@@ -6,9 +6,9 @@ import '../css modules/PopupInfo.css'; // Asegúrate de que el archivo CSS está
 export const AssistanceInfoPopUp = ({ onClose }) => {
   return (
     <div className="popup-overlay">
-      <div className="popup-content bg-gray-800 text-white p-5 rounded-md">
+      <div className="popup-content">
         <h2 className="text-lg font-bold mb-3 text-center">Detalles Asistencia</h2>
-        <ul>
+        <ul className='font-light'>
           <li>•	Tenga presente que usted deberá ser informado por la Escuela, Departamento o Dependencia de su nombramiento de asistencia.</li>
           <li>•	Si usted realizó solicitudes en más de una Escuela o Dependencia, tan pronto sea ratificado su nombramiento, deberá presentar de manera inmediata su renuncia en las otras instancias, si no desea tener otro nombramiento.</li>
           <li>•	Debe tener presente que el mínimo de horas requeridos para cubrir derechos de estudio (para HA, HE y TU) es de 50, y el máximo permitido por estudiante de 160 horas. </li>
