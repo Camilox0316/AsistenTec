@@ -4,7 +4,7 @@ import axios from "../api/axios";
 import logoImage from "../img/logoTec.png"; // importar el logo del tec
 import { useNavigate } from "react-router-dom";
 import {Link} from "react-router-dom";
-
+import background from "../img/backgroundLogin.jpg";
 const LOGIN_URL = "/login/auth";
 
 export function LoginPage() {
@@ -67,7 +67,7 @@ export function LoginPage() {
   };
 
   const styles = {
-    backgroundImage: "url(/src/img/backgroundLogin.jpg)",
+    backgroundImage: `url(${background})`,
     backgroundSize: "cover",
     backgroundPosition: "center",   
    

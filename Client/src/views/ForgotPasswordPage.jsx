@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from "../api/axios";
+import background from "../img/backgroundLogin.jpg";
 
 export function ForgotPasswordPage() {
   
@@ -39,7 +40,7 @@ export function ForgotPasswordPage() {
 
 
   const styles = {
-    backgroundImage: "url(/src/img/backgroundLogin.jpg)",
+    backgroundImage: `url(${background})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundOpacity: "0.5",

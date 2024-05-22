@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
-
+import background from "../img/backgroundLogin.jpg";
 
 // export const handleRegister = async formData => {
 //   event.preventDefault();
@@ -105,7 +105,7 @@ function RegisterUserPage() {
   };
   
   const styles = {
-    backgroundImage: "url(/src/img/backgroundLogin.jpg)",
+    backgroundImage: `url(${background})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
   };
